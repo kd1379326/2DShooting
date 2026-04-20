@@ -47,7 +47,7 @@ private:
 private:
 	// 
 	Application() {}
-	int test = 0;
+	
 public:
 	static Application &GetInstance(){
 		static Application Instance;
