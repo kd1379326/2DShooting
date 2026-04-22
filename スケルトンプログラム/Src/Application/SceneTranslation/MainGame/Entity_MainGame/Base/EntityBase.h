@@ -1,12 +1,12 @@
 #pragma once
 
-class C_EntityBase
+class C_EntityBase_MainGame
 {
 public:
 
 	// コンストラクタとデストラクタ
-	C_EntityBase() {}
-	~C_EntityBase() {}
+	C_EntityBase_MainGame() {}
+	~C_EntityBase_MainGame() {}
 
 	// 機能が全派生クラス共通なら通常の関数、派生クラスによって機能が違うなら純粋仮想関数を使う。
 	// 初期化
@@ -18,19 +18,15 @@ public:
 	// デバッグに表示するもの
 	virtual void ImGuiUpdate() = 0;
 
-	// Updateに導入する関数
-	// 操作
-	virtual void MoveControl() = 0;
+
 	// 当たり判定
 	bool HitEntity(Math::Vector2 A_Pos1, Math::Vector2 A_Pos2, Math::Vector2 A_Radius1, Math::Vector2 A_Radius2);
-
-protected:
 
 	// エンティティ(画像)を描画するために必要なもの(構造体)
 	struct S_EntityCharacter
 	{
 		// 位置
-			Math::Vector2		MS_Pos;
+			Math::Vector2		MS_Position;
 		// 移動量
 			Math::Vector2		MS_Move;
 		// 半径(サイズ)
@@ -47,12 +43,16 @@ protected:
 			KdTexture				MS_Texture;
 		// 画像の切り取り範囲
 			Math::Rectangle	MS_Rectangle;
+		// 画像の通常時の色
+			Math::Color			MS_Color_Normal;
 		// 角度
 			float						MS_Rotate;
 		// 移動速度
 			float						MS_MoveSpeed_Normal;
 		// 当たり判定の真偽を持たせる
-			bool						MS_Hit;
+			bool						MSF_Hit;
 	};
 	
+private:
+
 };

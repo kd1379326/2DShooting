@@ -1,38 +1,32 @@
 #include "EntityBase.h"
 
 // 初期化内容はここに
-void C_EntityBase::Init()
+void C_EntityBase_MainGame::Init()
 {
 
 }
 
 // 更新内容はここに(描画に使うMatrix(行列)や画像の指定もここ)
-void C_EntityBase::Update()
+void C_EntityBase_MainGame::Update()
 {
 
 }
 
 // 描画内容はここに
-void C_EntityBase::Draw()
+void C_EntityBase_MainGame::Draw()
 {
 
 }
 
 // デバッグ画面に表示させるならここに
-void C_EntityBase::ImGuiUpdate()
+void C_EntityBase_MainGame::ImGuiUpdate()
 {
 
 }
 
 // Updateに導入する関数
-// 操作
-void C_EntityBase::MoveControl()
-{
-
-}
-
 // 当たり判定のチェック(一対一用)
-bool C_EntityBase::HitEntity(Math::Vector2 A_Pos1, Math::Vector2 A_Pos2, Math::Vector2 A_Radius1, Math::Vector2 A_Radius2)
+bool C_EntityBase_MainGame::HitEntity(Math::Vector2 A_Pos1, Math::Vector2 A_Pos2, Math::Vector2 A_Radius1, Math::Vector2 A_Radius2)
 {
 	// 三角関数を使って接触しているか調べる。
 	// 上下左右の差を求める。

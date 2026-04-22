@@ -70,6 +70,18 @@
     <Filter Include="Src\Application\SceneTranslation\MainGame\Entity_MainGame\MainCharacter">
       <UniqueIdentifier>{a4f61319-8515-4858-bd61-7d207a25685e}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Src\Application\SceneTranslation\MainGame\Entity_MainGame\MainCharacter\Control">
+      <UniqueIdentifier>{7486ef2c-8e54-470c-b07a-a491427e6d21}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Src\Application\SceneTranslation\MainGame\Entity_MainGame\Enemy">
+      <UniqueIdentifier>{c4b6d9be-32b7-46af-aeef-c614fdde24dd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Src\Application\SceneTranslation\MainGame\Entity_MainGame\Enemy\Enemy1">
+      <UniqueIdentifier>{d347c8ae-2e20-472b-92f0-bb72496e4183}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Src\Application\SceneTranslation\Tool">
+      <UniqueIdentifier>{700f4b08-d334-465e-bd0b-47471ee6cfbc}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Pch.h">
@@ -189,6 +201,15 @@
     <ClInclude Include="Src\Application\SceneTranslation\MainGame\Entity_MainGame\MainCharacter\MainCharacter.h">
       <Filter>Src\Application\SceneTranslation\MainGame\Entity_MainGame\MainCharacter</Filter>
     </ClInclude>
+    <ClInclude Include="Src\Application\SceneTranslation\MainGame\Entity_MainGame\MainCharacter\Control\MainCharacterControl.h">
+      <Filter>Src\Application\SceneTranslation\MainGame\Entity_MainGame\MainCharacter\Control</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Application\SceneTranslation\MainGame\Entity_MainGame\Enemy\Enemy1\Enemy1.h">
+      <Filter>Src\Application\SceneTranslation\MainGame\Entity_MainGame\Enemy\Enemy1</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Application\Tool\RandomNumericalValue.h">
+      <Filter>Src\Application\SceneTranslation\Tool</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Pch.cpp">
@@ -274,6 +295,12 @@
     </ClCompile>
     <ClCompile Include="Src\Application\SceneTranslation\MainGame\Entity_MainGame\MainCharacter\MainCharacter.cpp">
       <Filter>Src\Application\SceneTranslation\MainGame\Entity_MainGame\MainCharacter</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Application\SceneTranslation\MainGame\Entity_MainGame\MainCharacter\Control\MainCharacterControl.cpp">
+      <Filter>Src\Application\SceneTranslation\MainGame\Entity_MainGame\MainCharacter\Control</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Application\SceneTranslation\MainGame\Entity_MainGame\Enemy\Enemy1\Enemy1.cpp">
+      <Filter>Src\Application\SceneTranslation\MainGame\Entity_MainGame\Enemy\Enemy1</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

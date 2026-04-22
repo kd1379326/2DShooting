@@ -1,14 +1,18 @@
 #pragma once
 
+// 親クラス
 #include "../Base/EntityBase.h"
 
-class C_MainCharacter :public C_EntityBase
+// 操作関連のクラス
+#include "Control/MainCharacterControl.h"
+
+class C_MainCharacter_MainGame :public C_EntityBase_MainGame
 {
 public:
 
 	// コンストラクタとデストラクタ
-	C_MainCharacter();
-	~C_MainCharacter();
+	C_MainCharacter_MainGame();
+	~C_MainCharacter_MainGame();
 
 	// 初期化内容
 	void Init()override;
@@ -19,12 +23,17 @@ public:
 	// デバッグ画面に表示する内容
 	void ImGuiUpdate()override;
 
-	// Updateに導入する関数
-	// 操作
-	void MoveControl()override;
-
+	
 private:
 
+	// 領域解放処理はこの実体が削除された時にデストラクタで自動で呼び出されるためprivateに置く。
+	void Release();
+
+	// 構造体変数
+	// メインキャラクター用
 	S_EntityCharacter M_MainCharacter;
+
+	// 操作機能関連のクラス
+	C_MainCharacterControl	CM_Control;
 
 };

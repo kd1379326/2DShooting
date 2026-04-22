@@ -2,6 +2,9 @@
 // M_・・・メンバ
 // A_・・・引数
 // E_・・・列挙体
+// S_・・・構造体
+// P_・・・ポインター
+// F_・・・フラグ
 
 #include "main.h"
 #include "Scene.h"
@@ -10,8 +13,6 @@
 // 描画内容はここに
 void Scene::Draw2D()
 {
-	//SHADER.m_spriteShader.SetMatrix(m);
-	//SHADER.m_spriteShader.DrawTex(&l, Math::Rectangle{ 0,0,64,64 }, 1);
 	// それぞれのシーン(ゲーム場面)の描画処理
 	SCENEMANAGER.Draw();
 }
@@ -25,15 +26,11 @@ void Scene::Update()
 	// それぞれのシーン(ゲーム場面)の更新処理
 	SCENEMANAGER.Update();
 
-
-	
-	m = Math::Matrix::CreateTranslation(0, 0, 0);
 }
 
 // 初期化内容はここに
 void Scene::Init()
 {
-	l.Load("player.png");
 	// キーフラグは先にfalseにしておく
 	M_ChangeSceneFlg = false;
 	// 最初のシーン(ゲーム場面)を入れる
@@ -91,6 +88,8 @@ void Scene::JudgeChangeScene()
 				{
 					// SCENEMANAGERからシーンのクラスを作成。
 					SCENEMANAGER.ChangeState(new C_MainGameScene());
+					// シーンを切り替えるのでちゃんと初期化する
+					SCENEMANAGER.Init();
 					M_NowScene = ME_MainGame;
 					M_ChangeSceneFlg = true;
 					break;
@@ -99,6 +98,8 @@ void Scene::JudgeChangeScene()
 				{
 					// SCENEMANAGERからシーンのクラスを作成。
 					SCENEMANAGER.ChangeState(new C_ResultScene());
+					// シーンを切り替えるのでちゃんと初期化する
+					SCENEMANAGER.Init();
 					M_NowScene = ME_Result;
 					M_ChangeSceneFlg = true;
 					break;
@@ -107,6 +108,8 @@ void Scene::JudgeChangeScene()
 				{
 					// SCENEMANAGERからシーンのクラスを作成。
 					SCENEMANAGER.ChangeState(new C_TitleScene());
+					// シーンを切り替えるのでちゃんと初期化する
+					SCENEMANAGER.Init();
 					M_NowScene = ME_Title;
 					M_ChangeSceneFlg = true;
 					break;

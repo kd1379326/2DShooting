@@ -4,6 +4,7 @@
 // E_・・・列挙体
 // S_・・・構造体
 // P_・・・ポインター
+// F_・・・フラグ
 
 #pragma once
 
@@ -24,8 +25,6 @@ private:
 
 	// 現在のシーン(ゲーム場面)を監視させる
 	int		M_NowScene;
-	KdTexture l;
-	Math::Matrix m;
 
 public:
 

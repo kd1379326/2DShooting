@@ -1,57 +1,63 @@
 #include "MainCharacter.h"
 
 // このクラスが生成された時に動かしたいものをここに(コンストラクタ)
-C_MainCharacter::C_MainCharacter()
+C_MainCharacter_MainGame::C_MainCharacter_MainGame()
 {
-	
+	M_MainCharacter.MS_Texture.Load("Texture/MainCharacter/MainCharacter.png");
 }
 
 // このクラスが削除される時に動かしたいものをここに(デストラクタ)
-C_MainCharacter::~C_MainCharacter()
+C_MainCharacter_MainGame::~C_MainCharacter_MainGame()
 {
-	M_MainCharacter.MS_Texture.Release();
+	// 自動で領域解放処理を行う。
+	Release();
 }
 
 // 初期化内容はここに
-void C_MainCharacter::Init()
+void C_MainCharacter_MainGame::Init()
 {
-	M_MainCharacter.MS_Texture.Load("player.png");
 	// 座標
-		M_MainCharacter.MS_Pos = { 0, 0 };
+	M_MainCharacter.MS_Position = { 0, -250 };
+	// 移動量
+	M_MainCharacter.MS_Move = { 5, 5 };
 	// 画像の切り取り範囲
-		M_MainCharacter.MS_Rectangle = { 0, 0, 64, 64 };
+	M_MainCharacter.MS_Rectangle = { 0, 0, 64, 64 };
+	// 通常時の色
+	M_MainCharacter.MS_Color_Normal = { 1, 1, 1, 1.0f };
 
 	
 }
 
 // 更新内容はここに
-void C_MainCharacter::Update()
+void C_MainCharacter_MainGame::Update()
 {
+	// キー操作による移動機能
+	CM_Control.MoveKeyControl(M_MainCharacter.MS_Position, M_MainCharacter.MS_Move);
+
 	// 表示したい座標を設定する
-	M_MainCharacter.MS_TranslationMatrix = Math::Matrix::CreateTranslation(M_MainCharacter.MS_Pos.x, M_MainCharacter.MS_Pos.y, 0);
+	M_MainCharacter.MS_TranslationMatrix = Math::Matrix::CreateTranslation(M_MainCharacter.MS_Position.x, M_MainCharacter.MS_Position.y, 0);
 
 	// 描画の詳細をまとめる
-	//M_MainCharacter.MS_Matrix = M_MainCharacter.MS_TranslationMatrix;
-	M_MainCharacter.MS_Matrix = Math::Matrix::CreateTranslation(M_MainCharacter.MS_Pos.x, M_MainCharacter.MS_Pos.y, 0);
+	M_MainCharacter.MS_Matrix = M_MainCharacter.MS_TranslationMatrix;
 }
 
 // 描画内容はここに(行列(Matrix等)はUpdateに含まれる)
-void C_MainCharacter::Draw()
+void C_MainCharacter_MainGame::Draw()
 {
 	SHADER.m_spriteShader.SetMatrix(M_MainCharacter.MS_Matrix);
-	SHADER.m_spriteShader.DrawTex(&M_MainCharacter.MS_Texture, M_MainCharacter.MS_Rectangle, 1);
+	SHADER.m_spriteShader.DrawColorTex(&M_MainCharacter.MS_Texture, M_MainCharacter.MS_Rectangle, M_MainCharacter.MS_Color_Normal);
 	//SHADER.m_spriteShader.DrawString(0, 0, "プレイヤー", Math::Color{ 1,1,1,1 });
 }
 
 // デバッグ画面に出したい内容はここに
-void C_MainCharacter::ImGuiUpdate()
+void C_MainCharacter_MainGame::ImGuiUpdate()
 {
 
 }
 
-// Updateに導入する関数
-// 操作処理
-void C_MainCharacter::MoveControl()
+// このクラスの実体が削除された時に行う領域解放処理。
+void C_MainCharacter_MainGame::Release()
 {
-
+	// 画像を入れている領域を解放する。
+	M_MainCharacter.MS_Texture.Release();
 }
