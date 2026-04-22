@@ -31,6 +31,9 @@ void Scene::Update()
 // 初期化内容はここに
 void Scene::Init()
 {
+	// 取り出す数値をシャッフルする。
+	srand(timeGetTime());
+
 	// キーフラグは先にfalseにしておく
 	M_ChangeSceneFlg = false;
 	// 最初のシーン(ゲーム場面)を入れる
@@ -51,9 +54,7 @@ void Scene::Release()
 // デバッグ画面に表示するものはここに
 void Scene::ImGuiUpdate()
 {
-	return;
-
-	SCENEMANAGER.ImGuiUpdate();
+	//return;
 
 	ImGui::SetNextWindowPos(ImVec2(20, 20), ImGuiSetCond_Once);
 	ImGui::SetNextWindowSize(ImVec2(200, 100), ImGuiSetCond_Once);
@@ -62,6 +63,7 @@ void Scene::ImGuiUpdate()
 	if (ImGui::Begin("Debug Window"))
 	{
 		ImGui::Text("FPS : %d", APP.m_fps);
+		SCENEMANAGER.ImGuiUpdate();
 	}
 	ImGui::End();
 }

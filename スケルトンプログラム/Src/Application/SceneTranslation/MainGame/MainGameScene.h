@@ -2,9 +2,14 @@
 
 // シーンの基礎となるクラス(基底クラス)を取り込む
 #include "../SceneManager&State/State.h"
+#include "vector"
+// 自動で解放処理をしてくれるスマートポインタを使うのに必要。
+#include "memory"
 
 // キャラクターのクラスを前方宣言(どんなクラスがあるのか教える)
 // ヘッダーファイルには基本的にヘッダーは取り込まない。
+// Entityクラス(キャラの親クラス)
+class C_EntityBase_MainGame;
 // メインキャラクター
 class C_MainCharacter_MainGame;
 // 敵１
@@ -36,10 +41,7 @@ private:
 	// 「Game」の文字用の構造体変数
 	S_Entity M_Game;
 
-	// メインキャラクターのクラスのアドレス
-	C_MainCharacter_MainGame* CM_MainCharacter = nullptr;
-
-	// 敵１のクラスのアドレス
-	C_Enemy1_MainGame*	CM_Enemy1 = nullptr;
+	// EntityBase(キャラ達の親クラス)型の動的配列
+	std::vector<C_EntityBase_MainGame*> CM_Entity;
 
 };
