@@ -40,7 +40,7 @@ void Scene::Init()
 	M_NowScene = ME_MainGame;
 
 	// 初めに持ってくるシーン(ゲーム場面)をここで選ぶ
-	SCENEMANAGER.ChangeState(new C_MainGameScene());
+	SCENEMANAGER.ChangeState(std::make_shared<C_MainGameScene>());
 	// それぞれのシーン(ゲーム場面)の初期化処理
 	SCENEMANAGER.Init();
 }
@@ -85,7 +85,7 @@ void Scene::JudgeChangeScene()
 				case ME_Title:
 				{
 					// SCENEMANAGERからシーンのクラスを作成。
-					SCENEMANAGER.ChangeState(new C_MainGameScene());
+					SCENEMANAGER.ChangeState(std::make_shared<C_MainGameScene>() );
 					// シーンを切り替えるのでちゃんと初期化する
 					SCENEMANAGER.Init();
 					M_NowScene = ME_MainGame;
@@ -95,7 +95,7 @@ void Scene::JudgeChangeScene()
 				case ME_MainGame:
 				{
 					// SCENEMANAGERからシーンのクラスを作成。
-					SCENEMANAGER.ChangeState(new C_MainGameScene());
+					SCENEMANAGER.ChangeState(std::make_shared<C_MainGameScene>() );
 					// シーンを切り替えるのでちゃんと初期化する
 					SCENEMANAGER.Init();
 					M_NowScene = ME_MainGame;
@@ -105,7 +105,7 @@ void Scene::JudgeChangeScene()
 				case ME_Result:
 				{
 					// SCENEMANAGERからシーンのクラスを作成。
-					SCENEMANAGER.ChangeState(new C_TitleScene());
+					SCENEMANAGER.ChangeState(std::make_shared<C_TitleScene>() );
 					// シーンを切り替えるのでちゃんと初期化する
 					SCENEMANAGER.Init();
 					M_NowScene = ME_Title;

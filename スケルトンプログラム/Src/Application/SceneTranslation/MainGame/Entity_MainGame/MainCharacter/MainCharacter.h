@@ -23,6 +23,9 @@ public:
 	// デバッグ画面に表示する内容
 	void ImGuiUpdate()					override;
 
+	// ゲッター
+	// 現在の座標を返す。
+	Math::Vector2 Getter_Position() { return M_MainCharacter.MS_Position; }
 	
 private:
 

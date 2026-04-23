@@ -15,9 +15,8 @@ public:
 		return Instance;
 	}
 
-	void  ChangeState(C_State* A_NewState)
+	void  ChangeState(std::shared_ptr<C_State>A_NewState)
 	{
-		delete CurrentState;
 		CurrentState = A_NewState;
 	}
 
@@ -41,13 +40,13 @@ public:
 		CurrentState->ImGuiUpdate();
 	}
 
-	C_State* GetCurrentState() { return CurrentState; }
+	std::shared_ptr<C_State> GetCurrentState() { return CurrentState; }
 
 private:
 
 	C_SceneManager(){}
 
-	C_State* CurrentState = nullptr;
+	std::shared_ptr<C_State>CurrentState = nullptr;
 };
 
 #define SCENEMANAGER C_SceneManager::GetInstance() // インスタンスがなくてもSCENEMANAGERで呼び出せる(シングルトンってやつ)
