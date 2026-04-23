@@ -7,10 +7,10 @@
 #include "../../../../Tool/RandomNumericalValue.h"
 
 // このクラスが生成された時に動かしたいものをここに(コンストラクタ)
-C_Bullet_MainGame::C_Bullet_MainGame(Math::Vector2 A_MainCharacterPosition)
+C_Bullet_MainGame::C_Bullet_MainGame()
 {
-	// 初期座標はメインキャラに合わせる。
-	M_Bullet.MS_Position = A_MainCharacterPosition;
+	//// 初期座標はメインキャラに合わせる。
+	//M_Bullet.MS_Position = A_MainCharacterPosition;
 }
 
 // このクラスが削除される時に動かしたいものをここに(デストラクタ)
@@ -26,6 +26,9 @@ void C_Bullet_MainGame::Init()
 	// 画像のパス(在処)を伝える
 	M_Bullet.MS_Texture.Load("Texture/Star/StarLight.png");
 
+	// 画面サイズをSceneクラスから引っ張ってきて、ランダム値を返す関数の引数に置く。
+	M_Bullet.MS_Position.x = (float)C_RandomNumericalValue::GetInstance().RandomNumericalValue(Scene::GetInstance().Getter_ScreenSize_Right(), Scene::GetInstance().Getter_ScreenSize_Left());
+	M_Bullet.MS_Position.y = (float)C_RandomNumericalValue::GetInstance().RandomNumericalValue(Scene::GetInstance().Getter_ScreenSize_Top(), Scene::GetInstance().Getter_ScreenSize_Bottom());
 	// 移動量
 	M_Bullet.MS_Move = { 0, 0 };
 	// 画像の切り取り範囲

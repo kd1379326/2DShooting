@@ -8,7 +8,7 @@ class C_Bullet_MainGame : public C_EntityBase_MainGame
 public:
 
 	// コンストラクタとデストラクタ
-	C_Bullet_MainGame(Math::Vector2 A_MainCharacterPosition);
+	C_Bullet_MainGame();
 	~C_Bullet_MainGame()	override;
 
 	// 初期化内容

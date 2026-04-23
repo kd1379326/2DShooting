@@ -13,7 +13,7 @@ public:
 	// 初期化
 	virtual void Init() = 0;
 	// 更新内容
-	virtual void Update(std::vector<std::unique_ptr<C_EntityBase_MainGame>) = 0;
+	virtual void Update() = 0;
 	// 描画内容
 	virtual void Draw() = 0;
 	// デバッグに表示するもの
