@@ -1,5 +1,8 @@
 #include "MainCharacter.h"
 
+// 操作関連のクラス
+#include "Control/Control.h"
+
 // このクラスが生成された時に動かしたいものをここに(コンストラクタ)
 C_MainCharacter_MainGame::C_MainCharacter_MainGame()
 {
@@ -25,6 +28,8 @@ void C_MainCharacter_MainGame::Init()
 	// 通常時の色
 	M_MainCharacter.MS_Color_Normal = { 1, 1, 1, 1.0f };
 
+	// キー操作の機能が入ったクラスの実体を作成
+	CM_Control = std::make_unique<C_MainCharacterControl>();
 	
 }
 
@@ -32,7 +37,7 @@ void C_MainCharacter_MainGame::Init()
 void C_MainCharacter_MainGame::Update()
 {
 	// キー操作による移動機能
-	CM_Control.MoveKeyControl(M_MainCharacter.MS_Position, M_MainCharacter.MS_Move);
+	CM_Control->MoveKeyControl(M_MainCharacter.MS_Position, M_MainCharacter.MS_Move);
 
 	// 表示したい座標を設定する
 	M_MainCharacter.MS_TranslationMatrix = Math::Matrix::CreateTranslation(M_MainCharacter.MS_Position.x, M_MainCharacter.MS_Position.y, 0);

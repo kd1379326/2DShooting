@@ -26,8 +26,8 @@ void C_Enemy1_MainGame::Init()
 
 	// 座標(1280×720の範囲で出現させる)
 	// 画面サイズをSceneクラスから引っ張ってきて、ランダム値を返す関数の引数に置く。
-		M_Enemy.MS_Position = { (float)C_RandomNumericalValue::GetInstance().RandomNumericalValue(Scene::GetInstance().Getter_ScreenSize_Right(), Scene::GetInstance().Getter_ScreenSize_Left()), 
-												(float)C_RandomNumericalValue::GetInstance().RandomNumericalValue(Scene::GetInstance().Getter_ScreenSize_Top(), Scene::GetInstance().Getter_ScreenSize_Bottom())};
+		M_Enemy.MS_Position.x = (float)C_RandomNumericalValue::GetInstance().RandomNumericalValue(Scene::GetInstance().Getter_ScreenSize_Right(), Scene::GetInstance().Getter_ScreenSize_Left());
+		M_Enemy.MS_Position.y = (float)C_RandomNumericalValue::GetInstance().RandomNumericalValue(Scene::GetInstance().Getter_ScreenSize_Top(), Scene::GetInstance().Getter_ScreenSize_Bottom());
 	// 移動量
 		M_Enemy.MS_Move = { 0, 0 };
 	// 画像の切り取り範囲

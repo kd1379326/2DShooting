@@ -9,16 +9,16 @@ public:
 
 	// コンストラクタとデストラクタ
 	C_Enemy1_MainGame();
-	~C_Enemy1_MainGame();
+	~C_Enemy1_MainGame()	override;
 
 	// 初期化内容
-		void Init()override;
+		void Init()						override;
 	// 更新内容
-		void Update()override;
+		void Update()				override;
 	// 描画処理
-		void Draw()override;
+		void Draw()					override;
 	// デバッグ画面に表示するもの
-		void ImGuiUpdate()override;
+		void ImGuiUpdate()		override;
 
 
 private:

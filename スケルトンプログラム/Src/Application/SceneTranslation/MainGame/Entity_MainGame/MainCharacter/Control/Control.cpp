@@ -1,4 +1,4 @@
-#include "MainCharacterControl.h"
+#include "Control.h"
 
 // このクラスが生成された時に動かしたい機能はここに
 C_MainCharacterControl::C_MainCharacterControl()

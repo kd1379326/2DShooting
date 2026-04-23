@@ -163,8 +163,9 @@
     <ClInclude Include="Src\Application\main.h" />
     <ClInclude Include="Src\Application\SceneTranslation\GameOver\GameOverScene.h" />
     <ClInclude Include="Src\Application\SceneTranslation\MainGame\Entity_MainGame\Base\EntityBase.h" />
+    <ClInclude Include="Src\Application\SceneTranslation\MainGame\Entity_MainGame\Bullet\Bullet.h" />
     <ClInclude Include="Src\Application\SceneTranslation\MainGame\Entity_MainGame\Enemy\Enemy1\Enemy1.h" />
-    <ClInclude Include="Src\Application\SceneTranslation\MainGame\Entity_MainGame\MainCharacter\Control\MainCharacterControl.h" />
+    <ClInclude Include="Src\Application\SceneTranslation\MainGame\Entity_MainGame\MainCharacter\Control\Control.h" />
     <ClInclude Include="Src\Application\SceneTranslation\MainGame\Entity_MainGame\MainCharacter\MainCharacter.h" />
     <ClInclude Include="Src\Application\SceneTranslation\MainGame\MainGameScene.h" />
     <ClInclude Include="Src\Application\SceneTranslation\Result\ResultScene.h" />
@@ -199,8 +200,9 @@
     <ClCompile Include="Src\Application\main.cpp" />
     <ClCompile Include="Src\Application\SceneTranslation\GameOver\GameOverScene.cpp" />
     <ClCompile Include="Src\Application\SceneTranslation\MainGame\Entity_MainGame\Base\EntityBase.cpp" />
+    <ClCompile Include="Src\Application\SceneTranslation\MainGame\Entity_MainGame\Bullet\Bullet.cpp" />
     <ClCompile Include="Src\Application\SceneTranslation\MainGame\Entity_MainGame\Enemy\Enemy1\Enemy1.cpp" />
-    <ClCompile Include="Src\Application\SceneTranslation\MainGame\Entity_MainGame\MainCharacter\Control\MainCharacterControl.cpp" />
+    <ClCompile Include="Src\Application\SceneTranslation\MainGame\Entity_MainGame\MainCharacter\Control\Control.cpp" />
     <ClCompile Include="Src\Application\SceneTranslation\MainGame\Entity_MainGame\MainCharacter\MainCharacter.cpp" />
     <ClCompile Include="Src\Application\SceneTranslation\MainGame\MainGameScene.cpp" />
     <ClCompile Include="Src\Application\SceneTranslation\Result\ResultScene.cpp" />

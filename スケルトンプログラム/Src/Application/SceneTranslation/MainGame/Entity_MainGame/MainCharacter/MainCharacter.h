@@ -3,8 +3,8 @@
 // 親クラス
 #include "../Base/EntityBase.h"
 
-// 操作関連のクラス
-#include "Control/MainCharacterControl.h"
+// キー操作の機能
+class C_MainCharacterControl;
 
 class C_MainCharacter_MainGame :public C_EntityBase_MainGame
 {
@@ -12,16 +12,16 @@ public:
 
 	// コンストラクタとデストラクタ
 	C_MainCharacter_MainGame();
-	~C_MainCharacter_MainGame();
+	~C_MainCharacter_MainGame()	override;
 
 	// 初期化内容
-	void Init()override;
+	void Init()									override;
 	// 更新内容
-	void Update()override;
+	void Update()							override;
 	// 描画内容
-	void Draw()override;
+	void Draw()								override;
 	// デバッグ画面に表示する内容
-	void ImGuiUpdate()override;
+	void ImGuiUpdate()					override;
 
 	
 private:
@@ -34,6 +34,6 @@ private:
 	S_EntityCharacter M_MainCharacter;
 
 	// 操作機能関連のクラス
-	C_MainCharacterControl	CM_Control;
+	std::shared_ptr<C_MainCharacterControl> CM_Control;
 
 };

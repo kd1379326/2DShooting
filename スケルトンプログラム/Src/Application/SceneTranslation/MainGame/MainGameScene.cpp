@@ -4,6 +4,8 @@
 // キャラクターのクラスを取り込む
 // メインキャラクター
 #include "Entity_MainGame/MainCharacter/MainCharacter.h"
+// 弾
+#include "Entity_MainGame/Bullet/Bullet.h"
 // 敵１
 #include "Entity_MainGame/Enemy/Enemy1/Enemy1.h"
 
@@ -29,6 +31,8 @@ void C_MainGameScene::Init()
 	// std::make_uniqueだとCM_Entityから消えた時自動でメモリが解放される。
 	// メインキャラクター
 		CM_Entity.push_back(std::make_unique<C_MainCharacter_MainGame>());
+	// 弾
+		CM_Entity.push_back(std::make_unique<C_Bullet_MainGame>());
 	// 初期化
 	// CM_Entity配列を最前列から最後尾まで一気に処理してくれる。
 	for (auto& p : CM_Entity) { p->Init(); }
