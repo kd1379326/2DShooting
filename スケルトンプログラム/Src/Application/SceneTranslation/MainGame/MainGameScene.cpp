@@ -26,36 +26,42 @@ void C_MainGameScene::Init()
 {
 	// アップキャストを使って各キャラの実体(インスタンス)を生成
 	// アップキャストという技術を使えば子クラスをまとめて親クラスで管理できる。
+	// std::make_uniqueだとCM_Entityから消えた時自動でメモリが解放される。
 	// メインキャラクター
-		CM_Entity.push_back(new C_MainCharacter_MainGame());
-	// 敵１
-		for (int i = 0; i < 10; i++) { CM_Entity.push_back(new C_Enemy1_MainGame()); }
-
+		CM_Entity.push_back(std::make_unique<C_MainCharacter_MainGame>());
 	// 初期化
 	// CM_Entity配列を最前列から最後尾まで一気に処理してくれる。
-	for (auto p : CM_Entity) { p->Init(); }
+	for (auto& p : CM_Entity) { p->Init(); }
 }
 
 // 更新内容はここに(描画に使うMatrix(行列)の作成や画像の指定もここ)
 void C_MainGameScene::Update()
 {
+	// 毎秒60回値が出力され、1%の確率で敵を出現させる。
+	if (C_RandomNumericalValue::GetInstance().RandomNumericalValue(100) == 100)
+	{
+		// 配列の列を追加し、敵１クラスの実体を生成→初期化する。
+		CM_Entity.push_back(std::make_unique<C_Enemy1_MainGame>());
+		CM_Entity.back()->Init();
+	}
+
 	// 更新処理
-	for (auto p : CM_Entity) { p->Update(); }
+	for (auto& p : CM_Entity) { p->Update(); }
 }
 
 // 描画処理はここに
 void C_MainGameScene::Draw()
 {
 	// 描画処理
-	for (auto p : CM_Entity) { p->Draw(); }
+	for (auto& p : CM_Entity) { p->Draw(); }
 }
 
 // デバッグ画面に表示させたいものはここに
 void C_MainGameScene::ImGuiUpdate()
 {
-	ImGui::Text(u8"敵の数：%d", CM_Entity.size() - 1);
+	ImGui::Text(u8"敵の数　：%d", CM_Entity.size() - 1);
 	// デバッグ表示
-	for (auto p : CM_Entity) { p->ImGuiUpdate(); }
+	for (auto& p : CM_Entity) { p->ImGuiUpdate(); }
 
 }
 

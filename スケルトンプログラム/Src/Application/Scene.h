@@ -26,6 +26,16 @@ private:
 	// 現在のシーン(ゲーム場面)を監視させる
 	int		M_NowScene;
 
+	// 画面の端の座標
+		// 上
+		static const int M_ScreenSize_Top		= 360;		
+		// 下
+		static const int M_ScreenSize_Bottom = -360;	
+		// 右
+		static const int M_ScreenSize_Right	= 640;		
+		// 左
+		static const int M_ScreenSize_Left		= -640;		
+
 public:
 
 	// 初期設定
@@ -43,11 +53,19 @@ public:
 	// GUI処理
 	void ImGuiUpdate();
 
-	// ゲームの場面を切り替える(シーン遷移)
-	void ChangeScene();
-
 	// ゲームの場面切り替え(シーン遷移)を行うかここで判定する
 	void JudgeChangeScene();
+
+	// ゲッター
+	// 画面端の座標を返す。
+		// 上
+		static const int Getter_ScreenSize_Top()			{ return M_ScreenSize_Top; }
+		// 下
+		static const int Getter_ScreenSize_Bottom()	{ return M_ScreenSize_Bottom; }	
+		// 右
+		static const int Getter_ScreenSize_Right()		{ return M_ScreenSize_Right; }		
+		// 左
+		static const int Getter_ScreenSize_Left()			{ return M_ScreenSize_Left; }		
 
 private:
 

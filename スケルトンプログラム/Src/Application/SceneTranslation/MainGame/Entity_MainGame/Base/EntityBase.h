@@ -6,7 +6,8 @@ public:
 
 	// コンストラクタとデストラクタ
 	C_EntityBase_MainGame() {}
-	~C_EntityBase_MainGame() {}
+	// デストラクタは仮想にしておかないと派生クラスが正しく消えない。
+	virtual ~C_EntityBase_MainGame() {}
 
 	// 機能が全派生クラス共通なら通常の関数、派生クラスによって機能が違うなら純粋仮想関数を使う。
 	// 初期化

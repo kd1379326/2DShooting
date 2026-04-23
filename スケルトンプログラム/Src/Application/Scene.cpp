@@ -37,10 +37,10 @@ void Scene::Init()
 	// キーフラグは先にfalseにしておく
 	M_ChangeSceneFlg = false;
 	// 最初のシーン(ゲーム場面)を入れる
-	M_NowScene = ME_Title;
+	M_NowScene = ME_MainGame;
 
 	// 初めに持ってくるシーン(ゲーム場面)をここで選ぶ
-	SCENEMANAGER.ChangeState(new C_TitleScene());
+	SCENEMANAGER.ChangeState(new C_MainGameScene());
 	// それぞれのシーン(ゲーム場面)の初期化処理
 	SCENEMANAGER.Init();
 }
@@ -68,11 +68,7 @@ void Scene::ImGuiUpdate()
 	ImGui::End();
 }
 
-// ゲームの場面をここで変更させる(シーン遷移)
-void Scene::ChangeScene()
-{
-	SCENEMANAGER.ChangeState(new C_TitleScene());
-}
+
 
 // ゲームの場面切り替え(シーン遷移)を行うかここで判定する。
 void Scene::JudgeChangeScene()
@@ -99,10 +95,10 @@ void Scene::JudgeChangeScene()
 				case ME_MainGame:
 				{
 					// SCENEMANAGERからシーンのクラスを作成。
-					SCENEMANAGER.ChangeState(new C_ResultScene());
+					SCENEMANAGER.ChangeState(new C_MainGameScene());
 					// シーンを切り替えるのでちゃんと初期化する
 					SCENEMANAGER.Init();
-					M_NowScene = ME_Result;
+					M_NowScene = ME_MainGame;
 					M_ChangeSceneFlg = true;
 					break;
 				}

@@ -42,6 +42,6 @@ private:
 	S_Entity M_Game;
 
 	// EntityBase(キャラ達の親クラス)型の動的配列
-	std::vector<C_EntityBase_MainGame*> CM_Entity;
+	std::vector<std::unique_ptr<C_EntityBase_MainGame>> CM_Entity;
 
 };

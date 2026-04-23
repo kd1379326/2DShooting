@@ -1,5 +1,11 @@
 #include "Enemy1.h"
 
+// Sceneクラスのヘッダー
+#include "../../../../../Scene.h"
+
+// ランダム値をくれるヘッダー
+#include "../../../../../Tool/RandomNumericalValue.h"
+
 // このクラスが生成された時に動かしたいものをここに(コンストラクタ)
 C_Enemy1_MainGame::C_Enemy1_MainGame()
 {
@@ -18,8 +24,10 @@ void C_Enemy1_MainGame::Init()
 	// 画像のパス(在処)を伝える
 		M_Enemy.MS_Texture.Load("Texture/Star/StarShadow.png");
 
-	// 座標(初期位置)
-		M_Enemy.MS_Position = { 0, 0 };
+	// 座標(1280×720の範囲で出現させる)
+	// 画面サイズをSceneクラスから引っ張ってきて、ランダム値を返す関数の引数に置く。
+		M_Enemy.MS_Position = { (float)C_RandomNumericalValue::GetInstance().RandomNumericalValue(Scene::GetInstance().Getter_ScreenSize_Right(), Scene::GetInstance().Getter_ScreenSize_Left()), 
+												(float)C_RandomNumericalValue::GetInstance().RandomNumericalValue(Scene::GetInstance().Getter_ScreenSize_Top(), Scene::GetInstance().Getter_ScreenSize_Bottom())};
 	// 移動量
 		M_Enemy.MS_Move = { 0, 0 };
 	// 画像の切り取り範囲
@@ -51,6 +59,7 @@ void C_Enemy1_MainGame::Draw()
 // デバッグ画面に表示させたいものはここに
 void C_Enemy1_MainGame::ImGuiUpdate()
 {
+	ImGui::Text(u8"敵の座標：X-%.0f｜Y-%.0f", M_Enemy.MS_Position.x, M_Enemy.MS_Position.y);
 }
 
 // このクラスの実体が削除された時に行う領域解放処理。
