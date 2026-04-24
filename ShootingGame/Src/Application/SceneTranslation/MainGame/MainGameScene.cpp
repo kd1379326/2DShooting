@@ -32,7 +32,7 @@ void C_MainGameScene::Init()
 	// メインキャラクター
 		CM_Entity.push_back(std::make_unique<C_MainCharacter_MainGame>());
 	// 弾
-		CM_Entity.push_back(std::make_unique<C_Bullet_MainGame>());
+		//CM_Entity.push_back(std::make_unique<C_Bullet_MainGame>());
 	// 初期化
 	// CM_Entity配列を最前列から最後尾まで一気に処理してくれる。
 	for (auto& p : CM_Entity) { p->Init(); }
@@ -48,6 +48,27 @@ void C_MainGameScene::Update()
 		CM_Entity.push_back(std::make_unique<C_Enemy1_MainGame>());
 		CM_Entity.back()->Init();
 	}
+
+	// 誰か弾を放ったか確認する。
+	for (auto& p : CM_Entity)
+	{
+		// 一人一人弾を放ったか確認する。
+		if (p->ShootBullet() == true)
+		{ 
+			// 弾が放たれる度にその数を記録していく。
+			M_ShootBulletNumber++;
+		}
+	}
+
+	// ループ処理はCM_Entityの要素の数だけ行うように指示している為、弾を生成するなら一回CM_Entity関連のループを抜ける必要がある。
+	for (int i = 0; i < M_ShootBulletNumber; i++)
+	{
+		// 弾の実体を作成し、初期化する。
+		CM_Entity.push_back(std::make_unique<C_Bullet_MainGame>());
+		CM_Entity.back()->Init();
+	}
+	// 必要数弾を生成したら放たれた弾の数を０に戻す。
+	M_ShootBulletNumber = 0;
 
 	// 更新処理
 	for (auto& p : CM_Entity) { p->Update(); }

@@ -44,4 +44,7 @@ private:
 	// EntityBase(キャラ達の親クラス)型の動的配列
 	std::vector<std::unique_ptr<C_EntityBase_MainGame>> CM_Entity;
 
+	// 放たれた弾の数の一時保存場所。
+	int M_ShootBulletNumber = 0;
+
 };

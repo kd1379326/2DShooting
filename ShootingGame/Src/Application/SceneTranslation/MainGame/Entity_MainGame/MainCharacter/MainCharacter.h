@@ -4,7 +4,7 @@
 #include "../Base/EntityBase.h"
 
 // キー操作の機能
-class C_MainCharacterControl;
+class C_MainCharacter_KeyControl;
 
 class C_MainCharacter_MainGame :public C_EntityBase_MainGame
 {
@@ -23,6 +23,9 @@ public:
 	// デバッグ画面に表示する内容
 	void ImGuiUpdate()					override;
 
+	// 弾を撃つかどうか判断する
+	bool ShootBullet()						override;
+
 	// ゲッター
 	// 現在の座標を返す。
 	Math::Vector2 Getter_Position() { return M_MainCharacter.MS_Position; }
@@ -37,6 +40,6 @@ private:
 	S_EntityCharacter M_MainCharacter;
 
 	// 操作機能関連のクラス
-	std::shared_ptr<C_MainCharacterControl> CM_Control;
+	std::shared_ptr<C_MainCharacter_KeyControl> CM_Control;
 
 };

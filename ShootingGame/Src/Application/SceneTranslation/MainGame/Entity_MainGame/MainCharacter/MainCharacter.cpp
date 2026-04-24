@@ -1,7 +1,7 @@
 #include "MainCharacter.h"
 
 // 操作関連のクラス
-#include "Control/Control.h"
+#include "Control/KeyControl.h"
 
 // このクラスが生成された時に動かしたいものをここに(コンストラクタ)
 C_MainCharacter_MainGame::C_MainCharacter_MainGame()
@@ -29,7 +29,7 @@ void C_MainCharacter_MainGame::Init()
 	M_MainCharacter.MS_Color_Normal = { 1, 1, 1, 1.0f };
 
 	// キー操作の機能が入ったクラスの実体を作成
-	CM_Control = std::make_unique<C_MainCharacterControl>();
+	CM_Control = std::make_shared<C_MainCharacter_KeyControl>();
 	
 }
 
@@ -38,6 +38,9 @@ void C_MainCharacter_MainGame::Update()
 {
 	// キー操作による移動機能
 	CM_Control->MoveKeyControl(M_MainCharacter.MS_Position, M_MainCharacter.MS_Move);
+
+	// キー操作クラスの更新処理
+	CM_Control->Update();
 
 	// 表示したい座標を設定する
 	M_MainCharacter.MS_TranslationMatrix = Math::Matrix::CreateTranslation(M_MainCharacter.MS_Position.x, M_MainCharacter.MS_Position.y, 0);
@@ -58,6 +61,13 @@ void C_MainCharacter_MainGame::Draw()
 void C_MainCharacter_MainGame::ImGuiUpdate()
 {
 
+}
+
+// 弾を撃つかどうか判断する
+bool C_MainCharacter_MainGame::ShootBullet()
+{
+	// 射撃用のクールタイムが無い且つエンターキーが押されたらtrueが返される。
+	return CM_Control->ShootingPermission();
 }
 
 // このクラスの実体が削除された時に行う領域解放処理。

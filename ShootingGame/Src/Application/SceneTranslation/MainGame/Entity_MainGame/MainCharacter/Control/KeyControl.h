@@ -3,13 +3,13 @@
 // 前方宣言
 class C_MainCharacter_MainGame;
 
-class C_MainCharacterControl
+class C_MainCharacter_KeyControl
 {
 public:
 
 	// コンストラクタとデストラクタ
-	C_MainCharacterControl();
-	~C_MainCharacterControl();
+	C_MainCharacter_KeyControl();
+	~C_MainCharacter_KeyControl();
 
 	// 様々な変数の計算をここで行う。
 	void Update();

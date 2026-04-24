@@ -207,7 +207,7 @@
     <ClInclude Include="Src\Application\SceneTranslation\MainGame\Entity_MainGame\MainCharacter\MainCharacter.h">
       <Filter>Src\Application\SceneTranslation\MainGame\Entity_MainGame\MainCharacter</Filter>
     </ClInclude>
-    <ClInclude Include="Src\Application\SceneTranslation\MainGame\Entity_MainGame\MainCharacter\Control\Control.h">
+    <ClInclude Include="Src\Application\SceneTranslation\MainGame\Entity_MainGame\MainCharacter\Control\KeyControl.h">
       <Filter>Src\Application\SceneTranslation\MainGame\Entity_MainGame\MainCharacter\Control</Filter>
     </ClInclude>
     <ClInclude Include="Src\Application\SceneTranslation\MainGame\Entity_MainGame\Enemy\Enemy1\Enemy1.h">
@@ -305,7 +305,7 @@
     <ClCompile Include="Src\Application\SceneTranslation\MainGame\Entity_MainGame\MainCharacter\MainCharacter.cpp">
       <Filter>Src\Application\SceneTranslation\MainGame\Entity_MainGame\MainCharacter</Filter>
     </ClCompile>
-    <ClCompile Include="Src\Application\SceneTranslation\MainGame\Entity_MainGame\MainCharacter\Control\Control.cpp">
+    <ClCompile Include="Src\Application\SceneTranslation\MainGame\Entity_MainGame\MainCharacter\Control\KeyControl.cpp">
       <Filter>Src\Application\SceneTranslation\MainGame\Entity_MainGame\MainCharacter\Control</Filter>
     </ClCompile>
     <ClCompile Include="Src\Application\SceneTranslation\MainGame\Entity_MainGame\Enemy\Enemy1\Enemy1.cpp">

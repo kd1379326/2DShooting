@@ -20,6 +20,8 @@ public:
 	// デバッグ画面に表示するもの
 		void ImGuiUpdate()		override;
 
+	// 弾を撃つかどうか判断する
+		bool ShootBullet()			override;
 
 private:
 

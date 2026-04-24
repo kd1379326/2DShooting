@@ -62,6 +62,12 @@ void C_Enemy1_MainGame::ImGuiUpdate()
 	ImGui::Text(u8"敵の座標：X-%.0f｜Y-%.0f", M_Enemy.MS_Position.x, M_Enemy.MS_Position.y);
 }
 
+// 弾を撃つかどうか判断する
+bool C_Enemy1_MainGame::ShootBullet()
+{
+	return false;
+}
+
 // このクラスの実体が削除された時に行う領域解放処理。
 void C_Enemy1_MainGame::Release()
 {

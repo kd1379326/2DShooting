@@ -19,9 +19,12 @@ public:
 	// デバッグに表示するもの
 	virtual void ImGuiUpdate() = 0;
 
+	// 弾を撃つかどうか判断する
+	virtual bool ShootBullet() = 0;
 
 	// 当たり判定
 	bool HitEntity(Math::Vector2 A_Pos1, Math::Vector2 A_Pos2, Math::Vector2 A_Radius1, Math::Vector2 A_Radius2);
+	
 
 	// エンティティ(画像)を描画するために必要なもの(構造体)
 	struct S_EntityCharacter
