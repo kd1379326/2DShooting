@@ -59,13 +59,13 @@ public:
 	// ゲッター
 	// 画面端の座標を返す。
 		// 上
-		static const int Getter_ScreenSize_Top()			{ return M_ScreenSize_Top; }
+		int Getter_ScreenSize_Top()			{ return M_ScreenSize_Top; }
 		// 下
-		static const int Getter_ScreenSize_Bottom()	{ return M_ScreenSize_Bottom; }	
+		int Getter_ScreenSize_Bottom()		{ return M_ScreenSize_Bottom; }	
 		// 右
-		static const int Getter_ScreenSize_Right()		{ return M_ScreenSize_Right; }		
+		int Getter_ScreenSize_Right()			{ return M_ScreenSize_Right; }		
 		// 左
-		static const int Getter_ScreenSize_Left()			{ return M_ScreenSize_Left; }		
+		int Getter_ScreenSize_Left()			{ return M_ScreenSize_Left; }		
 
 private:
 

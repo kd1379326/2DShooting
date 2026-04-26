@@ -22,7 +22,9 @@ void C_MainCharacter_MainGame::Init()
 	// 座標
 	M_MainCharacter.MS_Position = { 0, -250 };
 	// 移動量
-	M_MainCharacter.MS_Move = { 5, 5 };
+	M_MainCharacter.MS_Move = { 20, 20 };
+	// 半径
+	M_MainCharacter.MS_Radius = { 32, 32 };
 	// 画像の切り取り範囲
 	M_MainCharacter.MS_Rectangle = { 0, 0, 64, 64 };
 	// 通常時の色
@@ -37,7 +39,7 @@ void C_MainCharacter_MainGame::Init()
 void C_MainCharacter_MainGame::Update()
 {
 	// キー操作による移動機能
-	CM_Control->MoveKeyControl(M_MainCharacter.MS_Position, M_MainCharacter.MS_Move);
+	CM_Control->MoveKeyControl(M_MainCharacter.MS_Position, M_MainCharacter.MS_Move, M_MainCharacter.MS_Radius);
 
 	// キー操作クラスの更新処理
 	CM_Control->Update();
