@@ -33,6 +33,8 @@ public:
 			Math::Vector2		MS_Position;
 		// 移動量
 			Math::Vector2		MS_Move;
+		// 移動速度
+			Math::Vector2		MS_MoveSpeed;
 		// 半径(サイズ)
 			Math::Vector2		MS_Radius;
 		// 描画用のサイズ情報
@@ -51,11 +53,12 @@ public:
 			Math::Color			MS_Color_Normal;
 		// 角度
 			float						MS_Rotate;
-		// 移動速度
-			float						MS_MoveSpeed_Normal;
 		// 当たり判定の真偽を持たせる
 			bool						MSF_Hit;
 	};
+
+	// 構造体変数
+	S_EntityCharacter M_Entity;
 	
 private:
 

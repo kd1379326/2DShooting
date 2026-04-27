@@ -28,16 +28,12 @@ public:
 
 	// ゲッター
 	// 現在の座標を返す。
-	Math::Vector2 Getter_Position() { return M_MainCharacter.MS_Position; }
+	Math::Vector2 Getter_Position() { return M_Entity.MS_Position; }
 	
 private:
 
 	// 領域解放処理はこの実体が削除された時にデストラクタで自動で呼び出されるためprivateに置く。
 	void Release();
-
-	// 構造体変数
-	// メインキャラクター用
-	S_EntityCharacter M_MainCharacter;
 
 	// 操作機能関連のクラス
 	std::shared_ptr<C_MainCharacter_KeyControl> CM_Control;

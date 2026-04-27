@@ -28,7 +28,4 @@ private:
 	// 領域解放処理はこの実体が削除された時にデストラクタで自動で呼び出されるためprivateに置く。
 	void Release();
 
-	// 構造体変数
-	S_EntityCharacter	M_Enemy;
-
 };
