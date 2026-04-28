@@ -12,6 +12,8 @@ public:
 	// 機能が全派生クラス共通なら通常の関数、派生クラスによって機能が違うなら純粋仮想関数を使う。
 	// 初期化
 	virtual void Init(Math::Vector2 A_Position = {0, 0})	= 0;
+	// 操作の更新
+	virtual void Action()													= 0;
 	// 更新内容
 	virtual void Update()													= 0;
 	// 描画内容
@@ -24,9 +26,15 @@ public:
 
 	// 値を知らせるゲッター
 	// 自身の現在地(座標)
-	Math::Vector2	Getter_MyPosition() { return M_Entity.MS_Position; }
+	Math::Vector2	Getter_MyPosition()	{ return M_Entity.MS_Position; }
+	// 自身の半径
+	Math::Vector2	Getter_Radius()			{ return M_Entity.MS_Radius; }
 	// 実体を消していいかどうか(良いtrue：ダメfalse)
-	bool					Getter_DeleteFlag() { return M_Entity.MSF_Delete; }
+	bool					Getter_DeleteFlag()	{ return M_Entity.MSF_Delete; }
+
+	// 値を入れるセッター
+	// やられた時にfalseをここに入れる。
+	void Setter_AliveFlag(bool A_Alive) { M_Entity.MSF_Alive = A_Alive; }
 
 	// 当たり判定
 	bool HitEntity(Math::Vector2 A_Pos1, Math::Vector2 A_Pos2, Math::Vector2 A_Radius1, Math::Vector2 A_Radius2);

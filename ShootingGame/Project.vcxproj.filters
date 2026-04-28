@@ -88,6 +88,9 @@
     <Filter Include="Src\Application\SceneTranslation\MainGame\Entity_MainGame\Bullet\Control">
       <UniqueIdentifier>{aa0f3938-1d50-4d42-b2fb-7d6abfe26fd1}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Src\Application\SceneTranslation\MainGame\Entity_MainGame\HitJudgment">
+      <UniqueIdentifier>{7c1acf46-b9a9-4485-a468-f35af38da157}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Pch.h">
@@ -219,6 +222,9 @@
     <ClInclude Include="Src\Application\SceneTranslation\MainGame\Entity_MainGame\Bullet\Bullet.h">
       <Filter>Src\Application\SceneTranslation\MainGame\Entity_MainGame\Bullet</Filter>
     </ClInclude>
+    <ClInclude Include="Src\Application\SceneTranslation\MainGame\Entity_MainGame\HitJudgment\HitJudgment.h">
+      <Filter>Src\Application\SceneTranslation\MainGame\Entity_MainGame\HitJudgment</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Pch.cpp">
@@ -313,6 +319,9 @@
     </ClCompile>
     <ClCompile Include="Src\Application\SceneTranslation\MainGame\Entity_MainGame\Bullet\Bullet.cpp">
       <Filter>Src\Application\SceneTranslation\MainGame\Entity_MainGame\Bullet</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Application\SceneTranslation\MainGame\Entity_MainGame\HitJudgment\HitJudgment.cpp">
+      <Filter>Src\Application\SceneTranslation\MainGame\Entity_MainGame\HitJudgment</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

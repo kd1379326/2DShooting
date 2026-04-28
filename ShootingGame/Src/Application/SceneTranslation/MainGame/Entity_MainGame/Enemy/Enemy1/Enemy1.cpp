@@ -43,9 +43,18 @@ void C_Enemy1_MainGame::Init(Math::Vector2 A_Position)
 		M_Entity.MSF_Delete = false;
 }
 
+// 操作関連の更新内容はここに
+void C_Enemy1_MainGame::Action()
+{
+
+}
+
 // 更新内容はここに(描画に使うMatrix(行列)の作成や画像の指定もここ)
 void C_Enemy1_MainGame::Update()
 {
+	// やられた場合、削除フラグを立てる。
+	if (!M_Entity.MSF_Alive) { M_Entity.MSF_Delete = true; }
+
 	// どこに描画するか座標情報を設定する。
 	M_Entity.MS_TranslationMatrix = Math::Matrix::CreateTranslation(M_Entity.MS_Position.x, M_Entity.MS_Position.y, 0);
 

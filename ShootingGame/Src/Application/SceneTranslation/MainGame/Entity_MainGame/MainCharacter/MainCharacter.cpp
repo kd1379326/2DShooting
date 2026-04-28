@@ -41,14 +41,21 @@ void C_MainCharacter_MainGame::Init(Math::Vector2 A_Position)
 	
 }
 
-// 更新内容はここに
-void C_MainCharacter_MainGame::Update()
+// 操作関連の更新内容はここに
+void C_MainCharacter_MainGame::Action()
 {
 	// キー操作による移動機能
 	CM_Control->MoveKeyControl(M_Entity.MS_Position, M_Entity.MS_Move, M_Entity.MS_MoveSpeed, M_Entity.MS_Radius);
+}
 
+// 更新内容はここに
+void C_MainCharacter_MainGame::Update()
+{
 	// キー操作クラスの更新処理
 	CM_Control->Update();
+
+	// やられた場合、削除フラグを立てる。
+	if (!M_Entity.MSF_Alive) { M_Entity.MSF_Delete = true; }
 
 	// 表示したい座標を設定する
 	M_Entity.MS_TranslationMatrix = Math::Matrix::CreateTranslation(M_Entity.MS_Position.x, M_Entity.MS_Position.y, 0);

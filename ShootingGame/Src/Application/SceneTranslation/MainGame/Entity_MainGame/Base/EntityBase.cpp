@@ -6,6 +6,12 @@ void C_EntityBase_MainGame::Init(Math::Vector2 A_Position)
 
 }
 
+// 操作関連の更新内容はここに
+void C_EntityBase_MainGame::Action()
+{
+
+}
+
 // 更新内容はここに(描画に使うMatrix(行列)や画像の指定もここ)
 void C_EntityBase_MainGame::Update()
 {

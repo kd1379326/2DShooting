@@ -43,8 +43,8 @@ void C_Bullet_MainGame::Init(Math::Vector2 A_Position)
 	M_Entity.MSF_Delete = false;
 }
 
-// 更新内容はここに(描画に使うMatrix(行列)の作成や画像の指定もここ)
-void C_Bullet_MainGame::Update()
+// 操作関連の更新内容はここに
+void C_Bullet_MainGame::Action()
 {
 	// 上に飛ばす処理
 	//移動量に移動速度を入れ、移動量を基に座標を更新させる。
@@ -52,10 +52,17 @@ void C_Bullet_MainGame::Update()
 	M_Entity.MS_Position.x += M_Entity.MS_Move.x;
 
 	// 弾が画面端＋半径を超えて見えなくなったらインスタンスを削除する。
-	if (M_Entity.MS_Position.y >= (SCENE.Getter_ScreenSize_Top()      + M_Entity.MS_Radius.y)) { M_Entity.MSF_Delete = true; }
-	if (M_Entity.MS_Position.x <= (SCENE.Getter_ScreenSize_Left()      - M_Entity.MS_Radius.x))  { M_Entity.MSF_Delete = true; }
-	if (M_Entity.MS_Position.y <= (SCENE.Getter_ScreenSize_Bottom() - M_Entity.MS_Radius.y))  { M_Entity.MSF_Delete = true; }
-	if (M_Entity.MS_Position.x >= (SCENE.Getter_ScreenSize_Right()    + M_Entity.MS_Radius.x)) { M_Entity.MSF_Delete = true; }
+	if (M_Entity.MS_Position.y >= (SCENE.Getter_ScreenSize_Top() + M_Entity.MS_Radius.y)) { M_Entity.MSF_Delete = true; }
+	if (M_Entity.MS_Position.x <= (SCENE.Getter_ScreenSize_Left() - M_Entity.MS_Radius.x)) { M_Entity.MSF_Delete = true; }
+	if (M_Entity.MS_Position.y <= (SCENE.Getter_ScreenSize_Bottom() - M_Entity.MS_Radius.y)) { M_Entity.MSF_Delete = true; }
+	if (M_Entity.MS_Position.x >= (SCENE.Getter_ScreenSize_Right() + M_Entity.MS_Radius.x)) { M_Entity.MSF_Delete = true; }
+}
+
+// 更新内容はここに(描画に使うMatrix(行列)の作成や画像の指定もここ)
+void C_Bullet_MainGame::Update()
+{
+	// やられた場合、削除フラグを立てる。
+	if (!M_Entity.MSF_Alive) { M_Entity.MSF_Delete = true; }
 
 	// どこに描画するか座標情報を設定する。
 	M_Entity.MS_TranslationMatrix = Math::Matrix::CreateTranslation(M_Entity.MS_Position.x, M_Entity.MS_Position.y, 0);

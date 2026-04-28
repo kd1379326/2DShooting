@@ -9,6 +9,9 @@
 // 敵１
 #include "Entity_MainGame/Enemy/Enemy1/Enemy1.h"
 
+// 当たり判定をするクラス
+#include "Entity_MainGame/HitJudgment/HitJudgment.h"
+
 // このクラスが生成された時に処理したい内容はここに
 C_MainGameScene::C_MainGameScene()
 {
@@ -43,7 +46,7 @@ void C_MainGameScene::Init()
 void C_MainGameScene::Update()
 {
 	// 毎秒60回値が出力され、1%の確率で敵を出現させる。
-	if (C_RandomNumericalValue::GetInstance().RandomNumericalValue(100) == 100)
+	if (C_RandomNumericalValue::GetInstance().RandomNumericalValue(10) == 1)
 	{
 		// 配列の列を追加し、敵１クラスの実体を生成→初期化する。
 		CM_Entity[ME_Enemy1].push_back(std::make_unique<C_Enemy1_MainGame>());
@@ -83,8 +86,32 @@ void C_MainGameScene::Update()
 	// 必要数弾を生成したら放たれた弾の数を０に戻す。
 	M_ShootBulletNumber = 0;
 
+	// 操作系の更新処理
+	for (auto& Row : CM_Entity) { for (auto& Column : Row) { Column->Action(); } }
+
 	// 更新処理
 	for (auto& Row : CM_Entity) { for (auto& Column : Row) { Column->Update(); } }
+
+	// 接触しているかどうか調べる
+	for (auto& Column1 : CM_Entity[ME_Enemy1])
+	{
+		for (auto& Column2 : CM_Entity[ME_Bullet])
+		{
+			if (C_HitJudgment::Instance().HitJudgment(Column1->Getter_MyPosition(), Column2->Getter_MyPosition(), Column1->Getter_Radius(), Column2->Getter_Radius()) == true)
+			{
+				Column1->Setter_AliveFlag(false);
+				Column2->Setter_AliveFlag(false);
+			}
+		}
+	}
+
+	//for (auto& Row : CM_Entity)
+	//{ 
+	//	for (auto& Column : Row)
+	//	{
+	//		
+	//	}
+	//}
 }
 
 // 描画処理はここに
