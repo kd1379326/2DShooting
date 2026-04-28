@@ -41,10 +41,19 @@ private:
 	// 「Game」の文字用の構造体変数
 	S_Entity M_Game;
 
-	// EntityBase(キャラ達の親クラス)型の動的配列
-	std::vector<std::unique_ptr<C_EntityBase_MainGame>> CM_Entity;
+	// EntityBase(キャラ達の親クラス)型の動的二次元配列
+	std::vector<std::vector<std::unique_ptr<C_EntityBase_MainGame>>> CM_Entity;
 
 	// 放たれた弾の数の一時保存場所。
 	int M_ShootBulletNumber = 0;
+
+	// それぞれのキャラの格納場所(行)
+	enum E_EntityNumber
+	{
+		ME_MainCharacter,
+		ME_Enemy1,
+		ME_Bullet,
+		ME_Entity_KindNumber,
+	};
 
 };

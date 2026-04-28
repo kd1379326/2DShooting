@@ -19,8 +19,8 @@ public:
 	// 引数：int 最大値
 	int RandomNumericalValue(int A_MaximumValue)
 	{
-		// そのまま与えると最大値が引数-1になる為ランダム値を余りで求める前に+1しておく。
-		return rand() % (A_MaximumValue + 1);
+		// そのまま与えると最大値が引数-1になる為ランダム値を+1しておく。(1～最大値が返される)
+		return rand() % A_MaximumValue + 1;
 	}
 
 	// 第一引数を最大値、第二引数を最小値としてランダムな値を返す

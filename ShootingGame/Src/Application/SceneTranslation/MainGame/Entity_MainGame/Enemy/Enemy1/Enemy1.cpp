@@ -23,11 +23,14 @@ void C_Enemy1_MainGame::Init()
 {
 	// 画像のパス(在処)を伝える
 		M_Entity.MS_Texture.Load("Texture/Star/StarShadow.png");
+	// 半径のサイズ
+		M_Entity.MS_Radius = { 32, 32 };
 
 	// 座標(1280×720の範囲で出現させる)
-	// 画面サイズをSceneクラスから引っ張ってきて、ランダム値を返す関数の引数に置く。
-		M_Entity.MS_Position.x = (float)C_RandomNumericalValue::GetInstance().RandomNumericalValue(Scene::GetInstance().Getter_ScreenSize_Right(), Scene::GetInstance().Getter_ScreenSize_Left());
-		M_Entity.MS_Position.y = (float)C_RandomNumericalValue::GetInstance().RandomNumericalValue(Scene::GetInstance().Getter_ScreenSize_Top(), Scene::GetInstance().Getter_ScreenSize_Bottom());
+	// 画面サイズをSceneクラスから引っ張ってきて、半径分をも含めた値をランダム値を返す関数の引数に置く。
+	// 画面内に全身が納まる位置で出現させる。
+		M_Entity.MS_Position.x = (float)C_RandomNumericalValue::GetInstance().RandomNumericalValue((Scene::GetInstance().Getter_ScreenSize_Right() - M_Entity.MS_Radius.x), (Scene::GetInstance().Getter_ScreenSize_Left()       + M_Entity.MS_Radius.x));
+		M_Entity.MS_Position.y = (float)C_RandomNumericalValue::GetInstance().RandomNumericalValue((Scene::GetInstance().Getter_ScreenSize_Top()    - M_Entity.MS_Radius.y), (Scene::GetInstance().Getter_ScreenSize_Bottom() + M_Entity.MS_Radius.y));
 	// 移動量
 		M_Entity.MS_Move = { 0, 0 };
 	// 画像の切り取り範囲
