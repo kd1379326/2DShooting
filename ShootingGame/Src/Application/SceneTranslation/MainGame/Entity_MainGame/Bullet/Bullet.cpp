@@ -9,8 +9,7 @@
 // このクラスが生成された時に動かしたいものをここに(コンストラクタ)
 C_Bullet_MainGame::C_Bullet_MainGame()
 {
-	//// 初期座標はメインキャラに合わせる。
-	//M_Bullet.MS_Position = A_MainCharacterPosition;
+	
 }
 
 // このクラスが削除される時に動かしたいものをここに(デストラクタ)
@@ -21,25 +20,43 @@ C_Bullet_MainGame::~C_Bullet_MainGame()
 }
 
 // 初期化内容はここに
-void C_Bullet_MainGame::Init()
+void C_Bullet_MainGame::Init(Math::Vector2 A_Position)
 {
 	// 画像のパス(在処)を伝える
 	M_Entity.MS_Texture.Load("Texture/Star/StarLight.png");
 
 	// 画面サイズをSceneクラスから引っ張ってきて、ランダム値を返す関数の引数に置く。
-	M_Entity.MS_Position.x = (float)C_RandomNumericalValue::GetInstance().RandomNumericalValue(Scene::GetInstance().Getter_ScreenSize_Right(), Scene::GetInstance().Getter_ScreenSize_Left());
-	M_Entity.MS_Position.y = (float)C_RandomNumericalValue::GetInstance().RandomNumericalValue(Scene::GetInstance().Getter_ScreenSize_Top(), Scene::GetInstance().Getter_ScreenSize_Bottom());
+	M_Entity.MS_Position = A_Position;
 	// 移動量
 	M_Entity.MS_Move = { 0, 0 };
+	// 移動速度
+	M_Entity.MS_MoveSpeed = { 20, 20 };
 	// 画像の切り取り範囲
 	M_Entity.MS_Rectangle = { 0, 0, 64, 64 };
 	// 画像の通常時の色(設定なし)
 	M_Entity.MS_Color_Normal = { 1, 1, 1, 1 };
+	// 半径のサイズ
+	M_Entity.MS_Radius = { 32, 32 };
+	// 生存している状態にする
+	M_Entity.MSF_Alive = true;
+	// まだ処理が残っているという情報を持たせる
+	M_Entity.MSF_Delete = false;
 }
 
 // 更新内容はここに(描画に使うMatrix(行列)の作成や画像の指定もここ)
 void C_Bullet_MainGame::Update()
 {
+	// 上に飛ばす処理
+	//移動量に移動速度を入れ、移動量を基に座標を更新させる。
+	M_Entity.MS_Move.x = M_Entity.MS_MoveSpeed.x;
+	M_Entity.MS_Position.x += M_Entity.MS_Move.x;
+
+	// 弾が画面端＋半径を超えて見えなくなったらインスタンスを削除する。
+	if (M_Entity.MS_Position.y >= (SCENE.Getter_ScreenSize_Top()      + M_Entity.MS_Radius.y)) { M_Entity.MSF_Delete = true; }
+	if (M_Entity.MS_Position.x <= (SCENE.Getter_ScreenSize_Left()      - M_Entity.MS_Radius.x))  { M_Entity.MSF_Delete = true; }
+	if (M_Entity.MS_Position.y <= (SCENE.Getter_ScreenSize_Bottom() - M_Entity.MS_Radius.y))  { M_Entity.MSF_Delete = true; }
+	if (M_Entity.MS_Position.x >= (SCENE.Getter_ScreenSize_Right()    + M_Entity.MS_Radius.x)) { M_Entity.MSF_Delete = true; }
+
 	// どこに描画するか座標情報を設定する。
 	M_Entity.MS_TranslationMatrix = Math::Matrix::CreateTranslation(M_Entity.MS_Position.x, M_Entity.MS_Position.y, 0);
 

@@ -40,8 +40,6 @@ public:
 		CurrentState->ImGuiUpdate();
 	}
 
-	std::shared_ptr<C_State> GetCurrentState() { return CurrentState; }
-
 private:
 
 	C_SceneManager(){}

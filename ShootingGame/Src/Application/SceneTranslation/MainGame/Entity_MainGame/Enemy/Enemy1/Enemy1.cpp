@@ -19,7 +19,7 @@ C_Enemy1_MainGame::~C_Enemy1_MainGame()
 }
 
 // 初期化内容はここに
-void C_Enemy1_MainGame::Init()
+void C_Enemy1_MainGame::Init(Math::Vector2 A_Position)
 {
 	// 画像のパス(在処)を伝える
 		M_Entity.MS_Texture.Load("Texture/Star/StarShadow.png");
@@ -37,6 +37,10 @@ void C_Enemy1_MainGame::Init()
 		M_Entity.MS_Rectangle = { 0, 0, 64, 64 };
 	// 画像の通常時の色(設定なし)
 		M_Entity.MS_Color_Normal = { 1, 1, 1, 1 };
+	// 生存している状態にする
+		M_Entity.MSF_Alive = true;
+	// まだ処理が残っているという情報を持たせる
+		M_Entity.MSF_Delete = false;
 }
 
 // 更新内容はここに(描画に使うMatrix(行列)の作成や画像の指定もここ)

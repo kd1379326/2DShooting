@@ -9,19 +9,19 @@ public:
 
 	// コンストラクタとデストラクタ
 	C_Enemy1_MainGame();
-	~C_Enemy1_MainGame()	override;
+	~C_Enemy1_MainGame()					override;
 
 	// 初期化内容
-		void Init()						override;
+		void Init(Math::Vector2 A_Position)	override;
 	// 更新内容
-		void Update()				override;
+		void Update()								override;
 	// 描画処理
-		void Draw()					override;
+		void Draw()									override;
 	// デバッグ画面に表示するもの
-		void ImGuiUpdate()		override;
+		void ImGuiUpdate()						override;
 
 	// 弾を撃つかどうか判断する
-		bool ShootBullet()			override;
+		bool ShootBullet()							override;
 
 private:
 

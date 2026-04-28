@@ -38,6 +38,12 @@ private:
 	// 領域解放処理はこの実体が削除された時にデストラクタで自動で呼び出されるためprivateに置く。
 	void Release();
 
+	// エンティティの数を表示する関数。
+	void ImGui_EntityNumber();
+
+	// 全てのエンティティの数や種類を表示する関数。
+	void ImGui_AllEntityNumber();
+
 	// 「Game」の文字用の構造体変数
 	S_Entity M_Game;
 

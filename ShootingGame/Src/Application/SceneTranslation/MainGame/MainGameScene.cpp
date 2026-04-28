@@ -29,11 +29,11 @@ void C_MainGameScene::Init()
 	// アップキャストを使って各キャラの実体(インスタンス)を生成
 	// アップキャストという技術を使えば子クラスをまとめて親クラスで管理できる。
 	// std::make_uniqueだとCM_Entityから消えた時自動でメモリが解放される。
+	// 登場させるキャラの数だけ行を作る。
+	// 行によって扱うキャラを変えていく。
 	for (int i = 0; i < ME_Entity_KindNumber; i++) { CM_Entity.push_back({}); }
 	// メインキャラクター
-		CM_Entity[0].push_back(std::make_unique<C_MainCharacter_MainGame>());
-	// 弾
-		//CM_Entity.push_back(std::make_unique<C_Bullet_MainGame>());
+		CM_Entity[ME_MainCharacter].push_back(std::make_unique<C_MainCharacter_MainGame>());
 	// 初期化
 	// CM_Entity配列を最前列から最後尾まで一気に処理してくれる。
 		for (auto& Row : CM_Entity) { for (auto& Column : Row) { Column->Init(); } }
@@ -46,8 +46,8 @@ void C_MainGameScene::Update()
 	if (C_RandomNumericalValue::GetInstance().RandomNumericalValue(100) == 100)
 	{
 		// 配列の列を追加し、敵１クラスの実体を生成→初期化する。
-		CM_Entity[1].push_back(std::make_unique<C_Enemy1_MainGame>());
-		CM_Entity[1].back()->Init();
+		CM_Entity[ME_Enemy1].push_back(std::make_unique<C_Enemy1_MainGame>());
+		CM_Entity[ME_Enemy1].back()->Init();
 	}
 
 	// 誰か弾を放ったか確認する。
@@ -62,12 +62,23 @@ void C_MainGameScene::Update()
 		}
 	}
 
+	// 削除していい実体を消す処理
+	for (auto& Row : CM_Entity)
+	{
+		// 確認する範囲を始めの列(.begin())と終わりの列(.end())と設定する。
+		// ラムダ式で削除していい列を探す(戻り値はbool型)。
+		// 削除していい列を除いてその後ろの列達を前にずらしていく。
+		// std::remove_if()は最後に前にずらした列を戻り値とする。
+		// erase()はその戻り値から最後の列までを削除する。
+		Row.erase(std::remove_if(Row.begin(), Row.end(), [](const std::unique_ptr<C_EntityBase_MainGame>& A_Entity) {return A_Entity && A_Entity->Getter_DeleteFlag() == true; }), Row.end());
+	}
+
 	// ループ処理はCM_Entityの要素の数だけ行うように指示している為、弾を生成するなら一回CM_Entity関連のループを抜ける必要がある。
 	for (int i = 0; i < M_ShootBulletNumber; i++)
 	{
 		// 弾の実体を作成し、初期化する。
-		CM_Entity[2].push_back(std::make_unique<C_Bullet_MainGame>());
-		CM_Entity[2].back()->Init();
+		CM_Entity[ME_Bullet].push_back(std::make_unique<C_Bullet_MainGame>());
+		CM_Entity[ME_Bullet].back()->Init(CM_Entity[ME_MainCharacter][0]->Getter_MyPosition());
 	}
 	// 必要数弾を生成したら放たれた弾の数を０に戻す。
 	M_ShootBulletNumber = 0;
@@ -86,7 +97,9 @@ void C_MainGameScene::Draw()
 // デバッグ画面に表示させたいものはここに
 void C_MainGameScene::ImGuiUpdate()
 {
-	ImGui::Text(u8"敵の数　：%d", CM_Entity.size() - 1);
+	// エンティティの数や種類を表示する関数。
+	ImGui_EntityNumber();
+
 	// デバッグ表示
 	for (auto& Row : CM_Entity) { for (auto& Column : Row) { Column->ImGuiUpdate(); } }
 
@@ -112,4 +125,29 @@ void C_MainGameScene::Release()
 	//	delete CM_Enemy1;
 	//	CM_Enemy1 = nullptr;
 	//}
+}
+
+// エンティティの数や種類を表示する関数。
+void C_MainGameScene::ImGui_EntityNumber()
+{
+	// 敵１の数を表示する。
+	ImGui::Text(u8"敵の数　　　　　　：%d", CM_Entity[ME_Enemy1].size());
+	// 弾の数を表示する。
+	ImGui::Text(u8"弾の数　　　　　　：%d", CM_Entity[ME_Bullet].size());
+	// エンティティの種類を表示する。
+	ImGui::Text(u8"エンティティの種類：%d", CM_Entity.size());
+
+	// 全てのエンティティの数を表示する関数。
+	ImGui_AllEntityNumber();
+}
+
+// 全てのエンティティの数を表示する関数。
+void C_MainGameScene::ImGui_AllEntityNumber()
+{
+	// 全エンティティの数を表示する。
+	// エンティティの数を持ってもらう変数。
+	int AllEntity = 0;
+	// それぞれの行の列の数を順番に確認し、変数に伝える。
+	for (auto& Row : CM_Entity) { AllEntity += Row.size(); }
+	ImGui::Text(u8"エンティティの数　：%d", AllEntity);
 }

@@ -9,19 +9,20 @@ public:
 
 	// コンストラクタとデストラクタ
 	C_Bullet_MainGame();
-	~C_Bullet_MainGame()	override;
+	~C_Bullet_MainGame()					override;
 
 	// 初期化内容
-	void Init()						override;
+	void Init(Math::Vector2 A_Position)	override;
 	// 更新内容
-	void Update()				override;
+	void Update()								override;
 	// 描画処理
-	void Draw()					override;
+	void Draw()									override;
 	// デバッグ画面に表示するもの
-	void ImGuiUpdate()		override;
+	void ImGuiUpdate()						override;
 
 	// 弾を撃つかどうか判断する
-	bool ShootBullet()			override { return false; }
+	bool ShootBullet()							override { return false; }
+
 
 private:
 

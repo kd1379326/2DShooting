@@ -11,16 +11,22 @@ public:
 
 	// 機能が全派生クラス共通なら通常の関数、派生クラスによって機能が違うなら純粋仮想関数を使う。
 	// 初期化
-	virtual void Init() = 0;
+	virtual void Init(Math::Vector2 A_Position = {0, 0})	= 0;
 	// 更新内容
-	virtual void Update() = 0;
+	virtual void Update()													= 0;
 	// 描画内容
-	virtual void Draw() = 0;
+	virtual void Draw()														= 0;
 	// デバッグに表示するもの
-	virtual void ImGuiUpdate() = 0;
+	virtual void ImGuiUpdate()											= 0;
 
 	// 弾を撃つかどうか判断する
-	virtual bool ShootBullet() = 0;
+	virtual bool ShootBullet()											= 0;
+
+	// 値を知らせるゲッター
+	// 自身の現在地(座標)
+	Math::Vector2	Getter_MyPosition() { return M_Entity.MS_Position; }
+	// 実体を消していいかどうか(良いtrue：ダメfalse)
+	bool					Getter_DeleteFlag() { return M_Entity.MSF_Delete; }
 
 	// 当たり判定
 	bool HitEntity(Math::Vector2 A_Pos1, Math::Vector2 A_Pos2, Math::Vector2 A_Radius1, Math::Vector2 A_Radius2);
@@ -53,8 +59,12 @@ public:
 			Math::Color			MS_Color_Normal;
 		// 角度
 			float						MS_Rotate;
-		// 当たり判定の真偽を持たせる
+		// 当たり判定の真偽を持たせる(当たったらtrue：当たってなかったらfalse)
 			bool						MSF_Hit;
+		// 生きているかの真偽を持たせる(生きていたらtrue：やられていたらfalse)
+			bool						MSF_Alive;
+		// 消去するべきかの真偽を持たせる(もう何も動かさないのならtrue：まだ消去しちゃダメならfalse)
+			bool						MSF_Delete;
 	};
 
 	// 構造体変数

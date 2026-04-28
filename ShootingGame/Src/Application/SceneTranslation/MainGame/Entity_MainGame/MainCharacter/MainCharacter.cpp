@@ -17,20 +17,24 @@ C_MainCharacter_MainGame::~C_MainCharacter_MainGame()
 }
 
 // 初期化内容はここに
-void C_MainCharacter_MainGame::Init()
+void C_MainCharacter_MainGame::Init(Math::Vector2 A_Position)
 {
 	// 座標
-	M_Entity.MS_Position = { 0, -250 };
+		M_Entity.MS_Position = { -500, 0 };
 	// 移動速度
-	M_Entity.MS_MoveSpeed = { 20, 20 };
+		M_Entity.MS_MoveSpeed = { 20, 20 };
 	// 移動量
-	M_Entity.MS_Move = { 0, 0 };
+		M_Entity.MS_Move = { 0, 0 };
 	// 半径
-	M_Entity.MS_Radius = { 32, 32 };
+		M_Entity.MS_Radius = { 32, 32 };
 	// 画像の切り取り範囲
-	M_Entity.MS_Rectangle = { 0, 0, 64, 64 };
+		M_Entity.MS_Rectangle = { 0, 0, 64, 64 };
 	// 通常時の色
-	M_Entity.MS_Color_Normal = { 1, 1, 1, 1.0f };
+		M_Entity.MS_Color_Normal = { 1, 1, 1, 1.0f };
+	// 生存している状態にする
+		M_Entity.MSF_Alive = true;
+	// まだ処理が残っているという情報を持たせる
+		M_Entity.MSF_Delete = false;
 
 	// キー操作の機能が入ったクラスの実体を作成
 	CM_Control = std::make_shared<C_MainCharacter_KeyControl>();
@@ -58,7 +62,6 @@ void C_MainCharacter_MainGame::Draw()
 {
 	SHADER.m_spriteShader.SetMatrix(M_Entity.MS_Matrix);
 	SHADER.m_spriteShader.DrawColorTex(&M_Entity.MS_Texture, M_Entity.MS_Rectangle, M_Entity.MS_Color_Normal);
-	//SHADER.m_spriteShader.DrawString(0, 0, "プレイヤー", Math::Color{ 1,1,1,1 });
 }
 
 // デバッグ画面に出したい内容はここに

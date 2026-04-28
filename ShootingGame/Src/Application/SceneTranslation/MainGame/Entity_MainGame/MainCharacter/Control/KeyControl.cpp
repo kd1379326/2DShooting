@@ -15,7 +15,7 @@ C_MainCharacter_KeyControl::~C_MainCharacter_KeyControl()
 void C_MainCharacter_KeyControl::Update()
 {
 	// クールタイムが発生した時にのみ減らしていく。
-	if (M_NowCoolTime > 0) { M_NowCoolTime--; }
+	if (M_NowCoolTime > 0) { M_NowCoolTime -= 1; }
 }
 
 // キー入力による操作機能
