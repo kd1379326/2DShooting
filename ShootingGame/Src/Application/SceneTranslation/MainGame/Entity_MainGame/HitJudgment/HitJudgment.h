@@ -8,7 +8,7 @@ public:
 	~C_HitJudgment() {}
 
 	// ÚG‚µ‚½‚©Šm”F‚·‚éB
-	bool HitJudgment(Math::Vector2 A_Position1, Math::Vector2 A_Position2, Math::Vector2 A_Radius1, Math::Vector2 A_Radius2);
+	bool HitJudgment(Math::Vector2 A_Position1, Math::Vector2 A_Radius1, Math::Vector2 A_Position2, Math::Vector2 A_Radius2);
 
 	static C_HitJudgment& Instance()
 	{

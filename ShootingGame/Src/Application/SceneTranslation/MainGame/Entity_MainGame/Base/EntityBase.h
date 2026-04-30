@@ -29,6 +29,8 @@ public:
 	Math::Vector2	Getter_MyPosition()	{ return M_Entity.MS_Position; }
 	// ©g‚Ì”¼Œa
 	Math::Vector2	Getter_Radius()			{ return M_Entity.MS_Radius; }
+	// ¶‘¶‚µ‚Ä‚¢‚é‚©‚Ç‚¤‚©
+	bool					Getter_AliveFlag()		{ return M_Entity.MSF_Alive; }
 	// À‘Ì‚ğÁ‚µ‚Ä‚¢‚¢‚©‚Ç‚¤‚©(—Ç‚¢trueFƒ_ƒfalse)
 	bool					Getter_DeleteFlag()	{ return M_Entity.MSF_Delete; }
 

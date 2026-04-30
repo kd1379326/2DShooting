@@ -44,6 +44,24 @@ private:
 	// 全てのエンティティの数や種類を表示する関数。
 	void ImGui_AllEntityNumber();
 
+	// 当たり判定の処理。
+	void Update_Entity_HitJudgment();
+
+	// 誰が弾を撃ったのかチェックする。
+	void Update_Check_WhoShootBullet();
+
+	// 削除許可が出されたエンティティのインスタンスを削除する。
+	void Update_DeleteEntity();
+
+	// エンティティのインスタンスを生成する関数をここにまとめる。
+	void Update_CreateEntity();
+
+	// 敵１のインスタンスを生成する関数。
+	void Update_CreateEnemy1();
+
+	// 弾のインスタンスを生成する関数。
+	void Update_CreateBullet();
+
 	// 「Game」の文字用の構造体変数
 	S_Entity M_Game;
 

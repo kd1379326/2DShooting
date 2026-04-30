@@ -45,79 +45,30 @@ void C_MainGameScene::Init()
 // 更新内容はここに(描画に使うMatrix(行列)の作成や画像の指定もここ)
 void C_MainGameScene::Update()
 {
-	// 毎秒60回値が出力され、1%の確率で敵を出現させる。
-	if (C_RandomNumericalValue::GetInstance().RandomNumericalValue(10) == 1)
-	{
-		// 配列の列を追加し、敵１クラスの実体を生成→初期化する。
-		CM_Entity[ME_Enemy1].push_back(std::make_unique<C_Enemy1_MainGame>());
-		CM_Entity[ME_Enemy1].back()->Init();
-	}
-
 	// 誰か弾を放ったか確認する。
-	for (auto& Row : CM_Entity)
-	{
-		for (auto& Column : Row)
-		// 一人一人弾を放ったか確認する。
-		if (Column->ShootBullet() == true)
-		{ 
-			// 弾が放たれる度にその数を記録していく。
-			M_ShootBulletNumber++;
-		}
-	}
+	Update_Check_WhoShootBullet();
 
-	// 削除していい実体を消す処理
-	for (auto& Row : CM_Entity)
-	{
-		// 確認する範囲を始めの列(.begin())と終わりの列(.end())と設定する。
-		// ラムダ式で削除していい列を探す(戻り値はbool型)。
-		// 削除していい列を除いてその後ろの列達を前にずらしていく。
-		// std::remove_if()は最後に前にずらした列を戻り値とする。
-		// erase()はその戻り値から最後の列までを削除する。
-		Row.erase(std::remove_if(Row.begin(), Row.end(), [](const std::unique_ptr<C_EntityBase_MainGame>& A_Entity) {return A_Entity && A_Entity->Getter_DeleteFlag() == true; }), Row.end());
-	}
+	// エンティティのインスタンスを生成する関数。
+	Update_CreateEntity();
 
-	// ループ処理はCM_Entityの要素の数だけ行うように指示している為、弾を生成するなら一回CM_Entity関連のループを抜ける必要がある。
-	for (int i = 0; i < M_ShootBulletNumber; i++)
-	{
-		// 弾の実体を作成し、初期化する。
-		CM_Entity[ME_Bullet].push_back(std::make_unique<C_Bullet_MainGame>());
-		CM_Entity[ME_Bullet].back()->Init(CM_Entity[ME_MainCharacter][0]->Getter_MyPosition());
-	}
-	// 必要数弾を生成したら放たれた弾の数を０に戻す。
-	M_ShootBulletNumber = 0;
+	// エンティティのインスタンスを削除する関数。
+	Update_DeleteEntity();
 
-	// 操作系の更新処理
+	// 各キャラの操作系の更新処理
 	for (auto& Row : CM_Entity) { for (auto& Column : Row) { Column->Action(); } }
 
-	// 更新処理
+	// 当たり判定の確認をここで行う。
+	Update_Entity_HitJudgment();
+
+	// 各キャラの更新処理
 	for (auto& Row : CM_Entity) { for (auto& Column : Row) { Column->Update(); } }
 
-	// 接触しているかどうか調べる
-	for (auto& Column1 : CM_Entity[ME_Enemy1])
-	{
-		for (auto& Column2 : CM_Entity[ME_Bullet])
-		{
-			if (C_HitJudgment::Instance().HitJudgment(Column1->Getter_MyPosition(), Column2->Getter_MyPosition(), Column1->Getter_Radius(), Column2->Getter_Radius()) == true)
-			{
-				Column1->Setter_AliveFlag(false);
-				Column2->Setter_AliveFlag(false);
-			}
-		}
-	}
-
-	//for (auto& Row : CM_Entity)
-	//{ 
-	//	for (auto& Column : Row)
-	//	{
-	//		
-	//	}
-	//}
 }
 
 // 描画処理はここに
 void C_MainGameScene::Draw()
 {
-	// 描画処理
+	// 各キャラの描画処理
 	for (auto& Row : CM_Entity) { for (auto& Column : Row) { Column->Draw(); } }
 }
 
@@ -127,7 +78,7 @@ void C_MainGameScene::ImGuiUpdate()
 	// エンティティの数や種類を表示する関数。
 	ImGui_EntityNumber();
 
-	// デバッグ表示
+	// 各キャラのデバッグ表示
 	for (auto& Row : CM_Entity) { for (auto& Column : Row) { Column->ImGuiUpdate(); } }
 
 }
@@ -154,9 +105,118 @@ void C_MainGameScene::Release()
 	//}
 }
 
+// 当たり判定の処理。
+void C_MainGameScene::Update_Entity_HitJudgment()
+{
+	// 接触しているかどうか調べる
+	// 敵１と弾
+	// 敵１と弾の行から列を一つずつ取り出し、全通り見ていく。
+	// 座標と半径を渡し、接触しているか確認する。
+	// 接触している(戻り値がtrue)場合はお互いの生存フラグを折る(やられた判定にさせる)。
+	for (auto& Column1 : CM_Entity[ME_Enemy1])
+	{
+		for (auto& Column2 : CM_Entity[ME_Bullet])
+		{
+			// もし既にやられた判定だったら当たり判定の確認をさせない。
+			if (!Column1->Getter_AliveFlag() || !Column2->Getter_AliveFlag()) continue;
+			if (C_HitJudgment::Instance().HitJudgment(Column1->Getter_MyPosition(), Column1->Getter_Radius(), Column2->Getter_MyPosition(), Column2->Getter_Radius()) == true)
+			{
+				Column1->Setter_AliveFlag(false);
+				Column2->Setter_AliveFlag(false);
+			}
+		}
+	}
+
+	// メインキャラと敵１
+	// メインキャラと敵１の行から列を一つずつ取り出し、全通り見ていく。
+	// 座標と半径を渡し、接触しているか確認する。
+	// 接触している(戻り値がtrue)場合はお互いの生存フラグを折る(やられた判定にさせる)。
+	for (auto& Column1 : CM_Entity[ME_MainCharacter])
+	{
+		for (auto& Column2 : CM_Entity[ME_Enemy1])
+		{
+			// もし既にやられた判定だったら当たり判定の確認をさせない。
+			if (!Column1->Getter_AliveFlag() || !Column2->Getter_AliveFlag()) continue;
+			if (C_HitJudgment::Instance().HitJudgment(Column1->Getter_MyPosition(), Column1->Getter_Radius(), Column2->Getter_MyPosition(), Column2->Getter_Radius()) == true)
+			{
+				Column1->Setter_AliveFlag(false);
+				Column2->Setter_AliveFlag(false);
+			}
+		}
+	}
+}
+
+// 誰が弾を撃ったのかチェックする。
+void C_MainGameScene::Update_Check_WhoShootBullet()
+{
+	// 二重ループで全キャラ確認する。
+	for (auto& Row : CM_Entity)
+	{
+		for (auto& Column : Row)
+			// 一人一人弾を放ったか確認する。
+			if (Column->ShootBullet() == true)
+			{
+				// 弾が放たれる度にその数を記録していく。
+				M_ShootBulletNumber++;
+			}
+	}
+}
+
+// 削除許可が出されたエンティティのインスタンスを削除する。
+void C_MainGameScene::Update_DeleteEntity()
+{
+	// 削除していい実体を消す処理
+	for (auto& Row : CM_Entity)
+	{
+		// 確認する範囲を始めの列(.begin())と終わりの列(.end())と設定する。
+		// ラムダ式で削除していい列を探す(戻り値はbool型)。
+		// 削除していい列を除いてその後ろの列達を前にずらしていく。
+		// std::remove_if()は最後に前にずらした列を戻り値とする。
+		// erase()はその戻り値から最後の列までを削除する。
+		Row.erase(std::remove_if(Row.begin(), Row.end(), [](const std::unique_ptr<C_EntityBase_MainGame>& A_Entity) {return A_Entity && A_Entity->Getter_DeleteFlag() == true; }), Row.end());
+	}
+}
+
+// エンティティのインスタンスを生成する関数をここにまとめる。
+void C_MainGameScene::Update_CreateEntity()
+{
+	// 敵１のインスタンスを生成。
+	Update_CreateEnemy1();
+	// 弾のインスタンスを生成。
+	Update_CreateBullet();
+}
+
+// 敵１のインスタンスを生成する関数。
+void C_MainGameScene::Update_CreateEnemy1()
+{
+	// 毎秒60回値が出力され、1%の確率で敵を出現させる。
+	if (C_RandomNumericalValue::GetInstance().RandomNumericalValue(10) == 1)
+	{
+		// 配列の列を追加し、敵１クラスの実体を生成→初期化する。
+		CM_Entity[ME_Enemy1].push_back(std::make_unique<C_Enemy1_MainGame>());
+		CM_Entity[ME_Enemy1].back()->Init();
+	}
+}
+
+// 弾のインスタンスを生成する関数。
+void C_MainGameScene::Update_CreateBullet()
+{
+	// ループ処理はCM_Entityの要素の数だけ行うように指示している為、弾を生成するなら一回CM_Entity関連のループを抜ける必要がある。
+	for (int i = 0; i < M_ShootBulletNumber; i++)
+	{
+		// 弾の実体を作成し、初期化する。
+		CM_Entity[ME_Bullet].push_back(std::make_unique<C_Bullet_MainGame>());
+		CM_Entity[ME_Bullet].back()->Init(CM_Entity[ME_MainCharacter][0]->Getter_MyPosition());
+	}
+	// 必要数弾を生成したら放たれた弾の数を０に戻す。
+	M_ShootBulletNumber = 0;
+}
+
 // エンティティの数や種類を表示する関数。
 void C_MainGameScene::ImGui_EntityNumber()
 {
+	// メインキャラの数を表示する。
+	ImGui::Text(u8"メインキャラの数　：%d", CM_Entity[ME_MainCharacter].size());
 	// 敵１の数を表示する。
 	ImGui::Text(u8"敵の数　　　　　　：%d", CM_Entity[ME_Enemy1].size());
 	// 弾の数を表示する。
