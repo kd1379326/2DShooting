@@ -24,14 +24,26 @@ void C_ResultScene::Init()
 
 }
 
+// 更新前に行いたい更新処理はここに書く。
+void C_ResultScene::PreUpdate()
+{
+
+}
+
 // 更新内容はここに
 void C_ResultScene::Update()
 {
 	if (GetAsyncKeyState('X') & 0x8000) { C_SceneManager::Instance().SetterNextScene(C_SceneManager::E_SceneType::ME_Title); }
 }
 
+// 更新後に行いたい更新処理はここに書く。
+void C_ResultScene::PostUpdate()
+{
+
+}
+
 // 描画内容はここに(行列(Matrix等)はUpdateに含まれる)
-void C_ResultScene::Draw()
+void C_ResultScene::DrawSprite()
 {
 	SHADER.m_spriteShader.DrawString(M_Result.MS_Position.x, M_Result.MS_Position.y, "Result", { 1.0f, 1.0f, 1.0f, 1.0f });
 }

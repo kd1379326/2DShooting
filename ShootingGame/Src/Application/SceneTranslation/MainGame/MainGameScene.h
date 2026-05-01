@@ -24,14 +24,18 @@ public:
 	// デストラクタ
 	~C_MainGameScene() override;
 
-	// 初期化
-	void Init()override;
-	// 更新内容
-	void Update()override;
-	// 描画内容
-	void Draw()override;
-	// デバッグ画面に表示するもの
-	void ImGuiUpdate()override;
+	// 初期化用
+	void Init()						override;
+	// 更新前に行う更新
+	void PreUpdate()			override;
+	// 更新処理
+	void Update()				override;
+	// 更新後に行う更新
+	void PostUpdate()			override;
+	// 2D描画
+	void DrawSprite()			override;
+	// デバッグ表示
+	void ImGuiUpdate()		override;
 
 private:
 
@@ -48,13 +52,13 @@ private:
 	void Update_Entity_HitJudgment();
 
 	// 誰が弾を撃ったのかチェックする。
-	void Update_Check_WhoShootBullet();
+	void PostUpdate_Check_WhoShootBullet();
 
 	// 削除許可が出されたエンティティのインスタンスを削除する。
-	void Update_DeleteEntity();
+	void PostUpdate_DeleteEntity();
 
 	// エンティティのインスタンスを生成する関数をここにまとめる。
-	void Update_CreateEntity();
+	void PreUpdate_CreateEntity();
 
 	// 敵１のインスタンスを生成する関数。
 	void Update_CreateEnemy1();
@@ -63,10 +67,10 @@ private:
 	void Update_CreateBullet();
 
 	// リザルトに移る処理。
-	void Update_ChangeResultScene();
+	void PostUpdate_ChangeResultScene();
 
 	// ゲームオーバーに移る処理。
-	void Update_ChangeGameOverScene();
+	void PostUpdate_ChangeGameOverScene();
 
 	// 「Game」の文字用の構造体変数
 	S_Entity M_Game;

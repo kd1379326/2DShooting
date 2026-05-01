@@ -28,6 +28,9 @@ void Scene::Update()
 	// それぞれのシーン(ゲーム場面)の更新処理
 	SCENEMANAGER.Update();
 
+
+	SCENEMANAGER.PostUpdate();
+
 }
 
 // 初期化内容はここに

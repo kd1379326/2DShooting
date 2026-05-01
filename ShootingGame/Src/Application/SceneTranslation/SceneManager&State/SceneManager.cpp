@@ -34,6 +34,8 @@ void C_SceneManager::PreUpdate()
 	{
 		ChangeScene(M_NextSceneType);
 	}
+
+	M_CurrentScene->PreUpdate();
 }
 
 // 更新内容
@@ -42,10 +44,16 @@ void C_SceneManager::Update()
 	M_CurrentScene->Update();
 }
 
+// 更新後に行いたい更新処理はここに書く。
+void C_SceneManager::PostUpdate()
+{
+	M_CurrentScene->PostUpdate();
+}
+
 // 描画内容
 void C_SceneManager::Draw()
 {
-	M_CurrentScene->Draw();
+	M_CurrentScene->DrawSprite();
 }
 
 // デバッグに表示したいものはここに。

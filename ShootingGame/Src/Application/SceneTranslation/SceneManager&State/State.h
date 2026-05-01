@@ -17,9 +17,17 @@ public:
 
 	// 純粋仮想関数(virtualと=0を付ける)だと派生クラス(ゲームの大雑把な構成要素)で呼び出し忘れることがなくなる。
 	// 仮想関数(virtualを付ける)だと派生クラスで呼び出し忘れても動いてしまう。
+	// 初期化用
 	virtual void Init()					= 0;
+	// 更新前に行う更新
+	virtual void PreUpdate()			= 0;
+	// 更新処理
 	virtual void Update()				= 0;
-	virtual void Draw()					= 0;
+	// 更新後に行う更新
+	virtual void PostUpdate()		= 0;
+	// 2D描画
+	virtual void DrawSprite()		= 0;
+	// デバッグ表示
 	virtual void ImGuiUpdate()		= 0;
 
 	// エンティティ(画像)を描画するために必要なもの(構造体)

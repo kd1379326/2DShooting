@@ -43,21 +43,17 @@ void C_MainGameScene::Init()
 		for (auto& Row : CM_Entity) { for (auto& Column : Row) { Column->Init(); } }
 }
 
+// 更新前に行いたい更新処理はここに書く。
+void C_MainGameScene::PreUpdate()
+{
+	// エンティティのインスタンスを生成する関数。
+	PreUpdate_CreateEntity();
+
+}
+
 // 更新内容はここに(描画に使うMatrix(行列)の作成や画像の指定もここ)
 void C_MainGameScene::Update()
 {
-	// リザルトに移る処理。
-	Update_ChangeResultScene();
-
-	// 誰か弾を放ったか確認する。
-	Update_Check_WhoShootBullet();
-
-	// エンティティのインスタンスを生成する関数。
-	Update_CreateEntity();
-
-	// エンティティのインスタンスを削除する関数。
-	Update_DeleteEntity();
-
 	// 各キャラの操作系の更新処理
 	for (auto& Row : CM_Entity) { for (auto& Column : Row) { Column->Action(); } }
 
@@ -67,13 +63,28 @@ void C_MainGameScene::Update()
 	// 各キャラの更新処理
 	for (auto& Row : CM_Entity) { for (auto& Column : Row) { Column->Update(); } }
 
-	// ゲームオーバーに移る処理。
-	Update_ChangeGameOverScene();
+
 
 }
 
+// 更新後に行いたい更新処理はここに書く。
+void C_MainGameScene::PostUpdate()
+{
+	// エンティティのインスタンスを削除する関数。
+	PostUpdate_DeleteEntity();
+
+	// 誰か弾を放ったか確認する。
+	PostUpdate_Check_WhoShootBullet();
+
+	// リザルトに移る処理。
+	PostUpdate_ChangeResultScene();
+
+	// ゲームオーバーに移る処理。
+	PostUpdate_ChangeGameOverScene();
+}
+
 // 描画処理はここに
-void C_MainGameScene::Draw()
+void C_MainGameScene::DrawSprite()
 {
 	// 各キャラの描画処理
 	for (auto& Row : CM_Entity) { for (auto& Column : Row) { Column->Draw(); } }
@@ -154,7 +165,7 @@ void C_MainGameScene::Update_Entity_HitJudgment()
 }
 
 // 誰が弾を撃ったのかチェックする。
-void C_MainGameScene::Update_Check_WhoShootBullet()
+void C_MainGameScene::PostUpdate_Check_WhoShootBullet()
 {
 	// 二重ループで全キャラ確認する。
 	for (auto& Row : CM_Entity)
@@ -170,7 +181,7 @@ void C_MainGameScene::Update_Check_WhoShootBullet()
 }
 
 // 削除許可が出されたエンティティのインスタンスを削除する。
-void C_MainGameScene::Update_DeleteEntity()
+void C_MainGameScene::PostUpdate_DeleteEntity()
 {
 	// 削除していい実体を消す処理
 	for (auto& Row : CM_Entity)
@@ -185,7 +196,7 @@ void C_MainGameScene::Update_DeleteEntity()
 }
 
 // エンティティのインスタンスを生成する関数をここにまとめる。
-void C_MainGameScene::Update_CreateEntity()
+void C_MainGameScene::PreUpdate_CreateEntity()
 {
 	// 敵１のインスタンスを生成。
 	Update_CreateEnemy1();
@@ -220,14 +231,14 @@ void C_MainGameScene::Update_CreateBullet()
 }
 
 // リザルトに移る処理。
-void C_MainGameScene::Update_ChangeResultScene()
+void C_MainGameScene::PostUpdate_ChangeResultScene()
 {
 	// リザルトシーンに移りたいとSceneManager伝える。
 	if (GetAsyncKeyState('Z') & 0x8000) { C_SceneManager::Instance().SetterNextScene(C_SceneManager::E_SceneType::ME_Result); }
 }
 
 // ゲームオーバーに移る処理。
-void C_MainGameScene::Update_ChangeGameOverScene()
+void C_MainGameScene::PostUpdate_ChangeGameOverScene()
 {
 	// メインキャラに削除許可が出たらゲームオーバーシーンに移りたいとSceneManager伝える。
 	if (CM_Entity[ME_MainCharacter][0]->Getter_DeleteFlag()) { C_SceneManager::Instance().SetterNextScene(C_SceneManager::E_SceneType::ME_GameOver); }

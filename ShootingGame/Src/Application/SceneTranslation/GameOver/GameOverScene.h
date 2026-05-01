@@ -10,14 +10,18 @@ public:
 	C_GameOverScene();
 	~C_GameOverScene()  override;
 
-	// 初期化処理
-	void Init()					override;
+	// 初期化用
+	void Init()						override;
+	// 更新前に行う更新
+	void PreUpdate()			override;
 	// 更新処理
-	void Update()			override;
-	// 描画処理
-	void Draw()				override;
+	void Update()				override;
+	// 更新後に行う更新
+	void PostUpdate()			override;
+	// 2D描画
+	void DrawSprite()			override;
 	// デバッグ表示
-	void ImGuiUpdate()	override;
+	void ImGuiUpdate()		override;
 
 
 private:

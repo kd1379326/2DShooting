@@ -31,6 +31,9 @@ public:
 	// 更新処理
 	void Update();
 
+	// 更新後に行う更新処理
+	void PostUpdate();
+
 	// 描画
 	void Draw();
 
