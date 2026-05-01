@@ -1,50 +1,66 @@
 #pragma once
 
-#include "../Title/TitleScene.h"
-#include "../MainGame/MainGameScene.h"
-#include "../Result/ResultScene.h"
-#include "../GameOver/GameOverScene.h"
+// 前方宣言
+class C_State;
 
 class C_SceneManager
 {
 public:
 
-	static C_SceneManager& GetInstance()
+	// シーンの種類
+	enum E_SceneType
+	{
+		ME_Title,
+		ME_MainGame,
+		ME_Result,
+		ME_GameOver
+	};
+
+	static C_SceneManager& Instance()
 	{
 		static C_SceneManager Instance;
 		return Instance;
 	}
 
-	void  ChangeState(std::shared_ptr<C_State>A_NewState)
-	{
-		CurrentState = A_NewState;
-	}
+	// 初期化
+	void Init();
 
-	void Init()
-	{
-		CurrentState->Init();
-	}
+	// 更新前に行う更新処理
+	void PreUpdate();
 
-	void Update()
-	{
-		CurrentState->Update();
-	}
+	// 更新処理
+	void Update();
 
-	void Draw()
-	{
-		CurrentState->Draw();
-	}
+	// 描画
+	void Draw();
 
-	void ImGuiUpdate()
-	{
-		CurrentState->ImGuiUpdate();
-	}
+	// デバッグ表示させる内容
+	void ImGuiUpdate();
+
+	// シーンを移動したい時にここに該当するシーンを入れる。
+	void SetterNextScene(E_SceneType A_NextScene) { M_NextSceneType = A_NextScene; }
+
+	// 現在のシーンを確認できる。
+	E_SceneType GetterCrurrentSceneType()const { return M_CurrentSceneType; }
 
 private:
 
-	C_SceneManager(){}
+	// コンストラクタとデストラクタ。
+	C_SceneManager();
+	~C_SceneManager();
 
-	std::shared_ptr<C_State>CurrentState = nullptr;
+	// 解放処理
+	void Release();
+	
+	// シーン遷移をここで行う。
+	void  ChangeScene(E_SceneType A_NextSceneType);
+
+	// ここにアップキャストしてシーンのクラスを一括で扱う。
+	std::shared_ptr<C_State>M_CurrentScene;
+	// 現在のシーン
+	E_SceneType M_CurrentSceneType = E_SceneType::ME_Title;
+	// 移りたいシーンをここに入れる。
+	E_SceneType M_NextSceneType = M_CurrentSceneType;
 };
 
-#define SCENEMANAGER C_SceneManager::GetInstance() // インスタンスがなくてもSCENEMANAGERで呼び出せる(シングルトンってやつ)
+#define SCENEMANAGER C_SceneManager::Instance() // インスタンスがなくてもSCENEMANAGERで呼び出せる(シングルトンってやつ)

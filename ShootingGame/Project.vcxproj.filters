@@ -323,6 +323,9 @@
     <ClCompile Include="Src\Application\SceneTranslation\MainGame\Entity_MainGame\HitJudgment\HitJudgment.cpp">
       <Filter>Src\Application\SceneTranslation\MainGame\Entity_MainGame\HitJudgment</Filter>
     </ClCompile>
+    <ClCompile Include="Src\Application\SceneTranslation\SceneManager&amp;State\SceneManager.cpp">
+      <Filter>Src\Application\SceneTranslation\SceneManager&amp;State</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Text Include="説明.txt" />

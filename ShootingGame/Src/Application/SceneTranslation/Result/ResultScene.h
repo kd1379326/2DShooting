@@ -7,7 +7,7 @@ class C_ResultScene :public C_State
 public:
 
 	C_ResultScene();
-	~C_ResultScene();
+	~C_ResultScene() override;
 
 	// 基底クラス(Stateクラス)の関数の内容をここで上書きする
 	// 上書きするためには関数の後ろにoverrideと書く
@@ -22,6 +22,9 @@ public:
 	void ImGuiUpdate()override;
 
 private:
+
+	// 解放処理
+	void Release();
 
 	// 「Result」の文字用の構造体変数
 	S_Entity M_Result;

@@ -1,15 +1,20 @@
 #include "ResultScene.h"
 
+// シーン遷移を行うクラス
+#include "../SceneManager&State/SceneManager.h"
+
 // このクラスが生成された時に動かしたいものをここに(コンストラクタ)
 C_ResultScene::C_ResultScene()
 {
-	M_Result.MS_Pos = { 0, 0 };
+	M_Result.MS_Position = { 0, 0 };
 
 }
 
-// このクラスが削除される時に動かしたいものをここに(デストラクタ)
+// このクラスが作成された時に動かしたいものをここに(コンストラクタ)
 C_ResultScene::~C_ResultScene()
 {
+	// 解放処理
+	Release();
 
 }
 
@@ -22,17 +27,23 @@ void C_ResultScene::Init()
 // 更新内容はここに
 void C_ResultScene::Update()
 {
-
+	if (GetAsyncKeyState('X') & 0x8000) { C_SceneManager::Instance().SetterNextScene(C_SceneManager::E_SceneType::ME_Title); }
 }
 
 // 描画内容はここに(行列(Matrix等)はUpdateに含まれる)
 void C_ResultScene::Draw()
 {
-	SHADER.m_spriteShader.DrawString(M_Result.MS_Pos.x, M_Result.MS_Pos.y, "Result", { 1.0f, 1.0f, 1.0f, 1.0f });
+	SHADER.m_spriteShader.DrawString(M_Result.MS_Position.x, M_Result.MS_Position.y, "Result", { 1.0f, 1.0f, 1.0f, 1.0f });
 }
 
 // デバッグ画面に出したい内容はここに
 void C_ResultScene::ImGuiUpdate()
+{
+
+}
+
+// 解放処理
+void C_ResultScene::Release()
 {
 
 }

@@ -7,7 +7,7 @@ class C_TitleScene :public C_State
 public:
 
 	C_TitleScene();
-	~C_TitleScene();
+	~C_TitleScene()  override { /*Release();*/ }
 
 	// 基底クラス(Stateクラス)の関数の内容をここで上書きする
 	// 上書きするためには関数の後ろにoverrideと書く
@@ -22,6 +22,9 @@ public:
 	void ImGuiUpdate()override;
 
 private:
+
+	// 解放処理
+	//void Release();
 
 	// 「Title」の文字用の構造体変数
 	S_Entity M_Title;

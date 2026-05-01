@@ -22,7 +22,7 @@ public:
 	// コンストラクタ
 	C_MainGameScene();
 	// デストラクタ
-	~C_MainGameScene();
+	~C_MainGameScene() override;
 
 	// 初期化
 	void Init()override;
@@ -61,6 +61,12 @@ private:
 
 	// 弾のインスタンスを生成する関数。
 	void Update_CreateBullet();
+
+	// リザルトに移る処理。
+	void Update_ChangeResultScene();
+
+	// ゲームオーバーに移る処理。
+	void Update_ChangeGameOverScene();
 
 	// 「Game」の文字用の構造体変数
 	S_Entity M_Game;

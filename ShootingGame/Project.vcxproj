@@ -208,6 +208,7 @@
     <ClCompile Include="Src\Application\SceneTranslation\MainGame\Entity_MainGame\MainCharacter\MainCharacter.cpp" />
     <ClCompile Include="Src\Application\SceneTranslation\MainGame\MainGameScene.cpp" />
     <ClCompile Include="Src\Application\SceneTranslation\Result\ResultScene.cpp" />
+    <ClCompile Include="Src\Application\SceneTranslation\SceneManager&amp;State\SceneManager.cpp" />
     <ClCompile Include="Src\Application\SceneTranslation\SceneManager&amp;State\State.cpp" />
     <ClCompile Include="Src\Application\SceneTranslation\Title\TitleScene.cpp" />
     <ClCompile Include="Src\System\Audio\KdAudio.cpp" />

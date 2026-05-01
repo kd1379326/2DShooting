@@ -47,8 +47,8 @@ bool C_MainCharacter_KeyControl::ShootingPermission()
 	if (M_NowCoolTime <= 0)
 	{
 		// キーが押されたら弾を撃つ許可を出し、押されていなければ許可しない。
-		if (GetAsyncKeyState(VK_RETURN) & 0x8000)	{ M_NowCoolTime = M_CoolTime; return true; }
-		else																	{ return false; }
+		if (GetAsyncKeyState(VK_SPACE) & 0x8000)	{ M_NowCoolTime = M_CoolTime; return true; }
+		else																{ return false; }
 	}
 	// クールタイムが終わっていなけらば無条件で許可無し。
 	else { return false; }

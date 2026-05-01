@@ -12,20 +12,6 @@ class Scene
 {
 private:
 
-	enum E_SceneType
-	{
-		ME_Title,
-		ME_MainGame,
-		ME_Result,
-		ME_GameOver
-	};
-
-	// ゲームの場面切り替え(シーン遷移)を一つ一つ行う為のキーフラグ
-	bool	M_ChangeSceneFlg;
-
-	// 現在のシーン(ゲーム場面)を監視させる
-	int		M_NowScene;
-
 	// 画面の端の座標
 		// 上
 		static const int M_ScreenSize_Top		= 360;		
@@ -52,9 +38,6 @@ public:
 
 	// GUI処理
 	void ImGuiUpdate();
-
-	// ゲームの場面切り替え(シーン遷移)を行うかここで判定する
-	void JudgeChangeScene();
 
 	// ゲッター
 	// 画面端の座標を返す。

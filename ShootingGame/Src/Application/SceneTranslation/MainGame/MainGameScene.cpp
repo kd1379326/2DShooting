@@ -1,6 +1,9 @@
 #include "MainGameScene.h"
 #include "../../Tool/RandomNumericalValue.h"
 
+// シーン遷移を行うクラス
+#include "../SceneManager&State/SceneManager.h"
+
 // キャラクターのクラスを取り込む
 // メインキャラクター
 #include "Entity_MainGame/MainCharacter/MainCharacter.h"
@@ -15,15 +18,13 @@
 // このクラスが生成された時に処理したい内容はここに
 C_MainGameScene::C_MainGameScene()
 {
-	M_Game.MS_Pos = { 0,0 };
+	M_Game.MS_Position = { 0,0 };
 }
 
 // このクラスが削除された時に処理したい内容はここに
 C_MainGameScene::~C_MainGameScene()
 {
 	
-	// 自動で領域解放処理を行う。
-	Release();
 }
 
 // 初期化したい内容はここに
@@ -45,6 +46,9 @@ void C_MainGameScene::Init()
 // 更新内容はここに(描画に使うMatrix(行列)の作成や画像の指定もここ)
 void C_MainGameScene::Update()
 {
+	// リザルトに移る処理。
+	Update_ChangeResultScene();
+
 	// 誰か弾を放ったか確認する。
 	Update_Check_WhoShootBullet();
 
@@ -62,6 +66,9 @@ void C_MainGameScene::Update()
 
 	// 各キャラの更新処理
 	for (auto& Row : CM_Entity) { for (auto& Column : Row) { Column->Update(); } }
+
+	// ゲームオーバーに移る処理。
+	Update_ChangeGameOverScene();
 
 }
 
@@ -210,6 +217,21 @@ void C_MainGameScene::Update_CreateBullet()
 	}
 	// 必要数弾を生成したら放たれた弾の数を０に戻す。
 	M_ShootBulletNumber = 0;
+}
+
+// リザルトに移る処理。
+void C_MainGameScene::Update_ChangeResultScene()
+{
+	// リザルトシーンに移りたいとSceneManager伝える。
+	if (GetAsyncKeyState('Z') & 0x8000) { C_SceneManager::Instance().SetterNextScene(C_SceneManager::E_SceneType::ME_Result); }
+}
+
+// ゲームオーバーに移る処理。
+void C_MainGameScene::Update_ChangeGameOverScene()
+{
+	// メインキャラに削除許可が出たらゲームオーバーシーンに移りたいとSceneManager伝える。
+	if (CM_Entity[ME_MainCharacter][0]->Getter_DeleteFlag()) { C_SceneManager::Instance().SetterNextScene(C_SceneManager::E_SceneType::ME_GameOver); }
+	
 }
 
 // エンティティの数や種類を表示する関数。
