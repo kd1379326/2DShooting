@@ -70,17 +70,20 @@ void C_MainGameScene::Update()
 // 更新後に行いたい更新処理はここに書く。
 void C_MainGameScene::PostUpdate()
 {
-	// エンティティのインスタンスを削除する関数。
-	PostUpdate_DeleteEntity();
-
-	// 誰か弾を放ったか確認する。
-	PostUpdate_Check_WhoShootBullet();
 
 	// リザルトに移る処理。
 	PostUpdate_ChangeResultScene();
 
 	// ゲームオーバーに移る処理。
 	PostUpdate_ChangeGameOverScene();
+
+	// エンティティのインスタンスを削除する関数。
+	PostUpdate_DeleteEntity();
+
+	// 誰か弾を放ったか確認する。
+	PostUpdate_Check_WhoShootBullet();
+
+
 }
 
 // 描画処理はここに
