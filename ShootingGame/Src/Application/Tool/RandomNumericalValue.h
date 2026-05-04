@@ -9,7 +9,7 @@ public:
 	~C_RandomNumericalValue() {}
 
 	// このクラスのインスタンスを渡す関数
-	static C_RandomNumericalValue &GetInstance()
+	static C_RandomNumericalValue &Instance()
 	{
 		static C_RandomNumericalValue Instance;
 		return Instance;

@@ -55,11 +55,11 @@ private:
 	Scene() {}
 
 public:
-	static Scene& GetInstance()
+	static Scene& Instance()
 	{
 		static Scene instance;
 		return instance;
 	}
 };
 
-#define SCENE Scene::GetInstance()
+#define SCENE Scene::Instance()

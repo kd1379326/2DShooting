@@ -61,10 +61,10 @@ private:
 	void PreUpdate_CreateEntity();
 
 	// 敵１のインスタンスを生成する関数。
-	void Update_CreateEnemy1();
+	void PreUpdate_CreateEnemy1();
 
 	// 弾のインスタンスを生成する関数。
-	void Update_CreateBullet();
+	void PreUpdate_CreateBullet();
 
 	// リザルトに移る処理。
 	void PostUpdate_ChangeResultScene();

@@ -14,22 +14,20 @@
 void Scene::Draw2D()
 {
 	// それぞれのシーン(ゲーム場面)の描画処理
-	SCENEMANAGER.Draw();
+	C_SceneManager::Instance().Draw();
 }
 
 // 更新内容はここに
 void Scene::Update()
 {
-	// スペースキーでゲーム場面の切り替えを行う
-	//JudgeChangeScene();
-
-	SCENEMANAGER.PreUpdate();
+	// メインの更新前に行う更新処理
+	C_SceneManager::Instance().PreUpdate();
 
 	// それぞれのシーン(ゲーム場面)の更新処理
-	SCENEMANAGER.Update();
+	C_SceneManager::Instance().Update();
 
-
-	SCENEMANAGER.PostUpdate();
+	// メインの更新後に行う更新処理
+	C_SceneManager::Instance().PostUpdate();
 
 }
 
@@ -39,7 +37,7 @@ void Scene::Init()
 	// 取り出す数値をシャッフルする。
 	srand(timeGetTime());
 
-	SCENEMANAGER.Init();
+	C_SceneManager::Instance().Init();
 }
 
 // 最後に解放したいものはここに
@@ -60,7 +58,7 @@ void Scene::ImGuiUpdate()
 	if (ImGui::Begin("Debug Window"))
 	{
 		ImGui::Text("FPS : %d", APP.m_fps);
-		SCENEMANAGER.ImGuiUpdate();
+		C_SceneManager::Instance().ImGuiUpdate();
 	}
 	ImGui::End();
 }

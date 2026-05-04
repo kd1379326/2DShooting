@@ -28,15 +28,19 @@ void C_Enemy1_MainGame::Init(Math::Vector2 A_Position)
 
 	// 座標(1280×720の範囲で出現させる)
 	// 画面サイズをSceneクラスから引っ張ってきて、半径分をも含めた値をランダム値を返す関数の引数に置く。
-	// 画面内に全身が納まる位置で出現させる。
-		M_Entity.MS_Position = { 200,0 };/*(float)C_RandomNumericalValue::GetInstance().RandomNumericalValue((Scene::GetInstance().Getter_ScreenSize_Right() - M_Entity.MS_Radius.x), (Scene::GetInstance().Getter_ScreenSize_Left()       + M_Entity.MS_Radius.x));
-		M_Entity.MS_Position.y = (float)C_RandomNumericalValue::GetInstance().RandomNumericalValue((Scene::GetInstance().Getter_ScreenSize_Top()    - M_Entity.MS_Radius.y), (Scene::GetInstance().Getter_ScreenSize_Bottom() + M_Entity.MS_Radius.y));*/
+	// 画面右端の見えない位置で上下は画面内に納まる座標をランダムに取り出す。
+		M_Entity.MS_Position.x = ((float)Scene::Instance().Getter_ScreenSize_Right() + M_Entity.MS_Radius.x);
+		M_Entity.MS_Position.y = (float)C_RandomNumericalValue::Instance().RandomNumericalValue((Scene::Instance().Getter_ScreenSize_Top()    - M_Entity.MS_Radius.y), (Scene::Instance().Getter_ScreenSize_Bottom() + M_Entity.MS_Radius.y));
 	// 移動量
 		M_Entity.MS_Move = { 0, 0 };
+	// 移動スピード
+		M_Entity.MS_MoveSpeed = { 10, 10 };
 	// 画像の切り取り範囲
 		M_Entity.MS_Rectangle = { 0, 0, 64, 64 };
 	// 画像の通常時の色(設定なし)
 		M_Entity.MS_Color_Normal = { 1, 1, 1, 1 };
+	// 出現後、前に出る座標。
+		M_StopPosition = C_RandomNumericalValue::Instance().RandomNumericalValue((Scene::Instance().Getter_ScreenSize_Right() + M_Entity.MS_Radius.x), 200);
 	// 生存している状態にする
 		M_Entity.MSF_Alive = true;
 	// まだ処理が残っているという情報を持たせる
@@ -52,6 +56,16 @@ void C_Enemy1_MainGame::Action()
 // 更新内容はここに(描画に使うMatrix(行列)の作成や画像の指定もここ)
 void C_Enemy1_MainGame::Update()
 {
+	// 直線移動
+	M_Entity.MS_Move = M_Entity.MS_MoveSpeed;
+	M_Entity.MS_Position.x -= M_Entity.MS_Move.x;
+
+	// 前に出てくる座標
+	if (M_Entity.MS_Position.x < M_StopPosition) { M_Entity.MS_Position.x = M_StopPosition; }
+
+	// 左端を超えたらもう画面内には戻らないので削除許可を出す。
+	if (M_Entity.MS_Position.x < (Scene::Instance().Getter_ScreenSize_Left() - M_Entity.MS_Radius.x)) { M_Entity.MSF_Delete = true; }
+
 	// やられた場合、削除フラグを立てる。
 	if (!M_Entity.MSF_Alive) { M_Entity.MSF_Delete = true; }
 
@@ -67,9 +81,9 @@ void C_Enemy1_MainGame::Update()
 void C_Enemy1_MainGame::Draw()
 {
 	// 描画情報を伝える
-	SHADER.m_spriteShader.SetMatrix(M_Entity.MS_Matrix);
+	KdShaderManager::GetInstance().m_spriteShader.SetMatrix(M_Entity.MS_Matrix);
 	// 描画処理
-	SHADER.m_spriteShader.DrawColorTex(&M_Entity.MS_Texture, M_Entity.MS_Rectangle, M_Entity.MS_Color_Normal);
+	KdShaderManager::GetInstance().m_spriteShader.DrawColorTex(&M_Entity.MS_Texture, M_Entity.MS_Rectangle, M_Entity.MS_Color_Normal);
 }
 
 // デバッグ画面に表示させたいものはここに
