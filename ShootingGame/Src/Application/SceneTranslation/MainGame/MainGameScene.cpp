@@ -8,7 +8,7 @@
 // メインキャラクター
 #include "Entity_MainGame/MainCharacter/MainCharacter.h"
 // 弾
-#include "Entity_MainGame/Bullet/Bullet.h"
+#include "Entity_MainGame/Bullet/MainCharacter/Bullet_MainCharacter.h"
 // 敵１
 #include "Entity_MainGame/Enemy/Enemy1/Enemy1.h"
 
@@ -19,6 +19,8 @@
 C_MainGameScene::C_MainGameScene()
 {
 	M_Game.MS_Position = { 0,0 };
+	// シーン遷移させないようフラグを立てる。
+	MF_Stop_ContinuitySceneTransition = true;
 }
 
 // このクラスが削除された時に処理したい内容はここに
@@ -140,10 +142,15 @@ void C_MainGameScene::Update_Entity_HitJudgment()
 		{
 			// もし既にやられた判定だったら当たり判定の確認をさせない。
 			if (!Column1->Getter_AliveFlag() || !Column2->Getter_AliveFlag()) continue;
+			// 当たり判定を行う関数に座標や半径を渡す。
 			if (C_HitJudgment::Instance().HitJudgment(Column1->Getter_MyPosition(), Column1->Getter_Radius(), Column2->Getter_MyPosition(), Column2->Getter_Radius()) == true)
 			{
+				// やられた判定にする
 				Column1->Setter_AliveFlag(false);
 				Column2->Setter_AliveFlag(false);
+				// 倒したので残りの敵１の数を減らしていく
+				M_Enemy1_RemainingNumber--;
+
 			}
 		}
 	}
@@ -210,8 +217,10 @@ void C_MainGameScene::PreUpdate_CreateEntity()
 // 敵１のインスタンスを生成する関数。
 void C_MainGameScene::PreUpdate_CreateEnemy1()
 {
-	// 毎秒60回値が出力され、1%の確率で敵を出現させる。
-	if (C_RandomNumericalValue::Instance().RandomNumericalValue(10) == 1)
+	// 条件１：ランダム値が出現可能な数値の場合
+	// 条件２：敵の数が上限に達していない(.size()だと添え字基準で現在出現している数が1つ少なくカウントされる)
+	// 条件３：残りの敵１の数を上回る数を出現させていない
+	if ((C_RandomNumericalValue::Instance().RandomNumericalValue(10) == 1) && ((CM_Entity[C_MainGameScene::E_EntityNumber::ME_Enemy1].size() + 1) <= M_Enemy1_MaxNumber) && ((CM_Entity[C_MainGameScene::E_EntityNumber::ME_Enemy1].size() + 1) <= M_Enemy1_RemainingNumber))
 	{
 		// 配列の列を追加し、敵１クラスの実体を生成→初期化する。
 		CM_Entity[C_MainGameScene::E_EntityNumber::ME_Enemy1].push_back(std::make_unique<C_Enemy1_MainGame>());
@@ -227,7 +236,7 @@ void C_MainGameScene::PreUpdate_CreateBullet()
 	for (int i = 0; i < M_ShootBulletNumber; i++)
 	{
 		// 弾の実体を作成し、初期化する。
-		CM_Entity[C_MainGameScene::E_EntityNumber::ME_Bullet].push_back(std::make_unique<C_Bullet_MainGame>());
+		CM_Entity[C_MainGameScene::E_EntityNumber::ME_Bullet].push_back(std::make_unique<C_Bullet_MainCharacter>());
 		CM_Entity[C_MainGameScene::E_EntityNumber::ME_Bullet].back()->Init(CM_Entity[ME_MainCharacter][0]->Getter_MyPosition());
 	}
 	// 必要数弾を生成したら放たれた弾の数を０に戻す。
@@ -238,6 +247,8 @@ void C_MainGameScene::PreUpdate_CreateBullet()
 void C_MainGameScene::PostUpdate_ChangeResultScene()
 {
 	// リザルトシーンに移りたいとSceneManager伝える。
+	// 残りの敵１がゼロになったらリザルトに移る。
+	if (M_Enemy1_RemainingNumber == 0) { C_SceneManager::Instance().SetterNextScene(C_SceneManager::E_SceneType::ME_Result); }
 	if (GetAsyncKeyState('Z') & 0x8000) { C_SceneManager::Instance().SetterNextScene(C_SceneManager::E_SceneType::ME_Result); }
 }
 

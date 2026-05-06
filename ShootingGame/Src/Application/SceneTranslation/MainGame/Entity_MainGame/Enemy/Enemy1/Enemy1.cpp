@@ -40,7 +40,7 @@ void C_Enemy1_MainGame::Init(Math::Vector2 A_Position)
 	// 画像の通常時の色(設定なし)
 		M_Entity.MS_Color_Normal = { 1, 1, 1, 1 };
 	// 出現後、前に出る座標。
-		M_StopPosition = C_RandomNumericalValue::Instance().RandomNumericalValue((Scene::Instance().Getter_ScreenSize_Right() + M_Entity.MS_Radius.x), 200);
+		M_StopPosition = C_RandomNumericalValue::Instance().RandomNumericalValue((Scene::Instance().Getter_ScreenSize_Right() - M_Entity.MS_Radius.x), 200);
 	// 生存している状態にする
 		M_Entity.MSF_Alive = true;
 	// まだ処理が残っているという情報を持たせる

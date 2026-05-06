@@ -7,6 +7,8 @@
 C_TitleScene::C_TitleScene()
 {
 	M_Title.MS_Position = { 0, 0 };
+	// シーン遷移させないようフラグを立てる。
+	MF_Stop_ContinuitySceneTransition = true;
 	
 }
 
@@ -32,7 +34,11 @@ void C_TitleScene::PreUpdate()
 // 更新内容はここに
 void C_TitleScene::Update()
 {
-	if (GetAsyncKeyState(VK_RETURN) & 0x8000) { C_SceneManager::Instance().SetterNextScene(C_SceneManager::E_SceneType::ME_MainGame); }
+	// 遷移後、ENTER押し続けた判定でこのシーンを飛ばされないようにキーを離すまでシーン遷移許可を出さない。
+	if (!(GetAsyncKeyState(VK_RETURN) & 0x8000)) { MF_Stop_ContinuitySceneTransition = false; }
+	// 条件１：ENTERキーが押された
+	// 条件２：シーン遷移のストッパーが外れている
+	if ((GetAsyncKeyState(VK_RETURN) & 0x8000) && (!MF_Stop_ContinuitySceneTransition)) { C_SceneManager::Instance().SetterNextScene(C_SceneManager::E_SceneType::ME_MainGame); }
 }
 
 // 更新後に行いたい更新処理はここに書く。

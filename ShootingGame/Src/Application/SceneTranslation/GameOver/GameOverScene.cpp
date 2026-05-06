@@ -6,7 +6,8 @@
 // このクラスが生成された時に動かしたいものをここに(コンストラクタ)
 C_GameOverScene::C_GameOverScene()
 {
-
+	// シーン遷移させないようフラグを立てる。
+	MF_Stop_ContinuitySceneTransition = true;
 }
 
 // このクラスが削除された時に動かしたいものをここに(コンストラクタ)
@@ -30,7 +31,11 @@ void C_GameOverScene::PreUpdate()
 // 更新処理はここに書く。
 void C_GameOverScene::Update()
 {
-	if (GetAsyncKeyState('C') & 0x8000) { C_SceneManager::Instance().SetterNextScene(C_SceneManager::E_SceneType::ME_Title); }
+	// 遷移後、ENTER押し続けた判定でこのシーンを飛ばされないようにキーを離すまでシーン遷移許可を出さない。
+	if (!(GetAsyncKeyState(VK_RETURN) & 0x8000)) { MF_Stop_ContinuitySceneTransition = false; }
+	// 条件１：ENTERキーが押された
+	// 条件２：シーン遷移のストッパーが外れている
+	if ((GetAsyncKeyState(VK_RETURN) & 0x8000) && (!MF_Stop_ContinuitySceneTransition)) { C_SceneManager::Instance().SetterNextScene(C_SceneManager::E_SceneType::ME_Title); }
 }
 
 // 更新後に行いたい更新処理はここに書く。

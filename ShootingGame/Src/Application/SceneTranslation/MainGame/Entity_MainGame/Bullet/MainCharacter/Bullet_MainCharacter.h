@@ -1,15 +1,15 @@
 #pragma once
 
 // 基底クラス
-#include "../Base/EntityBase.h"
+#include "../../Base/EntityBase.h"
 
-class C_Bullet_MainGame : public C_EntityBase_MainGame
+class C_Bullet_MainCharacter : public C_EntityBase_MainGame
 {
 public:
 
 	// コンストラクタとデストラクタ
-	C_Bullet_MainGame();
-	~C_Bullet_MainGame()					override;
+	C_Bullet_MainCharacter();
+	~C_Bullet_MainCharacter()					override;
 
 	// 初期化内容
 	void Init(Math::Vector2 A_Position)	override;

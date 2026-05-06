@@ -91,6 +91,12 @@
     <Filter Include="Src\Application\SceneTranslation\MainGame\Entity_MainGame\HitJudgment">
       <UniqueIdentifier>{7c1acf46-b9a9-4485-a468-f35af38da157}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Src\Application\SceneTranslation\MainGame\Entity_MainGame\Bullet\MainCharacter">
+      <UniqueIdentifier>{a3b9d467-f7c4-4692-9ecd-8caf138f74fb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Src\Application\SceneTranslation\MainGame\Entity_MainGame\Bullet\Enemy1">
+      <UniqueIdentifier>{6eb1dfc1-6c79-4175-aba6-c7e706986b12}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Pch.h">
@@ -219,11 +225,14 @@
     <ClInclude Include="Src\Application\Tool\RandomNumericalValue.h">
       <Filter>Src\Application\Tool</Filter>
     </ClInclude>
-    <ClInclude Include="Src\Application\SceneTranslation\MainGame\Entity_MainGame\Bullet\Bullet.h">
-      <Filter>Src\Application\SceneTranslation\MainGame\Entity_MainGame\Bullet</Filter>
-    </ClInclude>
     <ClInclude Include="Src\Application\SceneTranslation\MainGame\Entity_MainGame\HitJudgment\HitJudgment.h">
       <Filter>Src\Application\SceneTranslation\MainGame\Entity_MainGame\HitJudgment</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Application\SceneTranslation\MainGame\Entity_MainGame\Bullet\MainCharacter\Bullet_MainCharacter.h">
+      <Filter>Src\Application\SceneTranslation\MainGame\Entity_MainGame\Bullet\MainCharacter</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Application\SceneTranslation\MainGame\Entity_MainGame\Bullet\Enemy1\Bullet_Enemy1.h">
+      <Filter>Src\Application\SceneTranslation\MainGame\Entity_MainGame\Bullet\Enemy1</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -317,14 +326,17 @@
     <ClCompile Include="Src\Application\SceneTranslation\MainGame\Entity_MainGame\Enemy\Enemy1\Enemy1.cpp">
       <Filter>Src\Application\SceneTranslation\MainGame\Entity_MainGame\Enemy\Enemy1</Filter>
     </ClCompile>
-    <ClCompile Include="Src\Application\SceneTranslation\MainGame\Entity_MainGame\Bullet\Bullet.cpp">
-      <Filter>Src\Application\SceneTranslation\MainGame\Entity_MainGame\Bullet</Filter>
-    </ClCompile>
     <ClCompile Include="Src\Application\SceneTranslation\MainGame\Entity_MainGame\HitJudgment\HitJudgment.cpp">
       <Filter>Src\Application\SceneTranslation\MainGame\Entity_MainGame\HitJudgment</Filter>
     </ClCompile>
     <ClCompile Include="Src\Application\SceneTranslation\SceneManager&amp;State\SceneManager.cpp">
       <Filter>Src\Application\SceneTranslation\SceneManager&amp;State</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Application\SceneTranslation\MainGame\Entity_MainGame\Bullet\MainCharacter\Bullet_MainCharacter.cpp">
+      <Filter>Src\Application\SceneTranslation\MainGame\Entity_MainGame\Bullet\MainCharacter</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Application\SceneTranslation\MainGame\Entity_MainGame\Bullet\Enemy1\Bullet_Enemy1.cpp">
+      <Filter>Src\Application\SceneTranslation\MainGame\Entity_MainGame\Bullet\Enemy1</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

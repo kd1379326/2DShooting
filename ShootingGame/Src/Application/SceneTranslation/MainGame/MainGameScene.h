@@ -81,6 +81,12 @@ private:
 	// •ú‚½‚ê‚½’e‚Ì”‚Ìˆê•Û‘¶êŠB
 	int M_ShootBulletNumber = 0;
 
+	// “G‚P‚Ì”‚ÌãŒÀ
+	const int M_Enemy1_MaxNumber = 10;
+
+	// c‚è‚Ì“G‚P‚Ì”
+	int M_Enemy1_RemainingNumber = 30;
+
 	// ‚»‚ê‚¼‚ê‚ÌƒLƒƒƒ‰‚ÌŠi”[êŠ(s)
 	enum E_EntityNumber
 	{

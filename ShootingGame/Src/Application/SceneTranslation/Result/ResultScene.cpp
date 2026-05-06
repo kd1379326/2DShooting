@@ -7,6 +7,8 @@
 C_ResultScene::C_ResultScene()
 {
 	M_Result.MS_Position = { 0, 0 };
+	// シーン遷移させないようフラグを立てる。
+	MF_Stop_ContinuitySceneTransition = true;
 
 }
 
@@ -33,7 +35,11 @@ void C_ResultScene::PreUpdate()
 // 更新内容はここに
 void C_ResultScene::Update()
 {
-	if (GetAsyncKeyState('X') & 0x8000) { C_SceneManager::Instance().SetterNextScene(C_SceneManager::E_SceneType::ME_Title); }
+	// 遷移後、ENTER押し続けた判定でこのシーンを飛ばされないようにキーを離すまでシーン遷移許可を出さない。
+	if (!(GetAsyncKeyState(VK_RETURN) & 0x8000)) { MF_Stop_ContinuitySceneTransition = false; }
+	// 条件１：ENTERキーが押された
+	// 条件２：シーン遷移のストッパーが外れている
+	if ((GetAsyncKeyState(VK_RETURN) & 0x8000) && (!MF_Stop_ContinuitySceneTransition)) { C_SceneManager::Instance().SetterNextScene(C_SceneManager::E_SceneType::ME_Title); }
 }
 
 // 更新後に行いたい更新処理はここに書く。

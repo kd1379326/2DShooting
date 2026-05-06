@@ -1,26 +1,26 @@
-#include "Bullet.h"
+#include "Bullet_Enemy1.h"
 
 // Sceneクラスのヘッダー
-#include "../../../../Scene.h"
+#include "../../../../../Scene.h"
 
 // ランダム値をくれるヘッダー
-#include "../../../../Tool/RandomNumericalValue.h"
+#include "../../../../../Tool/RandomNumericalValue.h"
 
 // このクラスが生成された時に動かしたいものをここに(コンストラクタ)
-C_Bullet_MainGame::C_Bullet_MainGame()
+C_Bullet_Enemy1::C_Bullet_Enemy1()
 {
 	
 }
 
 // このクラスが削除される時に動かしたいものをここに(デストラクタ)
-C_Bullet_MainGame::~C_Bullet_MainGame()
+C_Bullet_Enemy1::~C_Bullet_Enemy1()
 {
 	// 自動で領域解放処理を行う。
 	Release();
 }
 
 // 初期化内容はここに
-void C_Bullet_MainGame::Init(Math::Vector2 A_Position)
+void C_Bullet_Enemy1::Init(Math::Vector2 A_Position)
 {
 	// 画像のパス(在処)を伝える
 	M_Entity.MS_Texture.Load("Texture/Star/StarLight.png");
@@ -44,7 +44,7 @@ void C_Bullet_MainGame::Init(Math::Vector2 A_Position)
 }
 
 // 操作関連の更新内容はここに
-void C_Bullet_MainGame::Action()
+void C_Bullet_Enemy1::Action()
 {
 	// 上に飛ばす処理
 	//移動量に移動速度を入れ、移動量を基に座標を更新させる。
@@ -59,7 +59,7 @@ void C_Bullet_MainGame::Action()
 }
 
 // 更新内容はここに(描画に使うMatrix(行列)の作成や画像の指定もここ)
-void C_Bullet_MainGame::Update()
+void C_Bullet_Enemy1::Update()
 {
 	// やられた場合、削除フラグを立てる。
 	if (!M_Entity.MSF_Alive) { M_Entity.MSF_Delete = true; }
@@ -73,7 +73,7 @@ void C_Bullet_MainGame::Update()
 }
 
 // 描画処理はここに
-void C_Bullet_MainGame::Draw()
+void C_Bullet_Enemy1::Draw()
 {
 	// 描画情報を伝える
 	SHADER.m_spriteShader.SetMatrix(M_Entity.MS_Matrix);
@@ -82,13 +82,13 @@ void C_Bullet_MainGame::Draw()
 }
 
 // デバッグ画面に表示させたいものはここに
-void C_Bullet_MainGame::ImGuiUpdate()
+void C_Bullet_Enemy1::ImGuiUpdate()
 {
 
 }
 
 // このクラスの実体が削除された時に行う領域解放処理。
-void C_Bullet_MainGame::Release()
+void C_Bullet_Enemy1::Release()
 {
 	// 画像を入れている領域を解放する。
 	M_Entity.MS_Texture.Release();

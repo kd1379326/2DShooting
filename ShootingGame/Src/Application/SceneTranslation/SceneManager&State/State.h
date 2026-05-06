@@ -49,4 +49,7 @@ public:
 		KdTexture*		MSP_Texture;
 	};
 
+	// ENTER押し続けて連続でシーン遷移しないようにフラグで管理する。
+	bool MF_Stop_ContinuitySceneTransition;
+
 };
