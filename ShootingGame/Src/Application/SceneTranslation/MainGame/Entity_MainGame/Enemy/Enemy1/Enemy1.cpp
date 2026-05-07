@@ -6,6 +6,10 @@
 // ランダム値をくれるヘッダー
 #include "../../../../../Tool/RandomNumericalValue.h"
 
+// 動作処理を行うクラス
+#include "Control/Enemy1_Move.h"
+
+
 // このクラスが生成された時に動かしたいものをここに(コンストラクタ)
 C_Enemy1_MainGame::C_Enemy1_MainGame()
 {
@@ -34,37 +38,34 @@ void C_Enemy1_MainGame::Init(Math::Vector2 A_Position)
 	// 移動量
 		M_Entity.MS_Move = { 0, 0 };
 	// 移動スピード
-		M_Entity.MS_MoveSpeed = { 10, 10 };
+		M_Entity.MS_MoveSpeed = { 7, 7 };
 	// 画像の切り取り範囲
 		M_Entity.MS_Rectangle = { 0, 0, 64, 64 };
 	// 画像の通常時の色(設定なし)
 		M_Entity.MS_Color_Normal = { 1, 1, 1, 1 };
-	// 出現後、前に出る座標。
-		M_StopPosition = C_RandomNumericalValue::Instance().RandomNumericalValue((Scene::Instance().Getter_ScreenSize_Right() - M_Entity.MS_Radius.x), 200);
+
 	// 生存している状態にする
 		M_Entity.MSF_Alive = true;
 	// まだ処理が残っているという情報を持たせる
 		M_Entity.MSF_Delete = false;
+
+	// 操作処理を行うクラスのインスタンスを作成
+		if (!CMP_Control) { CMP_Control = std::make_shared<C_Enemy1_Move>(); }
+	// C_Enemy1_Moveの初期化
+		CMP_Control->Init(M_Entity);
 }
 
 // 操作関連の更新内容はここに
 void C_Enemy1_MainGame::Action()
 {
-
+	CMP_Control->Action(M_Entity);
 }
 
 // 更新内容はここに(描画に使うMatrix(行列)の作成や画像の指定もここ)
 void C_Enemy1_MainGame::Update()
 {
-	// 直線移動
-	M_Entity.MS_Move = M_Entity.MS_MoveSpeed;
-	M_Entity.MS_Position.x -= M_Entity.MS_Move.x;
-
-	// 前に出てくる座標
-	if (M_Entity.MS_Position.x < M_StopPosition) { M_Entity.MS_Position.x = M_StopPosition; }
-
 	// 左端を超えたらもう画面内には戻らないので削除許可を出す。
-	if (M_Entity.MS_Position.x < (Scene::Instance().Getter_ScreenSize_Left() - M_Entity.MS_Radius.x)) { M_Entity.MSF_Delete = true; }
+	//if (M_Entity.MS_Position.x < (Scene::Instance().Getter_ScreenSize_Left() - M_Entity.MS_Radius.x)) { M_Entity.MSF_Delete = true; }
 
 	// やられた場合、削除フラグを立てる。
 	if (!M_Entity.MSF_Alive) { M_Entity.MSF_Delete = true; }
@@ -95,7 +96,8 @@ void C_Enemy1_MainGame::ImGuiUpdate()
 // 弾を撃つかどうか判断する
 bool C_Enemy1_MainGame::ShootBullet()
 {
-	return false;
+	// 射撃用のクールタイムが無い且つエンターキーが押されたらtrueが返される。
+	return CMP_Control->ShootingPermission();
 }
 
 // このクラスの実体が削除された時に行う領域解放処理。
@@ -104,3 +106,6 @@ void C_Enemy1_MainGame::Release()
 	// 画像を入れている領域を解放する。
 	M_Entity.MS_Texture.Release();
 }
+
+// 旋回フラグ
+bool C_Enemy1_MainGame::Getter_TurningFlag() { return CMP_Control->Getter_TurningFlag(); }

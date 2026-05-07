@@ -32,14 +32,10 @@ void C_EntityBase_MainGame::ImGuiUpdate()
 
 // Updateに導入する関数
 // 当たり判定のチェック(一対一用)
-bool C_EntityBase_MainGame::HitEntity(Math::Vector2 A_Pos1, Math::Vector2 A_Pos2, Math::Vector2 A_Radius1, Math::Vector2 A_Radius2)
+bool C_EntityBase_MainGame::HitEntity(Math::Vector2 A_Position1, Math::Vector2 A_Position2, Math::Vector2 A_Radius1, Math::Vector2 A_Radius2)
 {
-	// 三角関数を使って接触しているか調べる。
-	// 上下左右の差を求める。
-	float X = A_Pos1.x - A_Pos2.x;
-	float Y = A_Pos1.y - A_Pos2.y;
-	// 求めた差を使ってそれぞれのキャラが直線状でどのくらい離れているか求める。
-	float Distance = sqrt(X * X + Y * Y);
+	// それぞれのキャラが直線状でどのくらい離れているか求める。(.Length()で離れている距離を算出できる)
+	float Distance = (A_Position1 - A_Position2).Length();
 
 	// 求めた直線状の距離とそれぞれの半径を足した値を比較し、数値から接触しているかどうか調べる。
 	// 接触しているようならtrue、接触していないのならfalseを返す。

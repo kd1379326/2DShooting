@@ -10,10 +10,6 @@
 // ヘッダーファイルには基本的にヘッダーは取り込まない。
 // Entityクラス(キャラの親クラス)
 class C_EntityBase_MainGame;
-// メインキャラクター
-class C_MainCharacter_MainGame;
-// 敵１
-class C_Enemy1_MainGame;
 
 class C_MainGameScene :public C_State
 {
@@ -51,8 +47,17 @@ private:
 	// 当たり判定の処理。
 	void Update_Entity_HitJudgment();
 
-	// 誰が弾を撃ったのかチェックする。
-	void PostUpdate_Check_WhoShootBullet();
+	// メインキャラと敵１の接触時の処理
+	void Update_Entity_HitJudgment_MainCharacter＆Enemy1();
+
+	// メインキャラと敵１の弾の接触時の処理
+	void Update_Entity_HitJudgment_MainCharacter＆Bullet_Enemy1();
+
+	// 敵１とメインキャラの弾の接触時の処理
+	void Update_Entity_HitJudgment_Enemy1＆Bullet_MainCharacter();
+
+	// メインキャラの弾と敵１の弾の接触時の処理
+	void Update_Entity_HitJudgment_Bullet_MainCharacter＆Bullet_Enemy1();
 
 	// 削除許可が出されたエンティティのインスタンスを削除する。
 	void PostUpdate_DeleteEntity();
@@ -82,7 +87,7 @@ private:
 	int M_ShootBulletNumber = 0;
 
 	// 敵１の数の上限
-	const int M_Enemy1_MaxNumber = 10;
+	const int M_Enemy1_MaxNumber = 7;
 
 	// 残りの敵１の数
 	int M_Enemy1_RemainingNumber = 30;
@@ -92,7 +97,8 @@ private:
 	{
 		ME_MainCharacter,
 		ME_Enemy1,
-		ME_Bullet,
+		ME_Bullet_MainCharacter,
+		ME_Bullet_Enemy1,
 		ME_Entity_KindNumber,
 	};
 

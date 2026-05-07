@@ -97,6 +97,9 @@
     <Filter Include="Src\Application\SceneTranslation\MainGame\Entity_MainGame\Bullet\Enemy1">
       <UniqueIdentifier>{6eb1dfc1-6c79-4175-aba6-c7e706986b12}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Src\Application\SceneTranslation\MainGame\Entity_MainGame\Enemy\Enemy1\Control">
+      <UniqueIdentifier>{4180efb7-28fd-4d9c-8a3c-0a57f1026c06}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Pch.h">
@@ -234,6 +237,9 @@
     <ClInclude Include="Src\Application\SceneTranslation\MainGame\Entity_MainGame\Bullet\Enemy1\Bullet_Enemy1.h">
       <Filter>Src\Application\SceneTranslation\MainGame\Entity_MainGame\Bullet\Enemy1</Filter>
     </ClInclude>
+    <ClInclude Include="Src\Application\SceneTranslation\MainGame\Entity_MainGame\Enemy\Enemy1\Control\Enemy1_Move.h">
+      <Filter>Src\Application\SceneTranslation\MainGame\Entity_MainGame\Enemy\Enemy1\Control</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Pch.cpp">
@@ -337,6 +343,9 @@
     </ClCompile>
     <ClCompile Include="Src\Application\SceneTranslation\MainGame\Entity_MainGame\Bullet\Enemy1\Bullet_Enemy1.cpp">
       <Filter>Src\Application\SceneTranslation\MainGame\Entity_MainGame\Bullet\Enemy1</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Application\SceneTranslation\MainGame\Entity_MainGame\Enemy\Enemy1\Control\Enemy1_Move.cpp">
+      <Filter>Src\Application\SceneTranslation\MainGame\Entity_MainGame\Enemy\Enemy1\Control</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

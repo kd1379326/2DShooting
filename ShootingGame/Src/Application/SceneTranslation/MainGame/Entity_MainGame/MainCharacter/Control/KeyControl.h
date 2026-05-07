@@ -25,8 +25,8 @@ public:
 private:
 
 	// 現在のクールタイムが入っている。
-	int M_NowCoolTime = 0;
+	float M_NowCoolTime = 0;
 	// クールタイムの長さが入っている。
-	float M_CoolTime = 0.05f * 60;
+	float M_CoolTime = 0.2f * 60;
 
 };

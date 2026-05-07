@@ -3,6 +3,10 @@
 // 基底クラスを取り込む
 #include "../../Base/EntityBase.h"
 
+// 動作処理を行うクラス
+class C_Enemy1_Move;
+
+
 class C_Enemy1_MainGame :public C_EntityBase_MainGame
 {
 public:
@@ -25,13 +29,16 @@ public:
 	// 弾を撃つかどうか判断する
 		bool ShootBullet()							override;
 
+	// ゲッター
+	// 旋回フラグ
+		bool Getter_TurningFlag();
+
 
 private:
 
 	// 領域解放処理はこの実体が削除された時にデストラクタで自動で呼び出されるためprivateに置く。
 	void Release();
 
-	// 出現後、前に出てきて止まる位置。
-	int M_StopPosition;
+	std::shared_ptr<C_Enemy1_Move> CMP_Control = nullptr;
 
 };

@@ -13,26 +13,26 @@ public:
 	// 初期化
 	virtual void Init(Math::Vector2 A_Position = {0, 0})	= 0;
 	// 操作の更新
-	virtual void Action()													= 0;
+	virtual void Action()									= 0;
 	// 更新内容
-	virtual void Update()													= 0;
+	virtual void Update()									= 0;
 	// 描画内容
-	virtual void Draw()														= 0;
+	virtual void Draw()										= 0;
 	// デバッグに表示するもの
-	virtual void ImGuiUpdate()											= 0;
+	virtual void ImGuiUpdate()								= 0;
 
 	// 弾を撃つかどうか判断する
-	virtual bool ShootBullet()											= 0;
+	virtual bool ShootBullet()								= 0;
 
 	// 値を知らせるゲッター
 	// 自身の現在地(座標)
 	Math::Vector2	Getter_MyPosition()	{ return M_Entity.MS_Position; }
 	// 自身の半径
-	Math::Vector2	Getter_Radius()			{ return M_Entity.MS_Radius; }
+	Math::Vector2	Getter_Radius()		{ return M_Entity.MS_Radius; }
 	// 生存しているかどうか
-	bool					Getter_AliveFlag()		{ return M_Entity.MSF_Alive; }
+	bool			Getter_AliveFlag()	{ return M_Entity.MSF_Alive; }
 	// 実体を消していいかどうか(良いtrue：ダメfalse)
-	bool					Getter_DeleteFlag()	{ return M_Entity.MSF_Delete; }
+	bool			Getter_DeleteFlag()	{ return M_Entity.MSF_Delete; }
 
 	// 値を入れるセッター
 	// やられた時にfalseをここに入れる。
