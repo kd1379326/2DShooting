@@ -42,3 +42,25 @@ bool C_EntityBase_MainGame::HitEntity(Math::Vector2 A_Position1, Math::Vector2 A
 	if (Distance < A_Radius1.x + A_Radius2.x) { return true; }
 	else { return false; }
 }
+
+// ダメージ処理(体力を減らす)
+void C_EntityBase_MainGame::Damage(int A_DamageNumber)
+{
+	// 体力をダメージ分引いた値に置き換える。
+	M_Entity.MS_HP -= A_DamageNumber;
+	// 体力が0未満にならないよう固定する。
+	if (M_Entity.MS_HP < 0) { M_Entity.MS_HP = 0; }
+}
+
+// ダメージを受けた時に後退する処理
+void C_EntityBase_MainGame::Knockback(float A_BackDirection, float A_KnockbackPower)
+{
+	if (!M_Entity.MSF_Knockback) return;
+	// どの方向に動くか決める。
+	M_Entity.MS_Move.x = A_BackDirection;
+	// どのくらい飛ばされるか決める。
+	M_Entity.MS_MoveSpeed.x = A_KnockbackPower;
+	M_Entity.MS_Position.x += M_Entity.MS_Move.x * M_Entity.MS_MoveSpeed.x;
+	A_KnockbackPower--;
+	if (A_KnockbackPower <= 0) { M_Entity.MSF_Knockback = false; }
+}

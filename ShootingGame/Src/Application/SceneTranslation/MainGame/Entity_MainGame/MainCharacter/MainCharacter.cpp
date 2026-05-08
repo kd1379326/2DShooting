@@ -22,7 +22,7 @@ void C_MainCharacter_MainGame::Init(Math::Vector2 A_Position)
 	// 座標
 		M_Entity.MS_Position = { -500, 0 };
 	// 移動速度
-		M_Entity.MS_MoveSpeed = { 20, 20 };
+		M_Entity.MS_MoveSpeed = { 15, 15 };
 	// 移動量
 		M_Entity.MS_Move = { 0, 0 };
 	// 半径
@@ -31,10 +31,24 @@ void C_MainCharacter_MainGame::Init(Math::Vector2 A_Position)
 		M_Entity.MS_Rectangle = { 0, 0, 64, 64 };
 	// 通常時の色
 		M_Entity.MS_Color_Normal = { 1, 1, 1, 1.0f };
+	// 残りの硬直時間
+		M_Entity.MS_DamageStiffness_RemainingTime = 0;
+	// 硬直時間(秒×フレーム)
+		M_Entity.MS_DamageStiffness_Time = 1 * 60;
+	// 攻撃の吹っ飛ばし力
+		M_Entity.MS_KnockbackPower = 20;
+	// 体力
+		M_Entity.MS_HP = 3;
+	// 攻撃力
+		M_Entity.MS_Power = 1;
 	// 生存している状態にする
 		M_Entity.MSF_Alive = true;
 	// まだ処理が残っているという情報を持たせる
 		M_Entity.MSF_Delete = false;
+	// 何もされていないので硬直無しにする
+		M_Entity.MSF_DamageStiffness = false;
+	// 最初は誰とも接触していないのでノックバックも無し
+		M_Entity.MSF_Knockback = false;
 
 	// キー操作の機能が入ったクラスの実体を作成
 	CM_Control = std::make_shared<C_MainCharacter_KeyControl>();
@@ -44,8 +58,12 @@ void C_MainCharacter_MainGame::Init(Math::Vector2 A_Position)
 // 操作関連の更新内容はここに
 void C_MainCharacter_MainGame::Action()
 {
-	// キー操作による移動機能
-	CM_Control->MoveKeyControl(M_Entity.MS_Position, M_Entity.MS_Move, M_Entity.MS_MoveSpeed, M_Entity.MS_Radius);
+	// ノックバック中は操作不能にする。
+	if (!M_Entity.MSF_Knockback)
+	{
+		// キー操作による移動機能
+		CM_Control->MoveKeyControl(M_Entity.MS_Position, M_Entity.MS_Move, M_Entity.MS_MoveSpeed, M_Entity.MS_Radius);
+	}
 }
 
 // 更新内容はここに
@@ -53,6 +71,9 @@ void C_MainCharacter_MainGame::Update()
 {
 	// キー操作クラスの更新処理
 	CM_Control->Update();
+
+	// 体力が0になったらやられた判定にする。
+	if (M_Entity.MS_HP <= 0) { M_Entity.MSF_Alive = false; }
 
 	// やられた場合、削除フラグを立てる。
 	if (!M_Entity.MSF_Alive) { M_Entity.MSF_Delete = true; }

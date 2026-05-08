@@ -21,6 +21,7 @@ public:
 	// 旋回フラグ
 	bool Getter_TurningFlag() { return MF_TurningFlag; }
 
+
 private:
 
 	// 解放処理
@@ -40,7 +41,7 @@ private:
 	float M_NowShootingCoolTime = M_ShootingCoolTime;
 
 	// クールタイムの長さが入っている。
-	float M_ShootingCoolTime = 5.0f * 60;
+	float M_ShootingCoolTime = 3.0f * 60;
 
 	// 旋回フラグ(する：true　しない：false)
 	bool MF_TurningFlag = false;

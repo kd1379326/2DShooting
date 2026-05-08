@@ -37,10 +37,24 @@ void C_Bullet_Enemy1::Init(Math::Vector2 A_Position)
 		M_Entity.MS_Color_Normal = { 0, 0, 0, 1 };
 	// 半径のサイズ
 		M_Entity.MS_Radius = { 32, 32 };
+	// 残りの硬直時間
+		M_Entity.MS_DamageStiffness_RemainingTime = 0;
+	// 硬直時間(秒×フレーム)
+		M_Entity.MS_DamageStiffness_Time = 1.5f * 60;
+	// 攻撃の吹っ飛ばし力
+		M_Entity.MS_KnockbackPower = 10;
+	// 体力
+		M_Entity.MS_HP = 1;
+	// 攻撃力
+		M_Entity.MS_Power = 1;
 	// 生存している状態にする
 		M_Entity.MSF_Alive = true;
 	// まだ処理が残っているという情報を持たせる
 		M_Entity.MSF_Delete = false;
+	// 何もされていないので硬直無しにする
+		M_Entity.MSF_DamageStiffness = false;
+	// 最初は誰とも接触していないのでノックバックも無し
+		M_Entity.MSF_Knockback = false;
 }
 
 // 操作関連の更新内容はここに
@@ -61,6 +75,8 @@ void C_Bullet_Enemy1::Action()
 // 更新内容はここに(描画に使うMatrix(行列)の作成や画像の指定もここ)
 void C_Bullet_Enemy1::Update()
 {
+	// 体力が0になったらやられた判定にする。
+	if (M_Entity.MS_HP <= 0) { M_Entity.MSF_Alive = false; }
 	// やられた場合、削除フラグを立てる。
 	if (!M_Entity.MSF_Alive) { M_Entity.MSF_Delete = true; }
 
@@ -85,6 +101,12 @@ void C_Bullet_Enemy1::Draw()
 void C_Bullet_Enemy1::ImGuiUpdate()
 {
 
+}
+
+// 弾の進行方向を反転させる
+void C_Bullet_Enemy1::DirectionInversion(bool AF_TurningFlag)
+{
+	if (AF_TurningFlag) { M_Entity.MS_Color_Normal *= -1; }
 }
 
 // このクラスの実体が削除された時に行う領域解放処理。

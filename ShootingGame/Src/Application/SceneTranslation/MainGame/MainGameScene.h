@@ -59,6 +59,9 @@ private:
 	// ƒƒCƒ“ƒLƒƒƒ‰‚Ì’e‚Æ“G‚P‚Ì’e‚ÌÚG‚Ìˆ—
 	void Update_Entity_HitJudgment_Bullet_MainCharacter•Bullet_Enemy1();
 
+	// “G‚P‚ª‚â‚ç‚ê‚½‚É“G‚P‚Ìc‚è‚Ì”‚ğŒ¸‚ç‚µ‚Ä‚¢‚­
+	void Update_Enemy1_RemainingNumber_Subtract();
+
 	// íœ‹–‰Â‚ªo‚³‚ê‚½ƒGƒ“ƒeƒBƒeƒB‚ÌƒCƒ“ƒXƒ^ƒ“ƒX‚ğíœ‚·‚éB
 	void PostUpdate_DeleteEntity();
 
@@ -87,7 +90,7 @@ private:
 	int M_ShootBulletNumber = 0;
 
 	// “G‚P‚Ì”‚ÌãŒÀ
-	const int M_Enemy1_MaxNumber = 7;
+	const int M_Enemy1_MaxNumber = 10;
 
 	// c‚è‚Ì“G‚P‚Ì”
 	int M_Enemy1_RemainingNumber = 30;

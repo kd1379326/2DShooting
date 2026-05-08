@@ -25,11 +25,16 @@ public:
 	// 弾を撃つかどうか判断する
 	bool ShootBullet()							override { return false; }
 
+	// 弾の進行方向を反転させる
+	void DirectionInversion(bool AF_TurningFlag);
+
 
 private:
 
 	// 領域解放処理はこの実体が削除された時にデストラクタで自動で呼び出されるためprivateに置く。
 	void Release();
+
+
 
 
 };

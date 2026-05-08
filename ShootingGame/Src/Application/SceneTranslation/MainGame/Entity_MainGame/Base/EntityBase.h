@@ -29,17 +29,30 @@ public:
 	Math::Vector2	Getter_MyPosition()	{ return M_Entity.MS_Position; }
 	// 自身の半径
 	Math::Vector2	Getter_Radius()		{ return M_Entity.MS_Radius; }
+	// 攻撃力
+	int				Getter_Power()		{ return M_Entity.MS_Power; }
 	// 生存しているかどうか
 	bool			Getter_AliveFlag()	{ return M_Entity.MSF_Alive; }
 	// 実体を消していいかどうか(良いtrue：ダメfalse)
 	bool			Getter_DeleteFlag()	{ return M_Entity.MSF_Delete; }
+	// 硬直しているかどうか(しているtrue：していないfalse)
+	bool			Getter_DamageStiffnessFlag() { return M_Entity.MSF_DamageStiffness; }
 
 	// 値を入れるセッター
 	// やられた時にfalseをここに入れる。
 	void Setter_AliveFlag(bool A_Alive) { M_Entity.MSF_Alive = A_Alive; }
+	// ノックバックさせる時にtrueを入れる
+	void Setter_KnockbackFlag(bool AF_Knockback) { M_Entity.MSF_Knockback = AF_Knockback; }
+
 
 	// 当たり判定
 	bool HitEntity(Math::Vector2 A_Pos1, Math::Vector2 A_Pos2, Math::Vector2 A_Radius1, Math::Vector2 A_Radius2);
+
+	// ダメージ処理(体力を減らす)
+	void Damage(int DamageNumber);
+
+	// ダメージを受けた時に後退する処理
+	void Knockback(float A_BackDirection, float A_KnockbackPower);
 	
 
 	// エンティティ(画像)を描画するために必要なもの(構造体)
@@ -69,12 +82,26 @@ public:
 			Math::Color			MS_Color_Normal;
 		// 角度
 			float						MS_Rotate;
+		// 残りの硬直時間
+			float						MS_DamageStiffness_RemainingTime;
+		// 硬直時間
+			float						MS_DamageStiffness_Time;
+		// 攻撃の吹っ飛ばし力
+			float						MS_KnockbackPower;
+		// 体力
+			int							MS_HP;
+		// 攻撃力
+			int							MS_Power;
 		// 当たり判定の真偽を持たせる(当たったらtrue：当たってなかったらfalse)
 			bool						MSF_Hit;
 		// 生きているかの真偽を持たせる(生きていたらtrue：やられていたらfalse)
 			bool						MSF_Alive;
 		// 消去するべきかの真偽を持たせる(もう何も動かさないのならtrue：まだ消去しちゃダメならfalse)
 			bool						MSF_Delete;
+		// ダメージを受けた後の硬直フラグ(硬直するtrue：硬直しないfalse)
+			bool						MSF_DamageStiffness;
+		// ノックバックさせられるかのフラグ(するtrue：しないfalse)
+			bool						MSF_Knockback;
 	};
 
 	// 構造体変数

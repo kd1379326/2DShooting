@@ -65,8 +65,17 @@ void C_MainGameScene::Update()
 	Update_Entity_HitJudgment();
 
 	// 各キャラの更新処理
-	for (auto& Row : CM_Entity) { for (auto& Column : Row) { Column->Update(); } }
+	for (auto& Row : CM_Entity)
+	{ 
+		for (auto& Column : Row)
+		{ 
+			//Column->Knockback(1, -20);
+			Column->Update(); 
+		} 
+	}
 
+	// 敵１の削除許可が出たら敵１の残りの数を減らす。
+	Update_Enemy1_RemainingNumber_Subtract();
 
 
 }
@@ -161,8 +170,9 @@ void C_MainGameScene::Update_Entity_HitJudgment_MainCharacter＆Enemy1()
 			if (!Column1->Getter_AliveFlag() || !Column2->Getter_AliveFlag()) continue;
 			if (C_HitJudgment::Instance().HitJudgment(Column1->Getter_MyPosition(), Column1->Getter_Radius(), Column2->Getter_MyPosition(), Column2->Getter_Radius()) == true)
 			{
-				Column1->Setter_AliveFlag(false);
-				Column2->Setter_AliveFlag(false);
+				// 攻撃力分体力を削る
+				Column1->Damage(Column2->Getter_Power());
+				Column2->Damage(Column1->Getter_Power());
 			}
 		}
 	}
@@ -182,8 +192,9 @@ void C_MainGameScene::Update_Entity_HitJudgment_MainCharacter＆Bullet_Enemy1()
 			if (!Column1->Getter_AliveFlag() || !Column2->Getter_AliveFlag()) continue;
 			if (C_HitJudgment::Instance().HitJudgment(Column1->Getter_MyPosition(), Column1->Getter_Radius(), Column2->Getter_MyPosition(), Column2->Getter_Radius()) == true)
 			{
-				Column1->Setter_AliveFlag(false);
-				Column2->Setter_AliveFlag(false);
+				// 攻撃力分体力を削る
+				Column1->Damage(Column2->Getter_Power());
+				Column2->Damage(Column1->Getter_Power());
 			}
 		}
 	}
@@ -204,11 +215,11 @@ void C_MainGameScene::Update_Entity_HitJudgment_Enemy1＆Bullet_MainCharacter()
 			// 当たり判定を行う関数に座標や半径を渡す。
 			if (C_HitJudgment::Instance().HitJudgment(Column1->Getter_MyPosition(), Column1->Getter_Radius(), Column2->Getter_MyPosition(), Column2->Getter_Radius()) == true)
 			{
-				// やられた判定にする
-				Column1->Setter_AliveFlag(false);
-				Column2->Setter_AliveFlag(false);
-				// 倒したので残りの敵１の数を減らしていく
-				M_Enemy1_RemainingNumber--;
+				// 攻撃力分体力を削る
+				Column1->Damage(Column2->Getter_Power());
+				Column2->Damage(Column1->Getter_Power());
+
+				//Column1->Setter_KnockbackFlag(true);
 
 			}
 		}
@@ -230,11 +241,25 @@ void C_MainGameScene::Update_Entity_HitJudgment_Bullet_MainCharacter＆Bullet_Ene
 			// 当たり判定を行う関数に座標や半径を渡す。
 			if (C_HitJudgment::Instance().HitJudgment(Column1->Getter_MyPosition(), Column1->Getter_Radius(), Column2->Getter_MyPosition(), Column2->Getter_Radius()) == true)
 			{
-				// やられた判定にする
-				Column1->Setter_AliveFlag(false);
-				Column2->Setter_AliveFlag(false);
+				// 攻撃力分体力を削る
+				Column1->Damage(Column2->Getter_Power());
+				Column2->Damage(Column1->Getter_Power());
 
 			}
+		}
+	}
+}
+
+// 敵１がやられた時に敵１の残りの数を減らしていく
+void C_MainGameScene::Update_Enemy1_RemainingNumber_Subtract()
+{
+	// 敵１の行を全て確認する
+	for (auto& Column : CM_Entity[C_MainGameScene::E_EntityNumber::ME_Enemy1])
+	{
+		// 削除許可が出た時に敵１の残りの数を減らしていく。
+		if (Column->Getter_DeleteFlag())
+		{
+			M_Enemy1_RemainingNumber--;
 		}
 	}
 }
@@ -269,7 +294,7 @@ void C_MainGameScene::PreUpdate_CreateEnemy1()
 	// 条件１：ランダム値が出現可能な数値の場合
 	// 条件２：敵の数が上限に達していない(.size()だと添え字基準で現在出現している数が1つ少なくカウントされる)
 	// 条件３：残りの敵１の数を上回る数を出現させていない
-	if ((C_RandomNumericalValue::Instance().RandomNumericalValue(30) == 1) && ((CM_Entity[C_MainGameScene::E_EntityNumber::ME_Enemy1].size() + 1) <= M_Enemy1_MaxNumber) && ((CM_Entity[C_MainGameScene::E_EntityNumber::ME_Enemy1].size() + 1) <= M_Enemy1_RemainingNumber))
+	if ((C_RandomNumericalValue::Instance().RandomNumericalValue(50) == 1) && ((CM_Entity[C_MainGameScene::E_EntityNumber::ME_Enemy1].size() + 1) <= M_Enemy1_MaxNumber) && ((CM_Entity[C_MainGameScene::E_EntityNumber::ME_Enemy1].size() + 1) <= M_Enemy1_RemainingNumber))
 	{
 		// 配列の列を追加し、敵１クラスの実体を生成→初期化する。
 		CM_Entity[C_MainGameScene::E_EntityNumber::ME_Enemy1].push_back(std::make_unique<C_Enemy1_MainGame>());
