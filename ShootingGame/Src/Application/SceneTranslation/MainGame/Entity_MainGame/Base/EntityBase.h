@@ -11,7 +11,7 @@ public:
 
 	// 機能が全派生クラス共通なら通常の関数、派生クラスによって機能が違うなら純粋仮想関数を使う。
 	// 初期化
-	virtual void Init(Math::Vector2 A_Position = {0, 0}, int Number)	= 0;
+	virtual void Init(Math::Vector2 A_Position = {0, 0})	= 0;
 	// 操作の更新
 	virtual void Action()									= 0;
 	// 更新内容

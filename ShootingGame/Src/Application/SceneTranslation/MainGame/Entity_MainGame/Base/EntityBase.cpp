@@ -1,7 +1,7 @@
 #include "EntityBase.h"
 
 // ‰Šú‰»“à—e‚Í‚±‚±‚É
-void C_EntityBase_MainGame::Init(Math::Vector2 A_Position, int Number)
+void C_EntityBase_MainGame::Init(Math::Vector2 A_Position)
 {
 
 }

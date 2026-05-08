@@ -23,7 +23,7 @@ C_Enemy1_MainGame::~C_Enemy1_MainGame()
 }
 
 // ‰Šú‰»“à—e‚Í‚±‚±‚É
-void C_Enemy1_MainGame::Init(Math::Vector2 A_Position, int Number)
+void C_Enemy1_MainGame::Init(Math::Vector2 A_Position)
 {
 	// ‰æ‘œ‚ÌƒpƒX(İˆ)‚ğ“`‚¦‚é
 		M_Entity.MS_Texture.Load("Texture/Star/StarShadow.png");
