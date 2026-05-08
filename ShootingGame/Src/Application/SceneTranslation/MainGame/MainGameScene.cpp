@@ -173,6 +173,10 @@ void C_MainGameScene::Update_Entity_HitJudgment_MainCharacter＆Enemy1()
 				// 攻撃力分体力を削る
 				Column1->Damage(Column2->Getter_Power());
 				Column2->Damage(Column1->Getter_Power());
+
+				// ノックバック処理
+				Column1->Setter_KnockbackFlag(true);
+				Column2->Setter_KnockbackFlag(true);
 			}
 		}
 	}
@@ -195,6 +199,9 @@ void C_MainGameScene::Update_Entity_HitJudgment_MainCharacter＆Bullet_Enemy1()
 				// 攻撃力分体力を削る
 				Column1->Damage(Column2->Getter_Power());
 				Column2->Damage(Column1->Getter_Power());
+
+				// ノックバック処理
+				Column1->Setter_KnockbackFlag(true);
 			}
 		}
 	}
@@ -219,7 +226,8 @@ void C_MainGameScene::Update_Entity_HitJudgment_Enemy1＆Bullet_MainCharacter()
 				Column1->Damage(Column2->Getter_Power());
 				Column2->Damage(Column1->Getter_Power());
 
-				//Column1->Setter_KnockbackFlag(true);
+				// ノックバック処理
+				Column1->Setter_KnockbackFlag(true);
 
 			}
 		}

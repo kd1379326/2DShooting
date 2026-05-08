@@ -71,8 +71,33 @@ void C_Enemy1_Move::Move(C_EntityBase_MainGame::S_EntityCharacter& A_Entity)
 	else					{ A_Entity.MS_Move = -A_Entity.MS_MoveSpeed; }
 	A_Entity.MS_Position.x -= A_Entity.MS_Move.x;
 
+	// ノックバック処理
+	if (A_Entity.MSF_Knockback)
+	{
+		// ノックバックさせたい(ノックバックする値が0じゃない)時のみ通す。
+		if (M_NowKnockback > 0)
+		{
+			// 現在の座標からノックバックしたい距離を計算する。
+			A_Entity.MS_Position.x += M_NowKnockback;
+			// ノックバックの距離を縮めていく。
+			M_NowKnockback *= M_Knockback_Subtract;
+			// ノックバックの値がある程度小さくなったら強制的に0にする。
+			if (M_NowKnockback < M_Knockback_Minimum) { M_NowKnockback = 0; }
+		}
+		else
+		{
+			// ノックバックさせ終えたらノックバックしないと伝える。
+			A_Entity.MSF_Knockback = false;
+		}
+	}
+	else
+	{
+		// ノックバック処理が終わった後にノックバックさせたい距離を代入する。
+		M_NowKnockback = M_KnockbackDistance;
+	}
+
 	// 前に出てくる座標
 	// 条件１：X座標が指定の座標を越える
 	// 条件２：旋回する場合
-	if ((A_Entity.MS_Position.x > M_StopPosition) && MF_TurningFlag) { A_Entity.MS_Position.x = M_StopPosition; }
+	if ((A_Entity.MS_Position.x > M_StopPosition) && MF_TurningFlag) { A_Entity.MS_Position.x -= 10; }
 }

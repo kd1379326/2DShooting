@@ -64,6 +64,30 @@ void C_MainCharacter_MainGame::Action()
 		// キー操作による移動機能
 		CM_Control->MoveKeyControl(M_Entity.MS_Position, M_Entity.MS_Move, M_Entity.MS_MoveSpeed, M_Entity.MS_Radius);
 	}
+	// ノックバック処理
+	if (M_Entity.MSF_Knockback)
+	{
+		// ノックバックさせたい(ノックバックする値が0じゃない)時のみ通す。
+		if (M_NowKnockback != 0)
+		{
+			// 現在の座標からノックバックしたい距離を計算する。
+			M_Entity.MS_Position.x += M_NowKnockback;
+			// ノックバックの距離を縮めていく。
+			M_NowKnockback *= M_Knockback_Subtract;
+			// ノックバックの値がある程度小さくなったら強制的に0にする。
+			if (M_NowKnockback > M_Knockback_Minimum) { M_NowKnockback = 0; }
+		}
+		else
+		{
+			// ノックバックさせ終えたらノックバックしないと伝える。
+			M_Entity.MSF_Knockback = false;
+		}
+	}
+	else
+	{
+		// ノックバック処理が終わった後にノックバックさせたい距離を代入する。
+		M_NowKnockback = M_KnockbackDistance;
+	}
 }
 
 // 更新内容はここに
@@ -71,6 +95,8 @@ void C_MainCharacter_MainGame::Update()
 {
 	// キー操作クラスの更新処理
 	CM_Control->Update();
+
+
 
 	// 体力が0になったらやられた判定にする。
 	if (M_Entity.MS_HP <= 0) { M_Entity.MSF_Alive = false; }

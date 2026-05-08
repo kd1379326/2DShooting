@@ -72,7 +72,7 @@ void C_Enemy1_MainGame::Init(Math::Vector2 A_Position)
 void C_Enemy1_MainGame::Action()
 {
 	// ノックバック中は操作不能にする。
-	if (!M_Entity.MSF_Knockback)
+	//if (!M_Entity.MSF_Knockback)
 	{
 		CMP_Control->Action(M_Entity);
 	}

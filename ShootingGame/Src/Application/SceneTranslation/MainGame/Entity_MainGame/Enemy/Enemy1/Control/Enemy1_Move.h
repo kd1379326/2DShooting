@@ -43,6 +43,18 @@ private:
 	// クールタイムの長さが入っている。
 	float M_ShootingCoolTime = 3.0f * 60;
 
+	// ノックバックする距離
+	int M_KnockbackDistance = 30;
+
+	// 現在ノックバックさせたい距離
+	int M_NowKnockback = 0;
+
+	// ノックバックの距離を小さくしていく数値
+	const float M_Knockback_Subtract = 0.85f;
+
+	// ノックバックさせたい距離の最小値
+	const float M_Knockback_Minimum = 1.0f;
+
 	// 旋回フラグ(する：true　しない：false)
 	bool MF_TurningFlag = false;
 
