@@ -11,7 +11,7 @@ public:
 
 	// 機能が全派生クラス共通なら通常の関数、派生クラスによって機能が違うなら純粋仮想関数を使う。
 	// 初期化
-	virtual void Init(Math::Vector2 A_Position = {0, 0})	= 0;
+	virtual void Init(Math::Vector2 A_Position = {0, 0}, int Number)	= 0;
 	// 操作の更新
 	virtual void Action()									= 0;
 	// 更新内容
@@ -54,6 +54,7 @@ public:
 	// ダメージを受けた時に後退する処理
 	void Knockback(float A_BackDirection, float A_KnockbackPower);
 	
+	void ApplyKnockback(Math::Vector2 A_Dir, float A_Power);
 
 	// エンティティ(画像)を描画するために必要なもの(構造体)
 	struct S_EntityCharacter
@@ -66,6 +67,8 @@ public:
 			Math::Vector2		MS_MoveSpeed;
 		// 半径(サイズ)
 			Math::Vector2		MS_Radius;
+		// ノックバックの速度
+			Math::Vector2		MS_KnockbackVector;
 		// 描画用のサイズ情報
 			Math::Matrix			MS_ScaleMatrix;
 		// 描画用の角度情報

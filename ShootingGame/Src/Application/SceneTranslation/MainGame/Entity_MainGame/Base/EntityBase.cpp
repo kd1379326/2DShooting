@@ -1,7 +1,7 @@
 #include "EntityBase.h"
 
 // èâä˙âªì‡óeÇÕÇ±Ç±Ç…
-void C_EntityBase_MainGame::Init(Math::Vector2 A_Position)
+void C_EntityBase_MainGame::Init(Math::Vector2 A_Position, int Number)
 {
 
 }
@@ -63,4 +63,10 @@ void C_EntityBase_MainGame::Knockback(float A_BackDirection, float A_KnockbackPo
 	M_Entity.MS_Position.x += M_Entity.MS_Move.x * M_Entity.MS_MoveSpeed.x;
 	A_KnockbackPower--;
 	if (A_KnockbackPower <= 0) { M_Entity.MSF_Knockback = false; }
+}
+
+void C_EntityBase_MainGame::ApplyKnockback(Math::Vector2 A_Dir, float A_Power)
+{
+	M_Entity.MS_KnockbackVector.x = A_Dir.x * A_Power;
+	M_Entity.MS_KnockbackVector.y = A_Dir.y * A_Power;
 }

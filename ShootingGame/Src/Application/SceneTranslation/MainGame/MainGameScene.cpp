@@ -174,9 +174,25 @@ void C_MainGameScene::Update_Entity_HitJudgment_MainCharacter＆Enemy1()
 				Column1->Damage(Column2->Getter_Power());
 				Column2->Damage(Column1->Getter_Power());
 
-				// ノックバック処理
-				Column1->Setter_KnockbackFlag(true);
-				Column2->Setter_KnockbackFlag(true);
+				Math::Vector2 KnockDir = Column2->Getter_MyPosition() - Column1->Getter_MyPosition();
+				float Length = KnockDir.Length();
+
+				if (Length > 0.0f)
+				{
+					KnockDir.Normalize();
+					Column2->ApplyKnockback(KnockDir, 40.0f);
+				}
+
+				KnockDir = Column1->Getter_MyPosition() - Column2->Getter_MyPosition();
+				Length = KnockDir.Length();
+
+				if (Length > 0.0f)
+				{
+					KnockDir.Normalize();
+					Column1->ApplyKnockback(KnockDir, 40.0f);
+				}
+
+
 			}
 		}
 	}

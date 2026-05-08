@@ -23,7 +23,7 @@ C_Enemy1_MainGame::~C_Enemy1_MainGame()
 }
 
 // 初期化内容はここに
-void C_Enemy1_MainGame::Init(Math::Vector2 A_Position)
+void C_Enemy1_MainGame::Init(Math::Vector2 A_Position, int Number)
 {
 	// 画像のパス(在処)を伝える
 		M_Entity.MS_Texture.Load("Texture/Star/StarShadow.png");
@@ -83,6 +83,13 @@ void C_Enemy1_MainGame::Update()
 {
 	// 左端を超えたらもう画面内には戻らないので削除許可を出す。
 	//if (M_Entity.MS_Position.x < (Scene::Instance().Getter_ScreenSize_Left() - M_Entity.MS_Radius.x)) { M_Entity.MSF_Delete = true; }
+
+	M_Entity.MS_Position += M_Entity.MS_KnockbackVector;
+
+	M_Entity.MS_KnockbackVector *= 0.85f;
+
+	if (std::abs(M_Entity.MS_KnockbackVector.x) < 1.0f) M_Entity.MS_KnockbackVector.x = 0.0f;
+	if (std::abs(M_Entity.MS_KnockbackVector.y) < 1.0f) M_Entity.MS_KnockbackVector.y = 0.0f;
 
 	// 体力が0になったらやられた判定にする。
 	if (M_Entity.MS_HP <= 0) { M_Entity.MSF_Alive = false; }

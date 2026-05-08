@@ -12,7 +12,7 @@ public:
 	~C_Bullet_Enemy1()					override;
 
 	// 初期化内容
-	void Init(Math::Vector2 A_Position)	override;
+	void Init(Math::Vector2 A_Position, int Number)	override;
 	// 操作の更新
 	void Action()									override;
 	// 更新内容

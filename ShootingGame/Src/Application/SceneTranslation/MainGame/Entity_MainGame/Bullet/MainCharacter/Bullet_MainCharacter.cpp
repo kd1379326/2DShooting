@@ -20,7 +20,7 @@ C_Bullet_MainCharacter::~C_Bullet_MainCharacter()
 }
 
 // ‰Šú‰»“à—e‚Í‚±‚±‚É
-void C_Bullet_MainCharacter::Init(Math::Vector2 A_Position)
+void C_Bullet_MainCharacter::Init(Math::Vector2 A_Position, int Number)
 {
 	// ‰æ‘œ‚ÌƒpƒX(İˆ)‚ğ“`‚¦‚é
 	M_Entity.MS_Texture.Load("Texture/Star/StarLight.png");

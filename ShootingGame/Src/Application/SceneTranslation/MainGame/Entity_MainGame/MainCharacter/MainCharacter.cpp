@@ -96,6 +96,12 @@ void C_MainCharacter_MainGame::Update()
 	// キー操作クラスの更新処理
 	CM_Control->Update();
 
+	M_Entity.MS_Position += M_Entity.MS_KnockbackVector;
+
+	M_Entity.MS_KnockbackVector *= 0.85f;
+
+	if (std::abs(M_Entity.MS_KnockbackVector.x) < 1.0f) M_Entity.MS_KnockbackVector.x = 0.0f;
+	if (std::abs(M_Entity.MS_KnockbackVector.y) < 1.0f) M_Entity.MS_KnockbackVector.y = 0.0f;
 
 
 	// 体力が0になったらやられた判定にする。

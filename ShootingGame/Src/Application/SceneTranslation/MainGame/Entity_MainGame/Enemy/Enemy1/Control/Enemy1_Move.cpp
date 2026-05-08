@@ -20,7 +20,7 @@ C_Enemy1_Move::~C_Enemy1_Move()
 }
 
 // 初期化処理
-void C_Enemy1_Move::Init(C_EntityBase_MainGame::S_EntityCharacter& A_Entity)
+void C_Enemy1_Move::Init(C_EntityBase_MainGame::S_EntityCharacter& A_Entity, int Number)
 {
 	// 出現後、前に出る座標。
 	M_StopPosition = C_RandomNumericalValue::Instance().RandomNumericalValue((Scene::Instance().Getter_ScreenSize_Left() + A_Entity.MS_Radius.x), -550);
