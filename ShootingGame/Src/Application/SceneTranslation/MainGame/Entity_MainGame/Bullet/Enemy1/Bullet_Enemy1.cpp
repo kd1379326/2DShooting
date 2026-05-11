@@ -23,7 +23,7 @@ C_Bullet_Enemy1::~C_Bullet_Enemy1()
 void C_Bullet_Enemy1::Init(Math::Vector2 A_Position)
 {
 	// 画像のパス(在処)を伝える
-		M_Entity.MS_Texture.Load("Texture/Star/StarLight.png");
+		M_Entity.MS_Texture.Load("Texture/Star/EnemyBullet.png");
 
 	// 画面サイズをSceneクラスから引っ張ってきて、ランダム値を返す関数の引数に置く。
 		M_Entity.MS_Position = A_Position;
@@ -32,11 +32,11 @@ void C_Bullet_Enemy1::Init(Math::Vector2 A_Position)
 	// 移動速度
 		M_Entity.MS_MoveSpeed = { 10, 10 };
 	// 画像の切り取り範囲
-		M_Entity.MS_Rectangle = { 0, 0, 64, 64 };
+		M_Entity.MS_Rectangle = { 0, 0, 16, 16 };
 	// 画像の通常時の色(黒)
-		M_Entity.MS_Color_Normal = { 0, 0, 0, 1 };
+		M_Entity.MS_Color_Normal = { 1, 1, 1, 1 };
 	// 半径のサイズ
-		M_Entity.MS_Radius = { 32, 32 };
+		M_Entity.MS_Radius = { 8, 8 };
 	// 残りの硬直時間
 		M_Entity.MS_DamageStiffness_RemainingTime = 0;
 	// 硬直時間(秒×フレーム)

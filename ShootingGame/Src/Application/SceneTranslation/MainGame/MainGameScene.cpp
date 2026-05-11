@@ -20,6 +20,7 @@
 // このクラスが生成された時に処理したい内容はここに
 C_MainGameScene::C_MainGameScene()
 {
+	M_Back.MS_Texture.Load("Texture/背景１.png");
 	M_Game.MS_Position = { 0,0 };
 	// シーン遷移させないようフラグを立てる。
 	MF_Stop_ContinuitySceneTransition = true;
@@ -28,7 +29,7 @@ C_MainGameScene::C_MainGameScene()
 // このクラスが削除された時に処理したい内容はここに
 C_MainGameScene::~C_MainGameScene()
 {
-	
+	Release();
 }
 
 // 初期化したい内容はここに
@@ -76,7 +77,7 @@ void C_MainGameScene::Update()
 
 	// 敵１の削除許可が出たら敵１の残りの数を減らす。
 	Update_Enemy1_RemainingNumber_Subtract();
-
+	M_Back.MS_Matrix = Math::Matrix::CreateTranslation(0, 0, 0);
 
 }
 
@@ -99,6 +100,9 @@ void C_MainGameScene::PostUpdate()
 // 描画処理はここに
 void C_MainGameScene::DrawSprite()
 {
+	SHADER.m_spriteShader.SetMatrix(M_Back.MS_Matrix);
+	SHADER.m_spriteShader.DrawColorTex(&M_Back.MS_Texture, Math::Rectangle{ 0, 0, 1280, 720 }, Math::Color{ 1, 1, 1, 1 });
+
 	// 各キャラの描画処理
 	for (auto& Row : CM_Entity) { for (auto& Column : Row) { Column->Draw(); } }
 }
@@ -134,6 +138,7 @@ void C_MainGameScene::Release()
 	//	delete CM_Enemy1;
 	//	CM_Enemy1 = nullptr;
 	//}
+	M_Back.MS_Texture.Release();
 }
 
 // 当たり判定の処理。

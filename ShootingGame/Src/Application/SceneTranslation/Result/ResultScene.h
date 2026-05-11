@@ -32,5 +32,8 @@ private:
 
 	// 「Result」の文字用の構造体変数
 	S_Entity M_Result;
+	S_Entity M_Back;
+	S_Entity M_Logo;
+	S_Entity M_Press;
 
 };

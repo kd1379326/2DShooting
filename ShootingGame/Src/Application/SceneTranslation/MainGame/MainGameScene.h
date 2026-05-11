@@ -82,6 +82,7 @@ private:
 
 	// 「Game」の文字用の構造体変数
 	S_Entity M_Game;
+	S_Entity M_Back;
 
 	// EntityBase(キャラ達の親クラス)型の動的二次元配列
 	std::vector<std::vector<std::unique_ptr<C_EntityBase_MainGame>>> CM_Entity;

@@ -109,6 +109,20 @@ public:
 
 	// 構造体変数
 	S_EntityCharacter M_Entity;
+
+	// ノックバックする距離
+	int M_KnockbackDistance;
+
+	// 現在ノックバックさせたい距離
+	int M_NowKnockback;
+
+	// ノックバックの距離を小さくしていく数値
+	float M_Knockback_Subtract;
+
+	// ノックバックさせたい距離の最小値
+	float M_Knockback_Minimum;
+
+
 	
 private:
 

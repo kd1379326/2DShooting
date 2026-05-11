@@ -23,7 +23,7 @@ C_Enemy1_Move::~C_Enemy1_Move()
 void C_Enemy1_Move::Init(C_EntityBase_MainGame::S_EntityCharacter& A_Entity)
 {
 	// 出現後、前に出る座標。
-	M_StopPosition = C_RandomNumericalValue::Instance().RandomNumericalValue((Scene::Instance().Getter_ScreenSize_Left() + A_Entity.MS_Radius.x), -550);
+	M_StopPosition = C_RandomNumericalValue::Instance().RandomNumericalValue(-500, (Scene::Instance().Getter_ScreenSize_Left() + A_Entity.MS_Radius.x));
 }
 
 // 更新内容
@@ -64,11 +64,18 @@ void C_Enemy1_Move::Move(C_EntityBase_MainGame::S_EntityCharacter& A_Entity)
 	// 旋回するタイミングは左端を完全に通り過ぎた時
 	// 条件１：左端を通り過ぎる(画面左端+半径分)
 	// 条件２：旋回フラグが立っていない
-	if ((A_Entity.MS_Position.x < (Scene::Instance().Getter_ScreenSize_Left() - A_Entity.MS_Radius.x)) && !MF_TurningFlag) { MF_TurningFlag = true; }
+
+	if ((A_Entity.MS_Position.x < (Scene::Instance().Getter_ScreenSize_Left() - A_Entity.MS_Radius.x - 100)) && !MF_TurningFlag) { MF_TurningFlag = true; }
 
 	// 直線移動
-	if (!MF_TurningFlag)	{ A_Entity.MS_Move =  A_Entity.MS_MoveSpeed; }
-	else					{ A_Entity.MS_Move = -A_Entity.MS_MoveSpeed; }
+	if (!MF_TurningFlag)	{ A_Entity.MS_Move.x =  A_Entity.MS_MoveSpeed.x; }
+	else					
+	{ 
+		// 旋回後用の移動速度を設定する。
+		const float TurningMoveSpeed = -6;
+		A_Entity.MS_Move.x = TurningMoveSpeed; 
+	}
+	// 座標移動
 	A_Entity.MS_Position.x -= A_Entity.MS_Move.x;
 
 	// ノックバック処理
@@ -96,8 +103,12 @@ void C_Enemy1_Move::Move(C_EntityBase_MainGame::S_EntityCharacter& A_Entity)
 		M_NowKnockback = M_KnockbackDistance;
 	}
 
+	// 座標が画面端を超えた場合、端の座標と半径を計算して画面内に納まるよう固定する。
+	if ((A_Entity.MS_Position.y + A_Entity.MS_Radius.y) > SCENE.Getter_ScreenSize_Top())	{ A_Entity.MS_Position.y = (SCENE.Getter_ScreenSize_Top() - A_Entity.MS_Radius.y); }
+	if ((A_Entity.MS_Position.y - A_Entity.MS_Radius.y) < SCENE.Getter_ScreenSize_Bottom()) { A_Entity.MS_Position.y = (SCENE.Getter_ScreenSize_Bottom() + A_Entity.MS_Radius.y); }
+
 	// 前に出てくる座標
 	// 条件１：X座標が指定の座標を越える
 	// 条件２：旋回する場合
-	if ((A_Entity.MS_Position.x > M_StopPosition) && MF_TurningFlag) { A_Entity.MS_Position.x -= 10; }
+	if ((A_Entity.MS_Position.x > M_StopPosition) && MF_TurningFlag) { A_Entity.MS_Position.x = M_StopPosition; }
 }

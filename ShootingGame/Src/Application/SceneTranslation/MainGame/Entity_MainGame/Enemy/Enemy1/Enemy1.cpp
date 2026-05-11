@@ -26,7 +26,7 @@ C_Enemy1_MainGame::~C_Enemy1_MainGame()
 void C_Enemy1_MainGame::Init(Math::Vector2 A_Position)
 {
 	// 画像のパス(在処)を伝える
-		M_Entity.MS_Texture.Load("Texture/Star/StarShadow.png");
+		M_Entity.MS_Texture.Load("Texture/MainCharacter/MainCharacter仮.png");
 	// 半径のサイズ
 		M_Entity.MS_Radius = { 32, 32 };
 
@@ -40,9 +40,9 @@ void C_Enemy1_MainGame::Init(Math::Vector2 A_Position)
 	// 移動スピード
 		M_Entity.MS_MoveSpeed = { 3, 3 };
 	// 画像の切り取り範囲
-		M_Entity.MS_Rectangle = { 0, 0, 64, 64 };
+		M_Entity.MS_Rectangle = { 0, 0, 50, 50 };
 	// 画像の通常時の色(設定なし)
-		M_Entity.MS_Color_Normal = { 1, 1, 1, 1 };
+		M_Entity.MS_Color_Normal = { 1, 0, 0, 1 };
 	// 残りの硬直時間
 		M_Entity.MS_DamageStiffness_RemainingTime = 0;
 	// 硬直時間(秒×フレーム)
@@ -82,12 +82,15 @@ void C_Enemy1_MainGame::Action()
 void C_Enemy1_MainGame::Update()
 {
 	// 左端を超えたらもう画面内には戻らないので削除許可を出す。
-	//if (M_Entity.MS_Position.x < (Scene::Instance().Getter_ScreenSize_Left() - M_Entity.MS_Radius.x)) { M_Entity.MSF_Delete = true; }
+	if (M_Entity.MS_Position.x < (Scene::Instance().Getter_ScreenSize_Left() - M_Entity.MS_Radius.x)) { M_Entity.MSF_Delete = true; }
 
+	// 現在座標にベクトルを足して弾くように移動させる。
 	M_Entity.MS_Position += M_Entity.MS_KnockbackVector;
 
+	// 常にベクトルを足し続けると止まらない為、徐々にベクトルを小さくしていく。
 	M_Entity.MS_KnockbackVector *= 0.85f;
 
+	// ベクトルが0になるのにかなり時間が掛かる為、一定の数値まで下がったら強制的に0にする。
 	if (std::abs(M_Entity.MS_KnockbackVector.x) < 1.0f) M_Entity.MS_KnockbackVector.x = 0.0f;
 	if (std::abs(M_Entity.MS_KnockbackVector.y) < 1.0f) M_Entity.MS_KnockbackVector.y = 0.0f;
 
@@ -99,9 +102,11 @@ void C_Enemy1_MainGame::Update()
 
 	// どこに描画するか座標情報を設定する。
 	M_Entity.MS_TranslationMatrix = Math::Matrix::CreateTranslation(M_Entity.MS_Position.x, M_Entity.MS_Position.y, 0);
+	M_Entity.MS_RotateMatrix = Math::Matrix::CreateRotationZ(DirectX::XMConvertToRadians(90));
 
-	// それぞれの描画情報を行列にまとめる
-	M_Entity.MS_Matrix = M_Entity.MS_TranslationMatrix;
+	// 描画の詳細をまとめる
+	M_Entity.MS_Matrix = M_Entity.MS_RotateMatrix * M_Entity.MS_TranslationMatrix;
+
 
 }
 

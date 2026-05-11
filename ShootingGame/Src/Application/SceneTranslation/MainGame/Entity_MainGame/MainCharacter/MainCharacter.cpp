@@ -6,7 +6,7 @@
 // このクラスが生成された時に動かしたいものをここに(コンストラクタ)
 C_MainCharacter_MainGame::C_MainCharacter_MainGame()
 {
-	M_Entity.MS_Texture.Load("Texture/MainCharacter/MainCharacter.png");
+	M_Entity.MS_Texture.Load("Texture/MainCharacter/MainCharacter仮.png");
 }
 
 // このクラスが削除される時に動かしたいものをここに(デストラクタ)
@@ -28,7 +28,7 @@ void C_MainCharacter_MainGame::Init(Math::Vector2 A_Position)
 	// 半径
 		M_Entity.MS_Radius = { 32, 32 };
 	// 画像の切り取り範囲
-		M_Entity.MS_Rectangle = { 0, 0, 64, 64 };
+		M_Entity.MS_Rectangle = { 0, 0, 50, 50 };
 	// 通常時の色
 		M_Entity.MS_Color_Normal = { 1, 1, 1, 1.0f };
 	// 残りの硬直時間
@@ -38,7 +38,7 @@ void C_MainCharacter_MainGame::Init(Math::Vector2 A_Position)
 	// 攻撃の吹っ飛ばし力
 		M_Entity.MS_KnockbackPower = 20;
 	// 体力
-		M_Entity.MS_HP = 3;
+		M_Entity.MS_HP = 30;
 	// 攻撃力
 		M_Entity.MS_Power = 1;
 	// 生存している状態にする
@@ -58,12 +58,6 @@ void C_MainCharacter_MainGame::Init(Math::Vector2 A_Position)
 // 操作関連の更新内容はここに
 void C_MainCharacter_MainGame::Action()
 {
-	// ノックバック中は操作不能にする。
-	if (!M_Entity.MSF_Knockback)
-	{
-		// キー操作による移動機能
-		CM_Control->MoveKeyControl(M_Entity.MS_Position, M_Entity.MS_Move, M_Entity.MS_MoveSpeed, M_Entity.MS_Radius);
-	}
 	// ノックバック処理
 	if (M_Entity.MSF_Knockback)
 	{
@@ -88,6 +82,18 @@ void C_MainCharacter_MainGame::Action()
 		// ノックバック処理が終わった後にノックバックさせたい距離を代入する。
 		M_NowKnockback = M_KnockbackDistance;
 	}
+
+	// 現在座標にベクトルを足して弾くように移動させる。
+	M_Entity.MS_Position += M_Entity.MS_KnockbackVector;
+	// 常にベクトルを足し続けると止まらない為、徐々にベクトルを小さくしていく。
+	M_Entity.MS_KnockbackVector *= 0.85f;
+	// ベクトルが0になるのにかなり時間が掛かる為、一定の数値まで下がったら強制的に0にする。
+	if (std::abs(M_Entity.MS_KnockbackVector.x) < 1.0f) M_Entity.MS_KnockbackVector.x = 0.0f;
+	if (std::abs(M_Entity.MS_KnockbackVector.y) < 1.0f) M_Entity.MS_KnockbackVector.y = 0.0f;
+
+	// キー操作による移動機能
+	CM_Control->MoveKeyControl(M_Entity.MS_Position, M_Entity.MS_Move, M_Entity.MS_MoveSpeed, M_Entity.MS_Radius);
+
 }
 
 // 更新内容はここに
@@ -95,14 +101,6 @@ void C_MainCharacter_MainGame::Update()
 {
 	// キー操作クラスの更新処理
 	CM_Control->Update();
-
-	M_Entity.MS_Position += M_Entity.MS_KnockbackVector;
-
-	M_Entity.MS_KnockbackVector *= 0.85f;
-
-	if (std::abs(M_Entity.MS_KnockbackVector.x) < 1.0f) M_Entity.MS_KnockbackVector.x = 0.0f;
-	if (std::abs(M_Entity.MS_KnockbackVector.y) < 1.0f) M_Entity.MS_KnockbackVector.y = 0.0f;
-
 
 	// 体力が0になったらやられた判定にする。
 	if (M_Entity.MS_HP <= 0) { M_Entity.MSF_Alive = false; }
@@ -112,9 +110,10 @@ void C_MainCharacter_MainGame::Update()
 
 	// 表示したい座標を設定する
 	M_Entity.MS_TranslationMatrix = Math::Matrix::CreateTranslation(M_Entity.MS_Position.x, M_Entity.MS_Position.y, 0);
+	M_Entity.MS_RotateMatrix = Math::Matrix::CreateRotationZ(DirectX::XMConvertToRadians(-90));
 
 	// 描画の詳細をまとめる
-	M_Entity.MS_Matrix = M_Entity.MS_TranslationMatrix;
+	M_Entity.MS_Matrix = M_Entity.MS_RotateMatrix * M_Entity.MS_TranslationMatrix;
 }
 
 // 描画内容はここに(行列(Matrix等)はUpdateに含まれる)

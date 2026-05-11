@@ -32,5 +32,9 @@ private:
 
 	// 「Title」の文字用の構造体変数
 	S_Entity M_Title;
+	S_Entity M_Logo;
+	S_Entity M_Press;
+
+
 
 };

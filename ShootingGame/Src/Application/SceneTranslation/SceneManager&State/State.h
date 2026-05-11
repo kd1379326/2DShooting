@@ -46,10 +46,13 @@ public:
 		// 行列(描画するエンティティの詳細情報)
 		Math::Matrix		MS_Matrix;
 		// 画像自体のデータ
-		KdTexture*		MSP_Texture;
+		KdTexture		MS_Texture;
 	};
 
 	// ENTER押し続けて連続でシーン遷移しないようにフラグで管理する。
 	bool MF_Stop_ContinuitySceneTransition;
+
+	float a = 1.0f;
+	float d = 0.1f;
 
 };
