@@ -46,9 +46,9 @@ void C_ResultScene::Update()
 	// 条件２：シーン遷移のストッパーが外れている
 	if ((GetAsyncKeyState(VK_RETURN) & 0x8000) && (!MF_Stop_ContinuitySceneTransition)) { C_SceneManager::Instance().SetterNextScene(C_SceneManager::E_SceneType::ME_Title); }
 
-	if (a <= 0.3f) { d = 0.02f; }
-	if (a >= 1) { d = -0.02f; }
-	a += d;
+	if (M_Alpha <= 0.3f) { M_Delta = 0.02f; }
+	if (M_Alpha >= 1) { M_Delta = -0.02f; }
+	M_Alpha += M_Delta;
 
 	M_Back.MS_TranslationMatrix = Math::Matrix::CreateTranslation(M_Back.MS_Position.x, M_Back.MS_Position.y, 0);
 	M_Logo.MS_TranslationMatrix = Math::Matrix::CreateTranslation(M_Logo.MS_Position.x, M_Logo.MS_Position.y, 0);
@@ -78,7 +78,7 @@ void C_ResultScene::DrawSprite()
 	SHADER.m_spriteShader.DrawTex(&M_Logo.MS_Texture, Math::Rectangle{ 0, 0, 581, 124 }, 1.0f);
 
 	SHADER.m_spriteShader.SetMatrix(M_Press.MS_Matrix);
-	SHADER.m_spriteShader.DrawTex(&M_Press.MS_Texture, Math::Rectangle{ 0, 0, 1221, 124 }, a);
+	SHADER.m_spriteShader.DrawTex(&M_Press.MS_Texture, Math::Rectangle{ 0, 0, 1221, 124 }, M_Alpha);
 
 }
 

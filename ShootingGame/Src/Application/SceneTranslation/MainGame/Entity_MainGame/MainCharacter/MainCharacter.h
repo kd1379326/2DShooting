@@ -15,7 +15,7 @@ public:
 	~C_MainCharacter_MainGame()		override;
 
 	// 初期化内容
-	void Init(Math::Vector2 A_Position)	override;
+	void Init(Math::Vector2 A_Position, bool AF_Turning)	override;
 	// 操作の更新
 	void Action()									override;
 	// 更新内容
@@ -50,6 +50,9 @@ private:
 	const float M_Knockback_Subtract = 0.85f;
 
 	// ノックバックさせたい距離の最小値
-	const float M_Knockback_Minimum = -1.0f;
+	const float M_Knockback_Minimum_Left = -1.0f;
+
+	// ノックバックさせたい距離の最小値
+	const float M_Knockback_Minimum_Right = 1.0f;
 
 };

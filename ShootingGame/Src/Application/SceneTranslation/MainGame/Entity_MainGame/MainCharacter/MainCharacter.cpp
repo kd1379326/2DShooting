@@ -17,7 +17,7 @@ C_MainCharacter_MainGame::~C_MainCharacter_MainGame()
 }
 
 // 初期化内容はここに
-void C_MainCharacter_MainGame::Init(Math::Vector2 A_Position)
+void C_MainCharacter_MainGame::Init(Math::Vector2 A_Position, bool AF_Turning)
 {
 	// 座標
 		M_Entity.MS_Position = { -500, 0 };
@@ -38,7 +38,7 @@ void C_MainCharacter_MainGame::Init(Math::Vector2 A_Position)
 	// 攻撃の吹っ飛ばし力
 		M_Entity.MS_KnockbackPower = 20;
 	// 体力
-		M_Entity.MS_HP = 30;
+		M_Entity.MS_HP = 10;
 	// 攻撃力
 		M_Entity.MS_Power = 1;
 	// 生存している状態にする
@@ -49,6 +49,8 @@ void C_MainCharacter_MainGame::Init(Math::Vector2 A_Position)
 		M_Entity.MSF_DamageStiffness = false;
 	// 最初は誰とも接触していないのでノックバックも無し
 		M_Entity.MSF_Knockback = false;
+	// 始めは旋回していない
+		M_Entity.MSF_OpponentTurningFlag = false;
 
 	// キー操作の機能が入ったクラスの実体を作成
 	CM_Control = std::make_shared<C_MainCharacter_KeyControl>();
@@ -58,30 +60,44 @@ void C_MainCharacter_MainGame::Init(Math::Vector2 A_Position)
 // 操作関連の更新内容はここに
 void C_MainCharacter_MainGame::Action()
 {
-	// ノックバック処理
-	if (M_Entity.MSF_Knockback)
-	{
-		// ノックバックさせたい(ノックバックする値が0じゃない)時のみ通す。
-		if (M_NowKnockback != 0)
-		{
-			// 現在の座標からノックバックしたい距離を計算する。
-			M_Entity.MS_Position.x += M_NowKnockback;
-			// ノックバックの距離を縮めていく。
-			M_NowKnockback *= M_Knockback_Subtract;
-			// ノックバックの値がある程度小さくなったら強制的に0にする。
-			if (M_NowKnockback > M_Knockback_Minimum) { M_NowKnockback = 0; }
-		}
-		else
-		{
-			// ノックバックさせ終えたらノックバックしないと伝える。
-			M_Entity.MSF_Knockback = false;
-		}
-	}
-	else
-	{
-		// ノックバック処理が終わった後にノックバックさせたい距離を代入する。
-		M_NowKnockback = M_KnockbackDistance;
-	}
+	//// ノックバック処理
+	//if (M_Entity.MSF_Knockback)
+	//{
+	//	// ノックバックさせたい(ノックバックする値が0じゃない)時のみ通す。
+	//	if (M_NowKnockback != 0)
+	//	{
+	//		// 旋回していなければ左に弾かれる
+	//		if (!M_Entity.MSF_OpponentTurningFlag)
+	//		{
+	//			// 現在の座標からノックバックしたい距離を計算する。
+	//			M_Entity.MS_Position.x += M_NowKnockback;
+	//			// ノックバックの距離を縮めていく。
+	//			M_NowKnockback *= M_Knockback_Subtract;
+	//			// ノックバックの値がある程度小さくなったら強制的に0にする。
+	//			if (M_NowKnockback > M_Knockback_Minimum_Left) { M_NowKnockback = 0; }
+	//		}
+	//		// 旋回していれば右に弾かれる
+	//		else
+	//		{
+	//			// 現在の座標からノックバックしたい距離を計算する。
+	//			M_Entity.MS_Position.x -= M_NowKnockback;
+	//			// ノックバックの距離を縮めていく。
+	//			M_NowKnockback *= M_Knockback_Subtract;
+	//			// ノックバックの値がある程度小さくなったら強制的に0にする。
+	//			if (-M_NowKnockback < M_Knockback_Minimum_Right) { M_NowKnockback = 0; }
+	//		}
+	//	}
+	//	else
+	//	{
+	//		// ノックバックさせ終えたらノックバックしないと伝える。
+	//		M_Entity.MSF_Knockback = false;
+	//	}
+	//}
+	//else
+	//{
+	//	// ノックバック処理が終わった後にノックバックさせたい距離を代入する。
+	//	M_NowKnockback = M_KnockbackDistance;
+	//}
 
 	// 現在座標にベクトルを足して弾くように移動させる。
 	M_Entity.MS_Position += M_Entity.MS_KnockbackVector;

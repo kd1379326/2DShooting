@@ -52,7 +52,7 @@ public:
 	// ENTER押し続けて連続でシーン遷移しないようにフラグで管理する。
 	bool MF_Stop_ContinuitySceneTransition;
 
-	float a = 1.0f;
-	float d = 0.1f;
+	float M_Alpha = 1.0f;
+	float M_Delta = 0.1f;
 
 };

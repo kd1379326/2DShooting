@@ -1,7 +1,7 @@
 #include "EntityBase.h"
 
 // èâä˙âªì‡óeÇÕÇ±Ç±Ç…
-void C_EntityBase_MainGame::Init(Math::Vector2 A_Position)
+void C_EntityBase_MainGame::Init(Math::Vector2 A_Position, bool AF_Turning)
 {
 
 }
@@ -69,4 +69,9 @@ void C_EntityBase_MainGame::ApplyKnockback(Math::Vector2 A_Dir, float A_Power)
 {
 	M_Entity.MS_KnockbackVector.x = A_Dir.x * A_Power;
 	M_Entity.MS_KnockbackVector.y = A_Dir.y * A_Power;
+}
+
+void C_EntityBase_MainGame::ApplyKnockbackBullet(Math::Vector2 A_Dir, float A_Power)
+{
+	M_Entity.MS_KnockbackVector.x = A_Dir.x * A_Power;
 }

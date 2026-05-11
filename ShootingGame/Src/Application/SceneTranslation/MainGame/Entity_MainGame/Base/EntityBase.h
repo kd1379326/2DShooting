@@ -11,7 +11,7 @@ public:
 
 	// 機能が全派生クラス共通なら通常の関数、派生クラスによって機能が違うなら純粋仮想関数を使う。
 	// 初期化
-	virtual void Init(Math::Vector2 A_Position = {0, 0})	= 0;
+	virtual void Init(Math::Vector2 A_Position = {0, 0}, bool AF_Turning = {false}) = 0;
 	// 操作の更新
 	virtual void Action()									= 0;
 	// 更新内容
@@ -37,13 +37,16 @@ public:
 	bool			Getter_DeleteFlag()	{ return M_Entity.MSF_Delete; }
 	// 硬直しているかどうか(しているtrue：していないfalse)
 	bool			Getter_DamageStiffnessFlag() { return M_Entity.MSF_DamageStiffness; }
+	// 旋回するか
+	bool			Getter_TurningFlag() { return M_Entity.MSF_TurningFlag; }
 
 	// 値を入れるセッター
 	// やられた時にfalseをここに入れる。
 	void Setter_AliveFlag(bool A_Alive) { M_Entity.MSF_Alive = A_Alive; }
 	// ノックバックさせる時にtrueを入れる
 	void Setter_KnockbackFlag(bool AF_Knockback) { M_Entity.MSF_Knockback = AF_Knockback; }
-
+	// 相手が旋回しているかどうか
+	void Setter_OpponentTurningFlag(bool AF_Turning) { M_Entity.MSF_OpponentTurningFlag = AF_Turning; }
 
 	// 当たり判定
 	bool HitEntity(Math::Vector2 A_Pos1, Math::Vector2 A_Pos2, Math::Vector2 A_Radius1, Math::Vector2 A_Radius2);
@@ -55,6 +58,7 @@ public:
 	void Knockback(float A_BackDirection, float A_KnockbackPower);
 	
 	void ApplyKnockback(Math::Vector2 A_Dir, float A_Power);
+	void ApplyKnockbackBullet(Math::Vector2 A_Dir, float A_Power);
 
 	// エンティティ(画像)を描画するために必要なもの(構造体)
 	struct S_EntityCharacter
@@ -105,6 +109,11 @@ public:
 			bool						MSF_DamageStiffness;
 		// ノックバックさせられるかのフラグ(するtrue：しないfalse)
 			bool						MSF_Knockback;
+		// 旋回するかのフラグ
+			bool						MSF_TurningFlag;
+		// 相手が旋回しているか
+			bool						MSF_OpponentTurningFlag;
+
 	};
 
 	// 構造体変数

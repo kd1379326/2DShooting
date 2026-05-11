@@ -61,7 +61,7 @@ void C_MainGameScene::Update()
 {
 	// 各キャラの操作系の更新処理
 	for (auto& Row : CM_Entity) { for (auto& Column : Row) { Column->Action(); } }
-
+	
 	// 当たり判定の確認をここで行う。
 	Update_Entity_HitJudgment();
 
@@ -213,6 +213,7 @@ void C_MainGameScene::Update_Entity_HitJudgment_MainCharacter＆Bullet_Enemy1()
 	{
 		for (auto& Column2 : CM_Entity[C_MainGameScene::E_EntityNumber::ME_Bullet_Enemy1])
 		{
+			
 			// もし既にやられた判定だったら当たり判定の確認をさせない。
 			if (!Column1->Getter_AliveFlag() || !Column2->Getter_AliveFlag()) continue;
 			if (C_HitJudgment::Instance().HitJudgment(Column1->Getter_MyPosition(), Column1->Getter_Radius(), Column2->Getter_MyPosition(), Column2->Getter_Radius()) == true)
@@ -223,6 +224,24 @@ void C_MainGameScene::Update_Entity_HitJudgment_MainCharacter＆Bullet_Enemy1()
 
 				// ノックバック処理
 				Column1->Setter_KnockbackFlag(true);
+				Math::Vector2 KnockDir = Column2->Getter_MyPosition() - Column1->Getter_MyPosition();
+				float Length = KnockDir.Length();
+
+				if (Length > 0.0f)
+				{
+					KnockDir.Normalize();
+					Column2->ApplyKnockbackBullet(KnockDir, 20.0f);
+				}
+
+				KnockDir = Column1->Getter_MyPosition() - Column2->Getter_MyPosition();
+				Length = KnockDir.Length();
+
+				if (Length > 0.0f)
+				{
+					KnockDir.Normalize();
+					Column1->ApplyKnockbackBullet(KnockDir, 20.0f);
+				}
+
 			}
 		}
 	}
@@ -263,6 +282,7 @@ void C_MainGameScene::Update_Entity_HitJudgment_Bullet_MainCharacter＆Bullet_Ene
 	// 接触している(戻り値がtrue)場合はお互いの生存フラグを折る(やられた判定にさせる)。
 	for (auto& Column1 : CM_Entity[C_MainGameScene::E_EntityNumber::ME_Bullet_MainCharacter])
 	{
+		
 		for (auto& Column2 : CM_Entity[C_MainGameScene::E_EntityNumber::ME_Bullet_Enemy1])
 		{
 			// もし既にやられた判定だったら当たり判定の確認をさせない。
@@ -270,6 +290,25 @@ void C_MainGameScene::Update_Entity_HitJudgment_Bullet_MainCharacter＆Bullet_Ene
 			// 当たり判定を行う関数に座標や半径を渡す。
 			if (C_HitJudgment::Instance().HitJudgment(Column1->Getter_MyPosition(), Column1->Getter_Radius(), Column2->Getter_MyPosition(), Column2->Getter_Radius()) == true)
 			{
+				
+				// ノックバックの方向を知る為旋回しているか教える
+				Math::Vector2 KnockDir = Column2->Getter_MyPosition() - Column1->Getter_MyPosition();
+				float Length = KnockDir.Length();
+
+				if (Length > 0.0f)
+				{
+					KnockDir.Normalize();
+					Column2->ApplyKnockbackBullet(KnockDir, 40.0f);
+				}
+
+				KnockDir = Column1->Getter_MyPosition() - Column2->Getter_MyPosition();
+				Length = KnockDir.Length();
+
+				if (Length > 0.0f)
+				{
+					KnockDir.Normalize();
+					Column1->ApplyKnockbackBullet(KnockDir, 40.0f);
+				}
 				// 攻撃力分体力を削る
 				Column1->Damage(Column2->Getter_Power());
 				Column2->Damage(Column1->Getter_Power());
@@ -368,7 +407,7 @@ void C_MainGameScene::PreUpdate_CreateBullet()
 		{
 			// 弾の実体を作成し、初期化する。
 			CM_Entity[C_MainGameScene::E_EntityNumber::ME_Bullet_Enemy1].push_back(std::make_unique<C_Bullet_Enemy1>());
-			CM_Entity[C_MainGameScene::E_EntityNumber::ME_Bullet_Enemy1].back()->Init(Column->Getter_MyPosition());
+			CM_Entity[C_MainGameScene::E_EntityNumber::ME_Bullet_Enemy1].back()->Init(Column->Getter_MyPosition(), Column->Getter_TurningFlag());
 		}
 	}
 }

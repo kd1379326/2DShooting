@@ -23,7 +23,7 @@ C_Enemy1_MainGame::~C_Enemy1_MainGame()
 }
 
 // 初期化内容はここに
-void C_Enemy1_MainGame::Init(Math::Vector2 A_Position)
+void C_Enemy1_MainGame::Init(Math::Vector2 A_Position, bool AF_Turning)
 {
 	// 画像のパス(在処)を伝える
 		M_Entity.MS_Texture.Load("Texture/MainCharacter/MainCharacter仮.png");
@@ -51,6 +51,8 @@ void C_Enemy1_MainGame::Init(Math::Vector2 A_Position)
 		M_Entity.MS_KnockbackPower = 20;
 	// 体力
 		M_Entity.MS_HP = 3;
+	// 角度
+		M_Entity.MS_Rotate = 90;
 	// 攻撃力
 		M_Entity.MS_Power = 1;
 	// 生存している状態にする
@@ -61,7 +63,8 @@ void C_Enemy1_MainGame::Init(Math::Vector2 A_Position)
 		M_Entity.MSF_DamageStiffness = false;
 	// 最初は誰とも接触していないのでノックバックも無し
 		M_Entity.MSF_Knockback = false;
-
+	// 始めは旋回しない
+		M_Entity.MSF_TurningFlag = false;
 	// 操作処理を行うクラスのインスタンスを作成
 		if (!CMP_Control) { CMP_Control = std::make_shared<C_Enemy1_Move>(); }
 	// C_Enemy1_Moveの初期化
@@ -82,7 +85,7 @@ void C_Enemy1_MainGame::Action()
 void C_Enemy1_MainGame::Update()
 {
 	// 左端を超えたらもう画面内には戻らないので削除許可を出す。
-	if (M_Entity.MS_Position.x < (Scene::Instance().Getter_ScreenSize_Left() - M_Entity.MS_Radius.x)) { M_Entity.MSF_Delete = true; }
+	//if (M_Entity.MS_Position.x < (Scene::Instance().Getter_ScreenSize_Left() - M_Entity.MS_Radius.x)) { M_Entity.MSF_Delete = true; }
 
 	// 現在座標にベクトルを足して弾くように移動させる。
 	M_Entity.MS_Position += M_Entity.MS_KnockbackVector;
@@ -100,9 +103,13 @@ void C_Enemy1_MainGame::Update()
 	// やられた場合、削除フラグを立てる。
 	if (!M_Entity.MSF_Alive) { M_Entity.MSF_Delete = true; }
 
+	// 旋回する場合は反転させる
+	if (M_Entity.MSF_TurningFlag) { M_Entity.MS_Rotate = -90; }
+
+
 	// どこに描画するか座標情報を設定する。
 	M_Entity.MS_TranslationMatrix = Math::Matrix::CreateTranslation(M_Entity.MS_Position.x, M_Entity.MS_Position.y, 0);
-	M_Entity.MS_RotateMatrix = Math::Matrix::CreateRotationZ(DirectX::XMConvertToRadians(90));
+	M_Entity.MS_RotateMatrix = Math::Matrix::CreateRotationZ(DirectX::XMConvertToRadians(M_Entity.MS_Rotate));
 
 	// 描画の詳細をまとめる
 	M_Entity.MS_Matrix = M_Entity.MS_RotateMatrix * M_Entity.MS_TranslationMatrix;

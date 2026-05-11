@@ -20,7 +20,7 @@ C_Bullet_Enemy1::~C_Bullet_Enemy1()
 }
 
 // 初期化内容はここに
-void C_Bullet_Enemy1::Init(Math::Vector2 A_Position)
+void C_Bullet_Enemy1::Init(Math::Vector2 A_Position, bool AF_Turning)
 {
 	// 画像のパス(在処)を伝える
 		M_Entity.MS_Texture.Load("Texture/Star/EnemyBullet.png");
@@ -29,8 +29,8 @@ void C_Bullet_Enemy1::Init(Math::Vector2 A_Position)
 		M_Entity.MS_Position = A_Position;
 	// 移動量
 		M_Entity.MS_Move = { 0, 0 };
-	// 移動速度
-		M_Entity.MS_MoveSpeed = { 10, 10 };
+	if (!AF_Turning) { M_Entity.MS_MoveSpeed = { 10, 10 }; }
+	else { M_Entity.MS_MoveSpeed = { -10, -10 }; }
 	// 画像の切り取り範囲
 		M_Entity.MS_Rectangle = { 0, 0, 16, 16 };
 	// 画像の通常時の色(黒)
@@ -55,6 +55,8 @@ void C_Bullet_Enemy1::Init(Math::Vector2 A_Position)
 		M_Entity.MSF_DamageStiffness = false;
 	// 最初は誰とも接触していないのでノックバックも無し
 		M_Entity.MSF_Knockback = false;
+	// 放った敵が旋回しているか
+		M_Entity.MSF_TurningFlag = AF_Turning;
 }
 
 // 操作関連の更新内容はここに
@@ -106,7 +108,7 @@ void C_Bullet_Enemy1::ImGuiUpdate()
 // 弾の進行方向を反転させる
 void C_Bullet_Enemy1::DirectionInversion(bool AF_TurningFlag)
 {
-	if (AF_TurningFlag) { M_Entity.MS_Color_Normal *= -1; }
+	//if (AF_TurningFlag) { M_Entity.MS_Color_Normal *= -1; }
 }
 
 // このクラスの実体が削除された時に行う領域解放処理。

@@ -20,7 +20,7 @@ C_Bullet_MainCharacter::~C_Bullet_MainCharacter()
 }
 
 // 初期化内容はここに
-void C_Bullet_MainCharacter::Init(Math::Vector2 A_Position)
+void C_Bullet_MainCharacter::Init(Math::Vector2 A_Position, bool AF_Turning)
 {
 	// 画像のパス(在処)を伝える
 	M_Entity.MS_Texture.Load("Texture/MainCharacter/MainCharacterBullet.png");
@@ -61,7 +61,7 @@ void C_Bullet_MainCharacter::Init(Math::Vector2 A_Position)
 void C_Bullet_MainCharacter::Action()
 {
 	// 上に飛ばす処理
-	//移動量に移動速度を入れ、移動量を基に座標を更新させる。
+	// 移動量に移動速度を入れ、移動量を基に座標を更新させる。
 	M_Entity.MS_Move.x = M_Entity.MS_MoveSpeed.x;
 	M_Entity.MS_Position.x += M_Entity.MS_Move.x;
 

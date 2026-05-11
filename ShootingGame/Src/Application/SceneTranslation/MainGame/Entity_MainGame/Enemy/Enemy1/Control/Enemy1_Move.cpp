@@ -65,10 +65,10 @@ void C_Enemy1_Move::Move(C_EntityBase_MainGame::S_EntityCharacter& A_Entity)
 	// 条件１：左端を通り過ぎる(画面左端+半径分)
 	// 条件２：旋回フラグが立っていない
 
-	if ((A_Entity.MS_Position.x < (Scene::Instance().Getter_ScreenSize_Left() - A_Entity.MS_Radius.x - 100)) && !MF_TurningFlag) { MF_TurningFlag = true; }
+	if ((A_Entity.MS_Position.x < (Scene::Instance().Getter_ScreenSize_Left() - A_Entity.MS_Radius.x - 50)) && !A_Entity.MSF_TurningFlag) { A_Entity.MSF_TurningFlag = true; }
 
 	// 直線移動
-	if (!MF_TurningFlag)	{ A_Entity.MS_Move.x =  A_Entity.MS_MoveSpeed.x; }
+	if (!A_Entity.MSF_TurningFlag)	{ A_Entity.MS_Move.x =  A_Entity.MS_MoveSpeed.x; }
 	else					
 	{ 
 		// 旋回後用の移動速度を設定する。
@@ -110,5 +110,5 @@ void C_Enemy1_Move::Move(C_EntityBase_MainGame::S_EntityCharacter& A_Entity)
 	// 前に出てくる座標
 	// 条件１：X座標が指定の座標を越える
 	// 条件２：旋回する場合
-	if ((A_Entity.MS_Position.x > M_StopPosition) && MF_TurningFlag) { A_Entity.MS_Position.x = M_StopPosition; }
+	if ((A_Entity.MS_Position.x > M_StopPosition) && A_Entity.MSF_TurningFlag) { A_Entity.MS_Position.x = M_StopPosition; }
 }

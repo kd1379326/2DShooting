@@ -45,9 +45,9 @@ void C_TitleScene::Update()
 	// 条件２：シーン遷移のストッパーが外れている
 	if ((GetAsyncKeyState(VK_RETURN) & 0x8000) && (!MF_Stop_ContinuitySceneTransition)) { C_SceneManager::Instance().SetterNextScene(C_SceneManager::E_SceneType::ME_MainGame); }
 
-	if (a <= 0.3f) { d = 0.02f; }
-	if (a >= 1) { d = -0.02f; }
-	a += d;
+	if (M_Alpha <= 0.3f) { M_Delta = 0.02f; }
+	if (M_Alpha >= 1) { M_Delta = -0.02f; }
+	M_Alpha += M_Delta;
 
 	M_Title.MS_Matrix = Math::Matrix::CreateTranslation(0, 0, 0);
 	M_Logo.MS_Matrix = Math::Matrix::CreateTranslation(M_Logo.MS_Position.x, M_Logo.MS_Position.y, 0);
@@ -68,7 +68,7 @@ void C_TitleScene::DrawSprite()
 	SHADER.m_spriteShader.SetMatrix(M_Logo.MS_Matrix);
 	SHADER.m_spriteShader.DrawColorTex(&M_Logo.MS_Texture, Math::Rectangle{ 0, 0, 472, 119 }, Math::Color {1, 1, 1, 1 });
 	SHADER.m_spriteShader.SetMatrix(M_Press.MS_Matrix);
-	SHADER.m_spriteShader.DrawColorTex(&M_Press.MS_Texture, Math::Rectangle{ 0, 0, 845, 101 }, Math::Color {1, 1, 1, a });
+	SHADER.m_spriteShader.DrawColorTex(&M_Press.MS_Texture, Math::Rectangle{ 0, 0, 845, 101 }, Math::Color {1, 1, 1, M_Alpha });
 }
 
 // デバッグ画面に出したい内容はここに
