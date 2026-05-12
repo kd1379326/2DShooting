@@ -2,6 +2,8 @@
 
 #include "../../../../../Scene.h"
 
+#include "../MainCharacter.h"
+
 // このクラスが生成された時に動かしたい機能はここに
 C_MainCharacter_KeyControl::C_MainCharacter_KeyControl()
 {
@@ -42,14 +44,25 @@ void C_MainCharacter_KeyControl::MoveKeyControl(Math::Vector2& A_Position, Math:
 }
 
 // エンターキーが押されたときに弾を放って良いと合図する
-bool C_MainCharacter_KeyControl::ShootingPermission()
+int C_MainCharacter_KeyControl::ShootingPermission(bool& AF_Turning)
 {
 	if (M_NowCoolTime <= 0)
 	{
 		// キーが押されたら弾を撃つ許可を出し、押されていなければ許可しない。
-		if (GetAsyncKeyState(VK_SPACE) & 0x8000)	{ M_NowCoolTime = M_CoolTime; return true; }
-		else																{ return false; }
+		if (GetAsyncKeyState('X') & 0x8000)
+		{ 
+			M_NowCoolTime = M_CoolTime; 
+			AF_Turning = false;
+			return C_EntityBase_MainGame::E_BulletKind::ME_Above; 
+		}
+		else if (GetAsyncKeyState('Z') & 0x8000)	
+		{ 
+			M_NowCoolTime = M_CoolTime; 
+			AF_Turning = true;
+			return C_EntityBase_MainGame::E_BulletKind::ME_Above; 
+		}
+		else																{ return C_EntityBase_MainGame::E_BulletKind::ME_None; }
 	}
 	// クールタイムが終わっていなけらば無条件で許可無し。
-	else { return false; }
+	else { return C_EntityBase_MainGame::E_BulletKind::ME_None; }
 }

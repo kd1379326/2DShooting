@@ -65,6 +65,9 @@ void C_Enemy1_MainGame::Init(Math::Vector2 A_Position, bool AF_Turning)
 		M_Entity.MSF_Knockback = false;
 	// 始めは旋回しない
 		M_Entity.MSF_TurningFlag = false;
+	// ダメージを受けたか
+		M_Entity.MSF_Damage = false;
+
 	// 操作処理を行うクラスのインスタンスを作成
 		if (!CMP_Control) { CMP_Control = std::make_shared<C_Enemy1_Move>(); }
 	// C_Enemy1_Moveの初期化
@@ -133,7 +136,7 @@ void C_Enemy1_MainGame::ImGuiUpdate()
 }
 
 // 弾を撃つかどうか判断する
-bool C_Enemy1_MainGame::ShootBullet()
+int C_Enemy1_MainGame::ShootBullet()
 {
 	// 射撃用のクールタイムが無い且つエンターキーが押されたらtrueが返される。
 	return CMP_Control->ShootingPermission();

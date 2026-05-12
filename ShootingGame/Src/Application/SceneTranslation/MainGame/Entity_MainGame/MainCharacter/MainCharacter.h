@@ -26,7 +26,7 @@ public:
 	void ImGuiUpdate()						override;
 
 	// 弾を撃つかどうか判断する
-	bool ShootBullet()							override;
+	int ShootBullet()							override;
 
 	// ゲッター
 	// 現在の座標を返す。

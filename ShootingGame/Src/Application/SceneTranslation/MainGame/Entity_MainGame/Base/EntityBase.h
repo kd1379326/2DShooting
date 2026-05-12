@@ -22,7 +22,7 @@ public:
 	virtual void ImGuiUpdate()								= 0;
 
 	// 弾を撃つかどうか判断する
-	virtual bool ShootBullet()								= 0;
+	virtual int ShootBullet()								= 0;
 
 	// 値を知らせるゲッター
 	// 自身の現在地(座標)
@@ -87,6 +87,8 @@ public:
 			Math::Rectangle	MS_Rectangle;
 		// 画像の通常時の色
 			Math::Color			MS_Color_Normal;
+		// 画像の大きさ
+			float				MS_NormalSize;
 		// 角度
 			float						MS_Rotate;
 		// 残りの硬直時間
@@ -95,6 +97,11 @@ public:
 			float						MS_DamageStiffness_Time;
 		// 攻撃の吹っ飛ばし力
 			float						MS_KnockbackPower;
+		// アニメーション用
+			float MS_RectangleX;
+			float MS_DeathRectangleX;
+		// 死亡時のアニメーションカウント
+			float MS_DeathCount;
 		// 体力
 			int							MS_HP;
 		// 攻撃力
@@ -113,11 +120,30 @@ public:
 			bool						MSF_TurningFlag;
 		// 相手が旋回しているか
 			bool						MSF_OpponentTurningFlag;
+		// ダメージを受けたか
+			bool						MSF_Damage;
 
+	};
+
+	// 弾の種類
+	enum E_BulletKind
+	{
+		ME_None,
+		ME_Above,
+		ME_Back,
 	};
 
 	// 構造体変数
 	S_EntityCharacter M_Entity;
+
+	// ダメージ爆発
+	S_EntityCharacter M_Explosion_Damage;
+
+	// 瀕死の煙
+	S_EntityCharacter M_Smoke;
+
+	// 死亡爆発
+	S_EntityCharacter M_Explosion_Death;
 
 	// ノックバックする距離
 	int M_KnockbackDistance;

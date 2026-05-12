@@ -16,7 +16,7 @@ private:
 		// è„
 		static const int M_ScreenSize_Top		= 360;		
 		// â∫
-		static const int M_ScreenSize_Bottom = -360;	
+		static const int M_ScreenSize_Bottom = -300;	
 		// âE
 		static const int M_ScreenSize_Right	= 640;		
 		// ç∂

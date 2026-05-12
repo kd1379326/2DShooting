@@ -96,6 +96,9 @@ private:
 	// c‚è‚Ì“G‚P‚Ì”
 	int M_Enemy1_RemainingNumber = 30;
 
+	Math::Vector2 BulletUP = { 0, -3 };
+	//Math::Vector2 BulletDOWN = { 0, -12 };
+
 	// ‚»‚ê‚¼‚ê‚ÌƒLƒƒƒ‰‚ÌŠi”[êŠ(s)
 	enum E_EntityNumber
 	{

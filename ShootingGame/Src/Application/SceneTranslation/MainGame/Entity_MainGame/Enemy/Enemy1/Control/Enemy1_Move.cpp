@@ -52,10 +52,10 @@ bool C_Enemy1_Move::ShootingPermission()
 	{
 		// クールタイムをリセット
 		M_NowShootingCoolTime = M_ShootingCoolTime; 
-		return true;
+		return C_EntityBase_MainGame::E_BulletKind::ME_Above;;
 	}
 	// クールタイムが終わっていなけらば無条件で許可無し。
-	else { return false; }
+	else { return C_EntityBase_MainGame::E_BulletKind::ME_None;; }
 }
 
 // 移動処理
@@ -79,29 +79,29 @@ void C_Enemy1_Move::Move(C_EntityBase_MainGame::S_EntityCharacter& A_Entity)
 	A_Entity.MS_Position.x -= A_Entity.MS_Move.x;
 
 	// ノックバック処理
-	if (A_Entity.MSF_Knockback)
-	{
-		// ノックバックさせたい(ノックバックする値が0じゃない)時のみ通す。
-		if (M_NowKnockback > 0)
-		{
-			// 現在の座標からノックバックしたい距離を計算する。
-			A_Entity.MS_Position.x += M_NowKnockback;
-			// ノックバックの距離を縮めていく。
-			M_NowKnockback *= M_Knockback_Subtract;
-			// ノックバックの値がある程度小さくなったら強制的に0にする。
-			if (M_NowKnockback < M_Knockback_Minimum) { M_NowKnockback = 0; }
-		}
-		else
-		{
-			// ノックバックさせ終えたらノックバックしないと伝える。
-			A_Entity.MSF_Knockback = false;
-		}
-	}
-	else
-	{
-		// ノックバック処理が終わった後にノックバックさせたい距離を代入する。
-		M_NowKnockback = M_KnockbackDistance;
-	}
+	//if (A_Entity.MSF_Knockback)
+	//{
+	//	// ノックバックさせたい(ノックバックする値が0じゃない)時のみ通す。
+	//	if (M_NowKnockback > 0)
+	//	{
+	//		// 現在の座標からノックバックしたい距離を計算する。
+	//		A_Entity.MS_Position.x += M_NowKnockback;
+	//		// ノックバックの距離を縮めていく。
+	//		M_NowKnockback *= M_Knockback_Subtract;
+	//		// ノックバックの値がある程度小さくなったら強制的に0にする。
+	//		if (M_NowKnockback < M_Knockback_Minimum) { M_NowKnockback = 0; }
+	//	}
+	//	else
+	//	{
+	//		// ノックバックさせ終えたらノックバックしないと伝える。
+	//		A_Entity.MSF_Knockback = false;
+	//	}
+	//}
+	//else
+	//{
+	//	// ノックバック処理が終わった後にノックバックさせたい距離を代入する。
+	//	M_NowKnockback = M_KnockbackDistance;
+	//}
 
 	// 座標が画面端を超えた場合、端の座標と半径を計算して画面内に納まるよう固定する。
 	if ((A_Entity.MS_Position.y + A_Entity.MS_Radius.y) > SCENE.Getter_ScreenSize_Top())	{ A_Entity.MS_Position.y = (SCENE.Getter_ScreenSize_Top() - A_Entity.MS_Radius.y); }

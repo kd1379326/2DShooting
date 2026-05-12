@@ -8,7 +8,7 @@
 // メインキャラクター
 #include "Entity_MainGame/MainCharacter/MainCharacter.h"
 // メインキャラクターの弾
-#include "Entity_MainGame/Bullet/MainCharacter/Bullet_MainCharacter.h"
+#include "Entity_MainGame/Bullet/MainCharacter/BulletAbove_MainCharacter.h"
 // 敵１
 #include "Entity_MainGame/Enemy/Enemy1/Enemy1.h"
 // 敵１の弾
@@ -268,6 +268,23 @@ void C_MainGameScene::Update_Entity_HitJudgment_Enemy1＆Bullet_MainCharacter()
 
 				// ノックバック処理
 				Column1->Setter_KnockbackFlag(true);
+				Math::Vector2 KnockDir = Column2->Getter_MyPosition() - Column1->Getter_MyPosition();
+				float Length = KnockDir.Length();
+
+				if (Length > 0.0f)
+				{
+					KnockDir.Normalize();
+					Column2->ApplyKnockbackBullet(KnockDir, 20.0f);
+				}
+
+				KnockDir = Column1->Getter_MyPosition() - Column2->Getter_MyPosition();
+				Length = KnockDir.Length();
+
+				if (Length > 0.0f)
+				{
+					KnockDir.Normalize();
+					Column1->ApplyKnockbackBullet(KnockDir, 20.0f);
+				}
 
 			}
 		}
@@ -390,11 +407,18 @@ void C_MainGameScene::PreUpdate_CreateBullet()
 	// Updateループ処理はCM_Entityの要素の数だけ行うように指示している為、弾を生成するなら一回CM_Entity関連のループを抜ける必要がある。
 	for (auto& Column : CM_Entity[C_MainGameScene::E_EntityNumber::ME_MainCharacter])
 	{
-		if (Column->ShootBullet())
+		if (Column->ShootBullet() == C_EntityBase_MainGame::E_BulletKind::ME_Above)
 		{
 			// 弾の実体を作成し、初期化する。
-			CM_Entity[C_MainGameScene::E_EntityNumber::ME_Bullet_MainCharacter].push_back(std::make_unique<C_Bullet_MainCharacter>());
-			CM_Entity[C_MainGameScene::E_EntityNumber::ME_Bullet_MainCharacter].back()->Init(Column->Getter_MyPosition());
+			CM_Entity[C_MainGameScene::E_EntityNumber::ME_Bullet_MainCharacter].push_back(std::make_unique<C_BulletAbove_MainCharacter>());
+			CM_Entity[C_MainGameScene::E_EntityNumber::ME_Bullet_MainCharacter].back()->Init((Column->Getter_MyPosition() + BulletUP), Column->Getter_TurningFlag());
+
+		}
+		if (Column->ShootBullet() == C_EntityBase_MainGame::E_BulletKind::ME_Back)
+		{
+			// 弾の実体を作成し、初期化する。
+			CM_Entity[C_MainGameScene::E_EntityNumber::ME_Bullet_MainCharacter].push_back(std::make_unique<C_BulletAbove_MainCharacter>());
+			CM_Entity[C_MainGameScene::E_EntityNumber::ME_Bullet_MainCharacter].back()->Init(Column->Getter_MyPosition(), true);
 		}
 	}
 	// 必要数弾を生成したら放たれた弾の数を０に戻す。
@@ -403,11 +427,12 @@ void C_MainGameScene::PreUpdate_CreateBullet()
 	// 敵１の弾発射処理
 	for (auto& Column : CM_Entity[C_MainGameScene::E_EntityNumber::ME_Enemy1])
 	{
-		if (Column->ShootBullet())
+		if (Column->ShootBullet() == C_EntityBase_MainGame::E_BulletKind::ME_Above)
 		{
 			// 弾の実体を作成し、初期化する。
 			CM_Entity[C_MainGameScene::E_EntityNumber::ME_Bullet_Enemy1].push_back(std::make_unique<C_Bullet_Enemy1>());
-			CM_Entity[C_MainGameScene::E_EntityNumber::ME_Bullet_Enemy1].back()->Init(Column->Getter_MyPosition(), Column->Getter_TurningFlag());
+			CM_Entity[C_MainGameScene::E_EntityNumber::ME_Bullet_Enemy1].back()->Init((Column->Getter_MyPosition() + BulletUP), Column->Getter_TurningFlag());
+
 		}
 	}
 }
@@ -418,7 +443,7 @@ void C_MainGameScene::PostUpdate_ChangeResultScene()
 	// リザルトシーンに移りたいとSceneManager伝える。
 	// 残りの敵１がゼロになったらリザルトに移る。
 	if (M_Enemy1_RemainingNumber == 0) { C_SceneManager::Instance().SetterNextScene(C_SceneManager::E_SceneType::ME_Result); }
-	if (GetAsyncKeyState('Z') & 0x8000) { C_SceneManager::Instance().SetterNextScene(C_SceneManager::E_SceneType::ME_Result); }
+	
 }
 
 // ゲームオーバーに移る処理。

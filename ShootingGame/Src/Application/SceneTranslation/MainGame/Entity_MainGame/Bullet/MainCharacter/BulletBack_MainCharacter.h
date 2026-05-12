@@ -3,13 +3,13 @@
 // 基底クラス
 #include "../../Base/EntityBase.h"
 
-class C_Bullet_MainCharacter : public C_EntityBase_MainGame
+class C_BulletBack_MainCharacter : public C_EntityBase_MainGame
 {
 public:
 
 	// コンストラクタとデストラクタ
-	C_Bullet_MainCharacter();
-	~C_Bullet_MainCharacter()					override;
+	C_BulletBack_MainCharacter();
+	~C_BulletBack_MainCharacter()					override;
 
 	// 初期化内容
 	void Init(Math::Vector2 A_Position, bool AF_Turning)	override;
@@ -23,7 +23,7 @@ public:
 	void ImGuiUpdate()						override;
 
 	// 弾を撃つかどうか判断する
-	bool ShootBullet()							override { return false; }
+	int ShootBullet()							override { return C_EntityBase_MainGame::E_BulletKind::ME_None;; }
 
 
 private:

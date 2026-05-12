@@ -48,6 +48,7 @@ void C_EntityBase_MainGame::Damage(int A_DamageNumber)
 {
 	// 体力をダメージ分引いた値に置き換える。
 	M_Entity.MS_HP -= A_DamageNumber;
+	M_Entity.MSF_Damage = true;
 	// 体力が0未満にならないよう固定する。
 	if (M_Entity.MS_HP < 0) { M_Entity.MS_HP = 0; }
 }

@@ -18,7 +18,7 @@ public:
 	void MoveKeyControl(Math::Vector2& A_Position, Math::Vector2& A_Move, Math::Vector2& A_MoveSpeed, Math::Vector2& A_Radius);
 
 	// エンターキーが押されたときに弾を放って良いと合図する
-	bool ShootingPermission();
+	int ShootingPermission(bool& AF_Turning);
 
 
 
