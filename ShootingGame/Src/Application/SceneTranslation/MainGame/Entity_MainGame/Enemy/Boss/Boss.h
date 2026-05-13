@@ -41,6 +41,4 @@ private:
 
 	std::shared_ptr<C_Enemy1_Move> CMP_Control = nullptr;
 
-	float M_Anime = 0;
-
 };

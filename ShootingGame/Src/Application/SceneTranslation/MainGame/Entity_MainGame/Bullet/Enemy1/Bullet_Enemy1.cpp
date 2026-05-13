@@ -23,7 +23,7 @@ C_Bullet_Enemy1::~C_Bullet_Enemy1()
 void C_Bullet_Enemy1::Init(Math::Vector2 A_Position, bool AF_Turning)
 {
 	// 画像のパス(在処)を伝える
-		M_Entity.MS_Texture.Load("Texture/Blue Effect Bullet Impact Explosion 32x32.png");
+		M_Entity.MS_Texture.Load("Texture/Red Effect Bullet Impact Explosion 32x32.png");
 
 	// 画面サイズをSceneクラスから引っ張ってきて、ランダム値を返す関数の引数に置く。
 		M_Entity.MS_Position = A_Position;

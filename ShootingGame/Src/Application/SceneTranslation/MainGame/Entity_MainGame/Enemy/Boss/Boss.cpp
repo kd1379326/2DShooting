@@ -26,10 +26,10 @@ C_Enemy1_MainGame::~C_Enemy1_MainGame()
 void C_Enemy1_MainGame::Init(Math::Vector2 A_Position, bool AF_Turning)
 {
 	// ‰æ‘œ‚ÌƒpƒX(İˆ)‚ğ“`‚¦‚é
-		M_Entity.MS_Texture.Load("Texture/MainCharacter/Enemy.png");
-		M_Explosion_Damage.MS_Texture.Load("Texture/Red Effect Bullet Impact Explosion 32x32.png");
-		M_Smoke.MS_Texture.Load("Texture/Red Effect Bullet Impact Explosion 32x32.png");
-		M_Explosion_Death.MS_Texture.Load("Texture/Red Effect Bullet Impact Explosion 32x32.png");
+		M_Entity.MS_Texture.Load("Texture/MainCharacter/MainCharacter‰¼.png");
+		M_Explosion_Damage.MS_Texture.Load("Texture/Blue Effect Bullet Impact Explosion 32x32.png");
+		M_Smoke.MS_Texture.Load("Texture/Blue Effect Bullet Impact Explosion 32x32.png");
+		M_Explosion_Death.MS_Texture.Load("Texture/Blue Effect Bullet Impact Explosion 32x32.png");
 	// ”¼Œa‚ÌƒTƒCƒY
 		M_Entity.MS_Radius = { 32, 32 };
 
@@ -47,7 +47,7 @@ void C_Enemy1_MainGame::Init(Math::Vector2 A_Position, bool AF_Turning)
 			// ‰æ‘œ‚ÌØ‚èæ‚è”ÍˆÍ
 			M_Entity.MS_Rectangle = { 0, 0, 50, 50 };
 			// ‰æ‘œ‚Ì’Êí‚ÌF(İ’è‚È‚µ)
-			M_Entity.MS_Color_Normal = { 1, 1, 1, 1 };
+			M_Entity.MS_Color_Normal = { 1, 0, 0, 1 };
 			// c‚è‚Ìd’¼ŠÔ
 			M_Entity.MS_DamageStiffness_RemainingTime = 0;
 			// d’¼ŠÔ(•b~ƒtƒŒ[ƒ€)
@@ -252,11 +252,7 @@ void C_Enemy1_MainGame::Update()
 		if (std::abs(M_Entity.MS_KnockbackVector.y) < 1.0f) M_Entity.MS_KnockbackVector.y = 0.0f;
 	}
 
-	M_Anime += 0.5f;
-	if (M_Anime >= 6)
-	{
-		M_Anime = 0;
-	}
+
 
 
 
@@ -302,12 +298,10 @@ void C_Enemy1_MainGame::Draw()
 
 	if (M_Entity.MSF_Alive)
 	{
-		int Anime[6] = { 0, 52, 104, 156, 104, 52 };
-		Math::Rectangle RcEnemy = { Anime[(int)M_Anime], 0, 52, 64 };
 		// •`‰æî•ñ‚ğ“`‚¦‚é
 		KdShaderManager::GetInstance().m_spriteShader.SetMatrix(M_Entity.MS_Matrix);
 		// •`‰æˆ—
-		KdShaderManager::GetInstance().m_spriteShader.DrawColorTex(&M_Entity.MS_Texture, RcEnemy, M_Entity.MS_Color_Normal);
+		KdShaderManager::GetInstance().m_spriteShader.DrawColorTex(&M_Entity.MS_Texture, M_Entity.MS_Rectangle, M_Entity.MS_Color_Normal);
 	}
 
 	if (M_Entity.MSF_Alive && M_Entity.MSF_Damage)

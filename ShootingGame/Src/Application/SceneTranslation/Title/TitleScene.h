@@ -37,6 +37,7 @@ private:
 	S_Entity M_MainChara;
 
 	bool MF_StartFlag;
+	float M_Anime = 0;
 
 
 };

@@ -59,4 +59,6 @@ private:
 
 	bool M_NotDeath = false;
 
+	float M_Anime = 0;
+
 };

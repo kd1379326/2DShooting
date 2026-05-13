@@ -9,7 +9,7 @@ C_TitleScene::C_TitleScene()
 	M_Title.MS_Texture.Load("Texture/”wŒi‚P.png");
 	M_Logo.MS_Texture.Load("Texture/TitleLogo.png");
 	M_Press.MS_Texture.Load("Texture/TitleStart.png");
-	M_MainChara.MS_Texture.Load("Texture/MainCharacter/MainCharacter‰¼.png");
+	M_MainChara.MS_Texture.Load("Texture/MainCharacter/MainCharacter.png");
 	M_Title.MS_Position = { 0, 0 };
 	M_Logo.MS_Position = { 640 + 385, 125 };
 	M_Press.MS_Position = { 640 + 385, -200 };
@@ -60,6 +60,12 @@ void C_TitleScene::Update()
 		M_Alpha += M_Delta;
 	}
 
+	M_Anime += 0.5f;
+	if (M_Anime >= 6)
+	{
+		M_Anime = 0;
+	}
+
 	M_Press.MS_Position.x -= 20;
 	if ((M_Press.MS_Position.x < 0) && !MF_StartFlag) { M_Press.MS_Position.x = 0; }
 
@@ -92,8 +98,11 @@ void C_TitleScene::DrawSprite()
 	SHADER.m_spriteShader.DrawColorTex(&M_Logo.MS_Texture, Math::Rectangle{ 0, 0, 770, 178 }, Math::Color {1, 1, 1, 1 });
 	SHADER.m_spriteShader.SetMatrix(M_Press.MS_Matrix);
 	SHADER.m_spriteShader.DrawColorTex(&M_Press.MS_Texture, Math::Rectangle{ 0, 0, 398, 80 }, Math::Color {1, 1, 1, M_Alpha });
+
+	int Anime[6] = { 0, 52, 104, 156, 104, 52 };
+	Math::Rectangle RcMainChara = { Anime[(int)M_Anime], 0, 52, 64 };
 	SHADER.m_spriteShader.SetMatrix(M_MainChara.MS_Matrix);
-	SHADER.m_spriteShader.DrawColorTex(&M_MainChara.MS_Texture, Math::Rectangle{ 0, 0, 50, 50 }, Math::Color {1, 1, 1, 1 });
+	SHADER.m_spriteShader.DrawColorTex(&M_MainChara.MS_Texture, RcMainChara, Math::Color {1, 1, 1, 1 });
 }
 
 // ƒfƒoƒbƒO‰æ–Ê‚Éo‚µ‚½‚¢“à—e‚Í‚±‚±‚É

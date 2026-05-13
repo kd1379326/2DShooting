@@ -100,6 +100,9 @@
     <Filter Include="Src\Application\SceneTranslation\MainGame\Entity_MainGame\Enemy\Enemy1\Control">
       <UniqueIdentifier>{4180efb7-28fd-4d9c-8a3c-0a57f1026c06}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Src\Application\SceneTranslation\MainGame\Entity_MainGame\Enemy\Boss">
+      <UniqueIdentifier>{f56c656e-22f7-468e-abac-797b4d00e43c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Pch.h">

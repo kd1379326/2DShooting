@@ -8,10 +8,10 @@
 // このクラスが生成された時に動かしたいものをここに(コンストラクタ)
 C_MainCharacter_MainGame::C_MainCharacter_MainGame()
 {
-	M_Entity.MS_Texture.Load("Texture/MainCharacter/MainCharacter仮.png");
-	M_Explosion_Damage.MS_Texture.Load("Texture/Red Effect Bullet Impact Explosion 32x32.png");
-	M_Smoke.MS_Texture.Load("Texture/Red Effect Bullet Impact Explosion 32x32.png");
-	M_Explosion_Death.MS_Texture.Load("Texture/Red Effect Bullet Impact Explosion 32x32.png");
+	M_Entity.MS_Texture.Load("Texture/MainCharacter/MainCharacter.png");
+	M_Explosion_Damage.MS_Texture.Load("Texture/Blue Effect Bullet Impact Explosion 32x32.png");
+	M_Smoke.MS_Texture.Load("Texture/Blue Effect Bullet Impact Explosion 32x32.png");
+	M_Explosion_Death.MS_Texture.Load("Texture/Blue Effect Bullet Impact Explosion 32x32.png");
 }
 
 // このクラスが削除される時に動かしたいものをここに(デストラクタ)
@@ -35,7 +35,7 @@ void C_MainCharacter_MainGame::Init(Math::Vector2 A_Position, bool AF_Turning)
 		// 半径
 		M_Entity.MS_Radius = { 32, 32 };
 		// 画像の切り取り範囲
-		M_Entity.MS_Rectangle = { 0, 0, 50, 50 };
+		M_Entity.MS_Rectangle = { (1 + 52 * 0), 0, 52, 64 };
 		// 通常時の色
 		M_Entity.MS_Color_Normal = { 1, 1, 1, 1.0f };
 		// 残りの硬直時間
@@ -250,6 +250,12 @@ void C_MainCharacter_MainGame::Update()
 	if (!M_Entity.MSF_Alive) { M_MainCharaEnd--; }
 	if (M_MainCharaEnd <= 0) { M_Entity.MSF_Delete = true; }
 
+	M_Anime += 0.5f;
+	if (M_Anime >= 6)
+	{
+		M_Anime = 0;
+	}
+
 	// 表示したい座標を設定する
 	if (M_Entity.MSF_Alive)
 	{
@@ -288,10 +294,11 @@ void C_MainCharacter_MainGame::Draw()
 	if (M_Entity.MSF_Alive)
 	{
 		// 画像の切り取り範囲
-		M_Explosion_Damage.MS_Rectangle = { 0, 0, 50, 50 };
+		int Anime[6] = { 0, 52, 104, 156, 104, 52 };
+		Math::Rectangle RcMainChara = { Anime[(int)M_Anime], 0, 52, 64 };
 
 		SHADER.m_spriteShader.SetMatrix(M_Entity.MS_Matrix);
-		SHADER.m_spriteShader.DrawColorTex(&M_Entity.MS_Texture, M_Entity.MS_Rectangle, M_Entity.MS_Color_Normal);
+		SHADER.m_spriteShader.DrawColorTex(&M_Entity.MS_Texture, RcMainChara, M_Entity.MS_Color_Normal);
 	}
 
 
