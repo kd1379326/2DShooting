@@ -3,6 +3,8 @@
 // 操作関連のクラス
 #include "Control/KeyControl.h"
 
+#include "../../../../Scene.h"
+
 // このクラスが生成された時に動かしたいものをここに(コンストラクタ)
 C_MainCharacter_MainGame::C_MainCharacter_MainGame()
 {
@@ -27,7 +29,7 @@ void C_MainCharacter_MainGame::Init(Math::Vector2 A_Position, bool AF_Turning)
 		// 座標
 		M_Entity.MS_Position = { -500, 0 };
 		// 移動速度
-		M_Entity.MS_MoveSpeed = { 15, 15 };
+		M_Entity.MS_MoveSpeed = { 10, 10 };
 		// 移動量
 		M_Entity.MS_Move = { 0, 0 };
 		// 半径
@@ -50,7 +52,7 @@ void C_MainCharacter_MainGame::Init(Math::Vector2 A_Position, bool AF_Turning)
 		// 死亡時のアニメーションカウント
 		M_Entity.MS_DeathCount = 0;
 		// 体力
-		M_Entity.MS_HP = 3;
+		M_Entity.MS_HP = 30;
 		// 攻撃力
 		M_Entity.MS_Power = 2;
 		// 生存している状態にする
@@ -257,8 +259,17 @@ void C_MainCharacter_MainGame::Action()
 		if (std::abs(M_Entity.MS_KnockbackVector.x) < 1.0f) M_Entity.MS_KnockbackVector.x = 0.0f;
 		if (std::abs(M_Entity.MS_KnockbackVector.y) < 1.0f) M_Entity.MS_KnockbackVector.y = 0.0f;
 
-		// キー操作による移動機能
-		CM_Control->MoveKeyControl(M_Entity.MS_Position, M_Entity.MS_Move, M_Entity.MS_MoveSpeed, M_Entity.MS_Radius);
+		if (!M_Entity.MSF_Damage)
+		{
+			// キー操作による移動機能
+			CM_Control->MoveKeyControl(M_Entity.MS_Position, M_Entity.MS_Move, M_Entity.MS_MoveSpeed, M_Entity.MS_Radius);
+		}
+
+		// 座標が画面端を超えた場合、端の座標と半径を計算して画面内に納まるよう固定する。
+		if ((M_Entity.MS_Position.y + M_Entity.MS_Radius.y) > SCENE.Getter_ScreenSize_Top())	{ M_Entity.MS_Position.y = (SCENE.Getter_ScreenSize_Top()    - M_Entity.MS_Radius.y); }
+		if ((M_Entity.MS_Position.x - M_Entity.MS_Radius.x) < SCENE.Getter_ScreenSize_Left())	{ M_Entity.MS_Position.x = (SCENE.Getter_ScreenSize_Left()   + M_Entity.MS_Radius.x); }
+		if ((M_Entity.MS_Position.y - M_Entity.MS_Radius.y) < SCENE.Getter_ScreenSize_Bottom()) { M_Entity.MS_Position.y = (SCENE.Getter_ScreenSize_Bottom() + M_Entity.MS_Radius.y); }
+		if ((M_Entity.MS_Position.x + M_Entity.MS_Radius.x) > SCENE.Getter_ScreenSize_Right())	{ M_Entity.MS_Position.x = (SCENE.Getter_ScreenSize_Right()  - M_Entity.MS_Radius.x); }
 	}
 
 }

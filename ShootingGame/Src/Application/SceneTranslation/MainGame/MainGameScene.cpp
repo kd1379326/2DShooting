@@ -20,7 +20,7 @@
 // ‚±‚ÌƒNƒ‰ƒX‚ª¶¬‚³‚ê‚½Žž‚Éˆ—‚µ‚½‚¢“à—e‚Í‚±‚±‚É
 C_MainGameScene::C_MainGameScene()
 {
-	M_Back.MS_Texture.Load("Texture/”wŒi‚P.png");
+	M_Back.MS_Texture.Load("Texture/”wŒi‚Q.png");
 	M_Game.MS_Position = { 0,0 };
 	// ƒV[ƒ“‘JˆÚ‚³‚¹‚È‚¢‚æ‚¤ƒtƒ‰ƒO‚ð—§‚Ä‚éB
 	MF_Stop_ContinuitySceneTransition = true;
@@ -100,8 +100,8 @@ void C_MainGameScene::PostUpdate()
 // •`‰æˆ—‚Í‚±‚±‚É
 void C_MainGameScene::DrawSprite()
 {
-	SHADER.m_spriteShader.SetMatrix(M_Back.MS_Matrix);
-	SHADER.m_spriteShader.DrawColorTex(&M_Back.MS_Texture, Math::Rectangle{ 0, 0, 1280, 720 }, Math::Color{ 1, 1, 1, 1 });
+	//SHADER.m_spriteShader.SetMatrix(M_Back.MS_Matrix);
+	//SHADER.m_spriteShader.DrawColorTex(&M_Back.MS_Texture, Math::Rectangle{ 0, 0, 1280, 720 }, Math::Color{ 1, 1, 1, 1 });
 
 	// ŠeƒLƒƒƒ‰‚Ì•`‰æˆ—
 	for (auto& Row : CM_Entity) { for (auto& Column : Row) { Column->Draw(); } }
@@ -185,7 +185,7 @@ void C_MainGameScene::Update_Entity_HitJudgment_MainCharacter•Enemy1()
 				if (Length > 0.0f)
 				{
 					KnockDir.Normalize();
-					Column2->ApplyKnockback(KnockDir, 40.0f);
+					Column2->ApplyKnockback(KnockDir, 25.0f);
 				}
 
 				KnockDir = Column1->Getter_MyPosition() - Column2->Getter_MyPosition();
@@ -194,7 +194,7 @@ void C_MainGameScene::Update_Entity_HitJudgment_MainCharacter•Enemy1()
 				if (Length > 0.0f)
 				{
 					KnockDir.Normalize();
-					Column1->ApplyKnockback(KnockDir, 40.0f);
+					Column1->ApplyKnockback(KnockDir, 25.0f);
 				}
 
 

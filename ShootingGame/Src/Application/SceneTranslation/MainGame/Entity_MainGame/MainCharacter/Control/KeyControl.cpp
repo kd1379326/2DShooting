@@ -36,11 +36,7 @@ void C_MainCharacter_KeyControl::MoveKeyControl(Math::Vector2& A_Position, Math:
 	// 反映させたらキーを離した時に止まるよう0初期化させる。
 	A_Move = { 0, 0 };
 
-	// 座標が画面端を超えた場合、端の座標と半径を計算して画面内に納まるよう固定する。
-	if ((A_Position.y + A_Radius.y) > SCENE.Getter_ScreenSize_Top())			{ A_Position.y = (SCENE.Getter_ScreenSize_Top()		  - A_Radius.y); }
-	if ((A_Position.x -  A_Radius.x) < SCENE.Getter_ScreenSize_Left())			{ A_Position.x = (SCENE.Getter_ScreenSize_Left()		 + A_Radius.x); }
-	if ((A_Position.y -  A_Radius.y) < SCENE.Getter_ScreenSize_Bottom())	{ A_Position.y = (SCENE.Getter_ScreenSize_Bottom()	 + A_Radius.y); }
-	if ((A_Position.x + A_Radius.x) > SCENE.Getter_ScreenSize_Right())		{ A_Position.x = (SCENE.Getter_ScreenSize_Right()	  - A_Radius.x); }
+
 }
 
 // エンターキーが押されたときに弾を放って良いと合図する

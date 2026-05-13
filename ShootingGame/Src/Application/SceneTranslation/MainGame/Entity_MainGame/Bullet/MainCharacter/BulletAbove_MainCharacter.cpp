@@ -93,13 +93,28 @@ void C_BulletAbove_MainCharacter::Update()
 	// 体力が0になったらやられた判定にする。
 	if (M_Entity.MS_HP <= 0) { M_Entity.MSF_Alive = false; }
 
-	// イラストを傾ける
-	M_Entity.MS_RotateMatrix = Math::Matrix::CreateRotationZ(DirectX::XMConvertToRadians(M_Entity.MS_Rotate));
-	// どこに描画するか座標情報を設定する。
-	M_Entity.MS_TranslationMatrix = Math::Matrix::CreateTranslation(M_Entity.MS_Position.x, M_Entity.MS_Position.y, 0);
+	if (M_Entity.MSF_Alive)
+	{
+		// イラストを傾ける
+		M_Entity.MS_RotateMatrix = Math::Matrix::CreateRotationZ(DirectX::XMConvertToRadians(M_Entity.MS_Rotate));
+		// どこに描画するか座標情報を設定する。
+		M_Entity.MS_TranslationMatrix = Math::Matrix::CreateTranslation(M_Entity.MS_Position.x, M_Entity.MS_Position.y, 0);
 
-	// それぞれの描画情報を行列にまとめる
-	M_Entity.MS_Matrix = M_Entity.MS_RotateMatrix * M_Entity.MS_TranslationMatrix;
+		// それぞれの描画情報を行列にまとめる
+		M_Entity.MS_Matrix = M_Entity.MS_RotateMatrix * M_Entity.MS_TranslationMatrix;
+	}
+	if (!M_Entity.MSF_Alive)
+	{
+		M_Entity.MS_ScaleMatrix = Math::Matrix::CreateScale(2.5f);
+		// イラストを傾ける
+		M_Entity.MS_RotateMatrix = Math::Matrix::CreateRotationZ(DirectX::XMConvertToRadians(M_Entity.MS_Rotate));
+		// どこに描画するか座標情報を設定する。
+		M_Entity.MS_TranslationMatrix = Math::Matrix::CreateTranslation(M_Entity.MS_Position.x, M_Entity.MS_Position.y, 0);
+
+		// それぞれの描画情報を行列にまとめる
+		M_Entity.MS_Matrix = M_Entity.MS_ScaleMatrix * M_Entity.MS_RotateMatrix * M_Entity.MS_TranslationMatrix;
+	}
+
 
 	if (M_Entity.MSF_Alive) { M_Entity.MS_Rotate += 4; }
 	else { M_Entity.MS_Rotate = 0; }

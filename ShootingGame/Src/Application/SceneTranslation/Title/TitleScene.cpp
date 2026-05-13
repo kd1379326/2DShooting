@@ -63,8 +63,8 @@ void C_TitleScene::PostUpdate()
 void C_TitleScene::DrawSprite()
 {
 	//SHADER.m_spriteShader.DrawString(M_Title.MS_Position.x, M_Title.MS_Position.y, "Title", { 1.0f, 1.0f, 1.0f, 1.0f });
-	SHADER.m_spriteShader.SetMatrix(M_Title.MS_Matrix);
-	SHADER.m_spriteShader.DrawColorTex(&M_Title.MS_Texture, Math::Rectangle{ 0, 0, 1280, 720 }, Math::Color {1, 1, 1, 1 });
+	//SHADER.m_spriteShader.SetMatrix(M_Title.MS_Matrix);
+	//SHADER.m_spriteShader.DrawColorTex(&M_Title.MS_Texture, Math::Rectangle{ 0, 0, 1280, 720 }, Math::Color {1, 1, 1, 1 });
 	SHADER.m_spriteShader.SetMatrix(M_Logo.MS_Matrix);
 	SHADER.m_spriteShader.DrawColorTex(&M_Logo.MS_Texture, Math::Rectangle{ 0, 0, 472, 119 }, Math::Color {1, 1, 1, 1 });
 	SHADER.m_spriteShader.SetMatrix(M_Press.MS_Matrix);

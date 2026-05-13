@@ -6,7 +6,7 @@
 // ‚±‚ÌƒNƒ‰ƒX‚ª¶¬‚³‚ê‚½‚É“®‚©‚µ‚½‚¢‚à‚Ì‚ğ‚±‚±‚É(ƒRƒ“ƒXƒgƒ‰ƒNƒ^)
 C_ResultScene::C_ResultScene()
 {
-	M_Back.MS_Texture.Load("Texture/”wŒi‚P.png");
+	M_Back.MS_Texture.Load("Texture/”wŒi‚Q.png");
 	M_Logo.MS_Texture.Load("Texture/GameClear.png");
 	M_Press.MS_Texture.Load("Texture/ClearReturnTitle.png");
 	M_Back.MS_Position = { 0, 0 };
@@ -71,8 +71,8 @@ void C_ResultScene::DrawSprite()
 {
 	//SHADER.m_spriteShader.DrawString(M_Result.MS_Position.x, M_Result.MS_Position.y, "Result", { 1.0f, 1.0f, 1.0f, 1.0f });
 
-	SHADER.m_spriteShader.SetMatrix(M_Back.MS_Matrix);
-	SHADER.m_spriteShader.DrawTex(&M_Back.MS_Texture, Math::Rectangle{ 0, 0, 1280, 720 }, 1.0f);
+	//SHADER.m_spriteShader.SetMatrix(M_Back.MS_Matrix);
+	//SHADER.m_spriteShader.DrawTex(&M_Back.MS_Texture, Math::Rectangle{ 0, 0, 1280, 720 }, 1.0f);
 
 	SHADER.m_spriteShader.SetMatrix(M_Logo.MS_Matrix);
 	SHADER.m_spriteShader.DrawTex(&M_Logo.MS_Texture, Math::Rectangle{ 0, 0, 581, 124 }, 1.0f);

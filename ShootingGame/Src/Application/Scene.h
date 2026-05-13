@@ -20,7 +20,23 @@ private:
 		// âE
 		static const int M_ScreenSize_Right	= 640;		
 		// ç∂
-		static const int M_ScreenSize_Left		= -640;		
+		static const int M_ScreenSize_Left		= -640;	
+
+		KdTexture M_BackTex[4];
+		Math::Vector2 M_BackPos[4];
+		Math::Matrix M_BackMat[4];
+
+		KdTexture M_Star1Tex[3];
+		Math::Vector2 M_Star1Pos[3];
+		Math::Matrix M_Star1Mat[3];
+
+		KdTexture M_Star2Tex[3];
+		Math::Vector2 M_Star2Pos[3];
+		Math::Matrix M_Star2Mat[3];
+
+		KdTexture M_Star3Tex[3];
+		Math::Vector2 M_Star3Pos[3];
+		Math::Matrix M_Star3Mat[3];
 
 public:
 

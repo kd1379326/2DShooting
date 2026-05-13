@@ -20,7 +20,7 @@ C_GameOverScene::~C_GameOverScene()
 // èâä˙âªÇÕÇ±Ç±Ç≈çsÇ§ÅB
 void C_GameOverScene::Init()
 {
-	M_Back.MS_Texture.Load("Texture/îwåiÇP.png");
+	M_Back.MS_Texture.Load("Texture/îwåiÇQ.png");
 	M_Over.MS_Texture.Load("Texture/GameOverLogo.png");
 	M_Press.MS_Texture.Load("Texture/GameOverReturnTitle.png");
 
@@ -66,8 +66,8 @@ void C_GameOverScene::DrawSprite()
 {
 	//KdShaderManager::GetInstance().m_spriteShader.DrawString(M_GameOver.MS_Position.x, M_GameOver.MS_Position.y, "GameOver", Math::Color{ 1, 1, 1, 1 });
 
-	SHADER.m_spriteShader.SetMatrix(M_Back.MS_Matrix);
-	SHADER.m_spriteShader.DrawTex(&M_Back.MS_Texture, Math::Rectangle{ 0, 0, 1280, 720 }, 1.0f);
+	//SHADER.m_spriteShader.SetMatrix(M_Back.MS_Matrix);
+	//SHADER.m_spriteShader.DrawTex(&M_Back.MS_Texture, Math::Rectangle{ 0, 0, 1280, 720 }, 1.0f);
 
 	SHADER.m_spriteShader.SetMatrix(M_Over.MS_Matrix);
 	SHADER.m_spriteShader.DrawTex(&M_Over.MS_Texture, Math::Rectangle{ 0, 0, 447, 111 }, 1.0f);

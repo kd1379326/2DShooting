@@ -99,6 +99,9 @@ private:
 	Math::Vector2 BulletUP = { 0, -3 };
 	//Math::Vector2 BulletDOWN = { 0, -12 };
 
+	// 敵出現カウント
+
+
 	// それぞれのキャラの格納場所(行)
 	enum E_EntityNumber
 	{
