@@ -344,7 +344,7 @@ void C_Enemy1_MainGame::ImGuiUpdate()
 int C_Enemy1_MainGame::ShootBullet()
 {
 	// 射撃用のクールタイムが無い且つエンターキーが押されたらtrueが返される。
-	return CMP_Control->ShootingPermission();
+	return CMP_Control->ShootingPermission(M_Entity.MSF_Alive);
 }
 
 // このクラスの実体が削除された時に行う領域解放処理。

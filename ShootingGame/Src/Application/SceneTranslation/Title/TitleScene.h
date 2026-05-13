@@ -34,7 +34,9 @@ private:
 	S_Entity M_Title;
 	S_Entity M_Logo;
 	S_Entity M_Press;
+	S_Entity M_MainChara;
 
+	bool MF_StartFlag;
 
 
 };

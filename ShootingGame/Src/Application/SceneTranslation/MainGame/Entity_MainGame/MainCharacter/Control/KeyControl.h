@@ -18,7 +18,7 @@ public:
 	void MoveKeyControl(Math::Vector2& A_Position, Math::Vector2& A_Move, Math::Vector2& A_MoveSpeed, Math::Vector2& A_Radius);
 
 	// エンターキーが押されたときに弾を放って良いと合図する
-	int ShootingPermission(bool& AF_Turning);
+	int ShootingPermission(bool& AF_Turning, bool& AF_Alive);
 
 
 
@@ -27,6 +27,8 @@ private:
 	// 現在のクールタイムが入っている。
 	float M_NowCoolTime = 0;
 	// クールタイムの長さが入っている。
-	float M_CoolTime = 0.3f * 60;
+	float M_CoolTime = 0.4f * 60;
+
+	bool M_NotCool = false;
 
 };

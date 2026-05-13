@@ -3,6 +3,8 @@
 // シーン遷移を行うクラス
 #include "../SceneManager&State/SceneManager.h"
 
+#include "../../Scene.h"
+
 // このクラスが生成された時に動かしたいものをここに(コンストラクタ)
 C_ResultScene::C_ResultScene()
 {
@@ -10,10 +12,11 @@ C_ResultScene::C_ResultScene()
 	M_Logo.MS_Texture.Load("Texture/GameClear.png");
 	M_Press.MS_Texture.Load("Texture/ClearReturnTitle.png");
 	M_Back.MS_Position = { 0, 0 };
-	M_Logo.MS_Position = { 0, 250 };
-	M_Press.MS_Position = { 0, -200 };
+	M_Logo.MS_Position = { 640 + 407, 150 };
+	M_Press.MS_Position = { 640 + 407, -200 };
 	// シーン遷移させないようフラグを立てる。
 	MF_Stop_ContinuitySceneTransition = true;
+	MF_StartFlag = false;
 
 }
 
@@ -41,14 +44,24 @@ void C_ResultScene::PreUpdate()
 void C_ResultScene::Update()
 {
 	// 遷移後、ENTER押し続けた判定でこのシーンを飛ばされないようにキーを離すまでシーン遷移許可を出さない。
-	if (!(GetAsyncKeyState(VK_RETURN) & 0x8000)) { MF_Stop_ContinuitySceneTransition = false; }
+	if (!(GetAsyncKeyState('Z') & 0x8000)) { MF_Stop_ContinuitySceneTransition = false; }
 	// 条件１：ENTERキーが押された
 	// 条件２：シーン遷移のストッパーが外れている
-	if ((GetAsyncKeyState(VK_RETURN) & 0x8000) && (!MF_Stop_ContinuitySceneTransition)) { C_SceneManager::Instance().SetterNextScene(C_SceneManager::E_SceneType::ME_Title); }
+	if ((GetAsyncKeyState('Z') & 0x8000) && (!MF_Stop_ContinuitySceneTransition)) { MF_StartFlag = true; }
+	if (M_Logo.MS_Position.x < (-640 + -407)) { C_SceneManager::Instance().SetterNextScene(C_SceneManager::E_SceneType::ME_Title); }
 
-	if (M_Alpha <= 0.3f) { M_Delta = 0.02f; }
-	if (M_Alpha >= 1) { M_Delta = -0.02f; }
-	M_Alpha += M_Delta;
+	M_Logo.MS_Position.x -= 20;
+	if ((M_Logo.MS_Position.x < 0) && !MF_StartFlag) { M_Logo.MS_Position.x = 0; }
+
+	if (M_Logo.MS_Position.x == 0)
+	{
+		if (M_Alpha <= 0.3f) { M_Delta = 0.02f; }
+		if (M_Alpha >= 1) { M_Delta = -0.02f; }
+		M_Alpha += M_Delta;
+	}
+
+	M_Press.MS_Position.x -= 20;
+	if ((M_Press.MS_Position.x < 0) && !MF_StartFlag) { M_Press.MS_Position.x = 0; }
 
 	M_Back.MS_TranslationMatrix = Math::Matrix::CreateTranslation(M_Back.MS_Position.x, M_Back.MS_Position.y, 0);
 	M_Logo.MS_TranslationMatrix = Math::Matrix::CreateTranslation(M_Logo.MS_Position.x, M_Logo.MS_Position.y, 0);
@@ -75,17 +88,18 @@ void C_ResultScene::DrawSprite()
 	//SHADER.m_spriteShader.DrawTex(&M_Back.MS_Texture, Math::Rectangle{ 0, 0, 1280, 720 }, 1.0f);
 
 	SHADER.m_spriteShader.SetMatrix(M_Logo.MS_Matrix);
-	SHADER.m_spriteShader.DrawTex(&M_Logo.MS_Texture, Math::Rectangle{ 0, 0, 581, 124 }, 1.0f);
+	SHADER.m_spriteShader.DrawTex(&M_Logo.MS_Texture, Math::Rectangle{ 0, 0, 814, 166 }, 1.0f);
 
 	SHADER.m_spriteShader.SetMatrix(M_Press.MS_Matrix);
-	SHADER.m_spriteShader.DrawTex(&M_Press.MS_Texture, Math::Rectangle{ 0, 0, 1221, 124 }, M_Alpha);
+	SHADER.m_spriteShader.DrawTex(&M_Press.MS_Texture, Math::Rectangle{ 0, 0, 284, 89 }, M_Alpha);
+
 
 }
 
 // デバッグ画面に出したい内容はここに
 void C_ResultScene::ImGuiUpdate()
 {
-
+	ImGui::Text("HP : %d", SCENE.Getter_MainCharaHP());
 }
 
 // 解放処理

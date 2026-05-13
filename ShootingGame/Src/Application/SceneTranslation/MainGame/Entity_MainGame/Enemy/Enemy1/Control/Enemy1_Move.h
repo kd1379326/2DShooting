@@ -15,7 +15,7 @@ public:
 	// 更新処理
 	void Action(C_EntityBase_MainGame::S_EntityCharacter& A_Entity);
 	// 弾発射確認
-	bool ShootingPermission();
+	bool ShootingPermission(bool& AF_Alive);
 
 	// ゲッター
 	// 旋回フラグ

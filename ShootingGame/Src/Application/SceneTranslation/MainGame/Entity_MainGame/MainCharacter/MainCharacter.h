@@ -55,4 +55,8 @@ private:
 	// ノックバックさせたい距離の最小値
 	const float M_Knockback_Minimum_Right = 1.0f;
 
+	float M_MainCharaEnd = (3 * 60);
+
+	bool M_NotDeath = false;
+
 };

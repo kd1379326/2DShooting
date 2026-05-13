@@ -52,7 +52,7 @@ void C_MainCharacter_MainGame::Init(Math::Vector2 A_Position, bool AF_Turning)
 		// 死亡時のアニメーションカウント
 		M_Entity.MS_DeathCount = 0;
 		// 体力
-		M_Entity.MS_HP = 30;
+		M_Entity.MS_HP = 5;
 		// 攻撃力
 		M_Entity.MS_Power = 2;
 		// 生存している状態にする
@@ -210,44 +210,6 @@ void C_MainCharacter_MainGame::Init(Math::Vector2 A_Position, bool AF_Turning)
 // 操作関連の更新内容はここに
 void C_MainCharacter_MainGame::Action()
 {
-	//// ノックバック処理
-	//if (M_Entity.MSF_Knockback)
-	//{
-	//	// ノックバックさせたい(ノックバックする値が0じゃない)時のみ通す。
-	//	if (M_NowKnockback != 0)
-	//	{
-	//		// 旋回していなければ左に弾かれる
-	//		if (!M_Entity.MSF_OpponentTurningFlag)
-	//		{
-	//			// 現在の座標からノックバックしたい距離を計算する。
-	//			M_Entity.MS_Position.x += M_NowKnockback;
-	//			// ノックバックの距離を縮めていく。
-	//			M_NowKnockback *= M_Knockback_Subtract;
-	//			// ノックバックの値がある程度小さくなったら強制的に0にする。
-	//			if (M_NowKnockback > M_Knockback_Minimum_Left) { M_NowKnockback = 0; }
-	//		}
-	//		// 旋回していれば右に弾かれる
-	//		else
-	//		{
-	//			// 現在の座標からノックバックしたい距離を計算する。
-	//			M_Entity.MS_Position.x -= M_NowKnockback;
-	//			// ノックバックの距離を縮めていく。
-	//			M_NowKnockback *= M_Knockback_Subtract;
-	//			// ノックバックの値がある程度小さくなったら強制的に0にする。
-	//			if (-M_NowKnockback < M_Knockback_Minimum_Right) { M_NowKnockback = 0; }
-	//		}
-	//	}
-	//	else
-	//	{
-	//		// ノックバックさせ終えたらノックバックしないと伝える。
-	//		M_Entity.MSF_Knockback = false;
-	//	}
-	//}
-	//else
-	//{
-	//	// ノックバック処理が終わった後にノックバックさせたい距離を代入する。
-	//	M_NowKnockback = M_KnockbackDistance;
-	//}
 
 	if (M_Entity.MSF_Alive)
 	{
@@ -277,11 +239,16 @@ void C_MainCharacter_MainGame::Action()
 // 更新内容はここに
 void C_MainCharacter_MainGame::Update()
 {
+	if (GetAsyncKeyState('L') & 0x8000) { M_NotDeath = true; }
+
 	// キー操作クラスの更新処理
 	CM_Control->Update();
 
+	SCENE.Setter_MainCharaHP(M_Entity.MS_HP);
+
 	// やられた場合、削除フラグを立てる。
-	if (M_Entity.MS_DeathCount == (32 * 3.9f)) { M_Entity.MSF_Delete = true; }
+	if (!M_Entity.MSF_Alive) { M_MainCharaEnd--; }
+	if (M_MainCharaEnd <= 0) { M_Entity.MSF_Delete = true; }
 
 	// 表示したい座標を設定する
 	if (M_Entity.MSF_Alive)
@@ -316,7 +283,7 @@ void C_MainCharacter_MainGame::Update()
 void C_MainCharacter_MainGame::Draw()
 {
 	// 体力が0になったらやられた判定にする。
-	if (M_Entity.MS_HP <= 0) { M_Entity.MSF_Alive = false; }
+	if ((M_Entity.MS_HP <= 0) && !M_NotDeath) { M_Entity.MSF_Alive = false; }
 
 	if (M_Entity.MSF_Alive)
 	{
@@ -348,7 +315,7 @@ void C_MainCharacter_MainGame::Draw()
 	
 	if (!M_Entity.MSF_Alive && !M_Entity.MSF_Delete && M_Entity.MS_DeathCount < (32 * 3.9f))
 	{
-		M_Entity.MS_DeathCount += 5;
+		M_Entity.MS_DeathCount += 1;
 		if (M_Entity.MS_DeathCount >= (32 * 3.9f)) { M_Entity.MS_DeathCount = (32 * 3.9f); }
 		// 画像の切り取り範囲
 		M_Explosion_Death.MS_Rectangle = { (32 * 16) + (32 * (int)(M_Entity.MS_DeathCount / 32)), (32 * 12), 32, 32 };
@@ -370,7 +337,7 @@ void C_MainCharacter_MainGame::ImGuiUpdate()
 int C_MainCharacter_MainGame::ShootBullet()
 {
 	// 射撃用のクールタイムが無い且つエンターキーが押されたらtrueが返される。
-	return CM_Control->ShootingPermission(M_Entity.MSF_TurningFlag);
+	return CM_Control->ShootingPermission(M_Entity.MSF_TurningFlag, M_Entity.MSF_Alive);
 }
 
 // このクラスの実体が削除された時に行う領域解放処理。

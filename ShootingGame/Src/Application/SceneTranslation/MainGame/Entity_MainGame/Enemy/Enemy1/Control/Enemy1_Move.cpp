@@ -30,7 +30,7 @@ void C_Enemy1_Move::Init(C_EntityBase_MainGame::S_EntityCharacter& A_Entity)
 void C_Enemy1_Move::Action(C_EntityBase_MainGame::S_EntityCharacter& A_Entity)
 {
 	// 弾発射許可の処理
-	ShootingPermission();
+	ShootingPermission(A_Entity.MSF_Alive);
 
 	// 移動処理
 	Move(A_Entity);
@@ -46,16 +46,17 @@ void C_Enemy1_Move::Release()
 }
 
 // クールタイムが無くなれば弾を発射する
-bool C_Enemy1_Move::ShootingPermission()
+bool C_Enemy1_Move::ShootingPermission(bool& AF_Alive)
 {
+	if (!AF_Alive) return C_EntityBase_MainGame::E_BulletKind::ME_None;
 	if (M_NowShootingCoolTime <= 0)
 	{
 		// クールタイムをリセット
 		M_NowShootingCoolTime = M_ShootingCoolTime; 
-		return C_EntityBase_MainGame::E_BulletKind::ME_Above;;
+		return C_EntityBase_MainGame::E_BulletKind::ME_Above;
 	}
 	// クールタイムが終わっていなけらば無条件で許可無し。
-	else { return C_EntityBase_MainGame::E_BulletKind::ME_None;; }
+	else { return C_EntityBase_MainGame::E_BulletKind::ME_None; }
 }
 
 // 移動処理

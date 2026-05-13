@@ -22,21 +22,20 @@ private:
 		// ç∂
 		static const int M_ScreenSize_Left		= -640;	
 
-		KdTexture M_BackTex[4];
-		Math::Vector2 M_BackPos[4];
-		Math::Matrix M_BackMat[4];
+		static const int M_BackTexMAX = 4;
+		KdTexture M_BackTex[M_BackTexMAX];
+		Math::Vector2 M_BackPos[M_BackTexMAX];
+		Math::Matrix M_BackMat[M_BackTexMAX];
 
-		KdTexture M_Star1Tex[3];
-		Math::Vector2 M_Star1Pos[3];
-		Math::Matrix M_Star1Mat[3];
+		static const int M_StarNumMAX = 3;
+		static const int M_StarTexMAX = 3;
+		KdTexture M_StarTex[M_StarNumMAX][M_StarTexMAX];
+		Math::Vector2 M_StarPos[M_StarNumMAX][M_StarTexMAX];
+		Math::Matrix M_StarMat[M_StarNumMAX][M_StarTexMAX];
 
-		KdTexture M_Star2Tex[3];
-		Math::Vector2 M_Star2Pos[3];
-		Math::Matrix M_Star2Mat[3];
+	int M_MainCharaHP = 0;
 
-		KdTexture M_Star3Tex[3];
-		Math::Vector2 M_Star3Pos[3];
-		Math::Matrix M_Star3Mat[3];
+	int M_EnemyAliveNum = 0;
 
 public:
 
@@ -64,7 +63,15 @@ public:
 		// âE
 		int Getter_ScreenSize_Right()			{ return M_ScreenSize_Right; }		
 		// ç∂
-		int Getter_ScreenSize_Left()			{ return M_ScreenSize_Left; }		
+		int Getter_ScreenSize_Left()			{ return M_ScreenSize_Left; }
+
+
+		int Getter_MainCharaHP() { return M_MainCharaHP; }
+		int Getter_EnemyAliveNum() { return M_EnemyAliveNum; }
+
+		void Setter_MainCharaHP(int A_HP) { M_MainCharaHP = A_HP; }
+		void Setter_EnemyAliveNum(int A_AliveNum) { M_EnemyAliveNum = A_AliveNum; }
+
 
 private:
 

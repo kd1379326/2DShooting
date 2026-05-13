@@ -31,10 +31,10 @@ private:
 
 	S_Entity M_GameOver;
 	S_Entity M_Back;
-	S_Entity M_Over;
+	S_Entity M_Logo;
 	S_Entity M_Press;
 
-
+	bool MF_StartFlag;
 
 
 };
