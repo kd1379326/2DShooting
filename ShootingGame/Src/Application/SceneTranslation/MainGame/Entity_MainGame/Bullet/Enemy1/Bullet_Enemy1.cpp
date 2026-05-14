@@ -25,6 +25,8 @@ void C_Bullet_Enemy1::Init(Math::Vector2 A_Position, bool AF_Turning)
 	// 画像のパス(在処)を伝える
 		M_Entity.MS_Texture.Load("Texture/Red Effect Bullet Impact Explosion 32x32.png");
 
+		M_FinishSlide = 0;
+
 	// 画面サイズをSceneクラスから引っ張ってきて、ランダム値を返す関数の引数に置く。
 		M_Entity.MS_Position = A_Position;
 	// 移動量
@@ -94,6 +96,10 @@ void C_Bullet_Enemy1::Update()
 {
 	// 体力が0になったらやられた判定にする。
 	if (M_Entity.MS_HP <= 0) { M_Entity.MSF_Alive = false; }
+
+	if (!SCENE.Getter_MainCharaAlive() || (SCENE.Getter_EnemyAliveNum() <= 0)) { M_FinishSlide = -25; }
+	M_Entity.MS_Position.x += M_FinishSlide;
+
 	if (M_Entity.MSF_Alive)
 	{
 		// イラストを傾ける

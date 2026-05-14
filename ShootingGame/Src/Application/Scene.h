@@ -33,9 +33,13 @@ private:
 		Math::Vector2 M_StarPos[M_StarNumMAX][M_StarTexMAX];
 		Math::Matrix M_StarMat[M_StarNumMAX][M_StarTexMAX];
 
-	int M_MainCharaHP = 0;
+	int M_MainCharaHP = 1;
 
 	int M_EnemyAliveNum = 0;
+
+	bool M_MainCharaAlive = true;
+
+	bool M_MainCharaDelete = false;
 
 public:
 
@@ -68,10 +72,13 @@ public:
 
 		int Getter_MainCharaHP() { return M_MainCharaHP; }
 		int Getter_EnemyAliveNum() { return M_EnemyAliveNum; }
+		bool Getter_MainCharaAlive() { return M_MainCharaAlive; }
+		bool Getter_MainCharaDelete() { return M_MainCharaDelete; }
 
 		void Setter_MainCharaHP(int A_HP) { M_MainCharaHP = A_HP; }
 		void Setter_EnemyAliveNum(int A_AliveNum) { M_EnemyAliveNum = A_AliveNum; }
-
+		void Setter_MainCharaAlive(bool A_Alive) { M_MainCharaAlive = A_Alive; }
+		void Setter_MainCharaDelete(bool A_Delete) { M_MainCharaDelete = A_Delete; }
 
 private:
 

@@ -33,6 +33,10 @@ void C_Enemy1_MainGame::Init(Math::Vector2 A_Position, bool AF_Turning)
 	// ”¼Œa‚ÌƒTƒCƒY
 		M_Entity.MS_Radius = { 32, 32 };
 
+		M_LastEnemy = false;
+
+		M_FinishSlide = 0;
+
 		// M_Entity
 		{
 			// À•W(1280~720‚Ì”ÍˆÍ‚ÅoŒ»‚³‚¹‚é)
@@ -258,7 +262,8 @@ void C_Enemy1_MainGame::Update()
 		M_Anime = 0;
 	}
 
-
+	if (!SCENE.Getter_MainCharaAlive()) { M_FinishSlide = -10; }
+	M_Entity.MS_Position.x += M_FinishSlide;
 
 	// ù‰ñ‚·‚éê‡‚Í”½“]‚³‚¹‚é
 	if (M_Entity.MSF_TurningFlag) { M_Entity.MS_Rotate = -90; }
@@ -347,7 +352,8 @@ void C_Enemy1_MainGame::Draw()
 		// •`‰æ‚ÌÚ×‚ğ‚Ü‚Æ‚ß‚é
 		M_Explosion_Death.MS_Matrix = M_Explosion_Death.MS_ScaleMatrix * M_Explosion_Death.MS_TranslationMatrix;
 
-		M_Entity.MS_DeathCount += 5;
+		if (!M_LastEnemy) { M_Entity.MS_DeathCount += 5; }
+		if (M_LastEnemy) { M_Entity.MS_DeathCount += 1; }
 		if (M_Entity.MS_DeathCount >= (32 * 3.9f)) { M_Entity.MS_DeathCount = (32 * 3.9f); }
 		// ‰æ‘œ‚ÌØ‚èæ‚è”ÍˆÍ
 		M_Explosion_Death.MS_Rectangle = { (32 * 16) + (32 * (int)(M_Entity.MS_DeathCount / 32)), (32 * 12), 32, 32 };

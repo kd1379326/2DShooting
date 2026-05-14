@@ -97,15 +97,25 @@ private:
 	int M_ShootBulletNumber = 0;
 
 	// “G‚P‚Ì”‚ÌãŒÀ
-	const int M_Enemy1_MaxNumber = 10;
+	const int M_Enemy1_MaxNumber = 7;
+
+	float M_FinishSlide = 0;
+
+	float M_StartSlide = -10;
 
 	// c‚è‚Ì“G‚P‚Ì”
 	int M_Enemy1_RemainingNumber = 32;
 
-	int M_ChangeResultTime = 5 * 60;
+	int M_ChangeResultTime = 2 * 60;
+	int M_ChangeGameOverTime = 2 * 60;
+
+	float M_UIAlpha = 0;
+	float M_UIDelta = 0.05f;
 
 	Math::Vector2 BulletUP = { 0, -3 };
 	//Math::Vector2 BulletDOWN = { 0, -12 };
+
+	Math::Vector2 M_EntityRadius = { 32, 0 };
 
 	// “GoŒ»ƒJƒEƒ“ƒg
 	float M_SpownEnemy1Count = (5 * 60);
@@ -117,6 +127,7 @@ private:
 		ME_Enemy1,
 		ME_Bullet_MainCharacter,
 		ME_Bullet_Enemy1,
+		ME_Boss,
 		ME_Entity_KindNumber,
 	};
 

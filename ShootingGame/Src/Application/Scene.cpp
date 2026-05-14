@@ -136,6 +136,8 @@ void Scene::Update()
 // 初期化内容はここに
 void Scene::Init()
 {
+	ShowCursor(FALSE);
+
 	// 取り出す数値をシャッフルする。
 	srand(timeGetTime());
 

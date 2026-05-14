@@ -24,6 +24,8 @@ C_MainCharacter_MainGame::~C_MainCharacter_MainGame()
 // 初期化内容はここに
 void C_MainCharacter_MainGame::Init(Math::Vector2 A_Position, bool AF_Turning)
 {
+	M_FinishSlide = 0;
+
 	// M_Entity
 	{
 		// 座標
@@ -223,15 +225,21 @@ void C_MainCharacter_MainGame::Action()
 
 		if (!M_Entity.MSF_Damage)
 		{
-			// キー操作による移動機能
-			CM_Control->MoveKeyControl(M_Entity.MS_Position, M_Entity.MS_Move, M_Entity.MS_MoveSpeed, M_Entity.MS_Radius);
+			if (SCENE.Getter_EnemyAliveNum() > 0)
+			{
+				// キー操作による移動機能
+				CM_Control->MoveKeyControl(M_Entity.MS_Position, M_Entity.MS_Move, M_Entity.MS_MoveSpeed, M_Entity.MS_Radius);
+			}
 		}
 
-		// 座標が画面端を超えた場合、端の座標と半径を計算して画面内に納まるよう固定する。
-		if ((M_Entity.MS_Position.y + M_Entity.MS_Radius.y) > SCENE.Getter_ScreenSize_Top())	{ M_Entity.MS_Position.y = (SCENE.Getter_ScreenSize_Top()    - M_Entity.MS_Radius.y); }
-		if ((M_Entity.MS_Position.x - M_Entity.MS_Radius.x) < SCENE.Getter_ScreenSize_Left())	{ M_Entity.MS_Position.x = (SCENE.Getter_ScreenSize_Left()   + M_Entity.MS_Radius.x); }
-		if ((M_Entity.MS_Position.y - M_Entity.MS_Radius.y) < SCENE.Getter_ScreenSize_Bottom()) { M_Entity.MS_Position.y = (SCENE.Getter_ScreenSize_Bottom() + M_Entity.MS_Radius.y); }
-		if ((M_Entity.MS_Position.x + M_Entity.MS_Radius.x) > SCENE.Getter_ScreenSize_Right())	{ M_Entity.MS_Position.x = (SCENE.Getter_ScreenSize_Right()  - M_Entity.MS_Radius.x); }
+		if (SCENE.Getter_EnemyAliveNum() > 0)
+		{
+			// 座標が画面端を超えた場合、端の座標と半径を計算して画面内に納まるよう固定する。
+			if ((M_Entity.MS_Position.y + M_Entity.MS_Radius.y) > SCENE.Getter_ScreenSize_Top()) { M_Entity.MS_Position.y = (SCENE.Getter_ScreenSize_Top() - M_Entity.MS_Radius.y); }
+			if ((M_Entity.MS_Position.x - M_Entity.MS_Radius.x) < SCENE.Getter_ScreenSize_Left()) { M_Entity.MS_Position.x = (SCENE.Getter_ScreenSize_Left() + M_Entity.MS_Radius.x); }
+			if ((M_Entity.MS_Position.y - M_Entity.MS_Radius.y) < SCENE.Getter_ScreenSize_Bottom()) { M_Entity.MS_Position.y = (SCENE.Getter_ScreenSize_Bottom() + M_Entity.MS_Radius.y); }
+			if ((M_Entity.MS_Position.x + M_Entity.MS_Radius.x) > SCENE.Getter_ScreenSize_Right()) { M_Entity.MS_Position.x = (SCENE.Getter_ScreenSize_Right() - M_Entity.MS_Radius.x); }
+		}
 	}
 
 }
@@ -241,14 +249,24 @@ void C_MainCharacter_MainGame::Update()
 {
 	if (GetAsyncKeyState('L') & 0x8000) { M_NotDeath = true; }
 
-	// キー操作クラスの更新処理
-	CM_Control->Update();
+	if (SCENE.Getter_EnemyAliveNum() > 0)
+	{
+		// キー操作クラスの更新処理
+		CM_Control->Update();
+	}
 
 	SCENE.Setter_MainCharaHP(M_Entity.MS_HP);
+	SCENE.Setter_MainCharaAlive(M_Entity.MSF_Alive);
+
+	if ((SCENE.Getter_EnemyAliveNum() <= 0)) { M_FinishSlide = -10; }
+	M_Entity.MS_Position.x += M_FinishSlide;
 
 	// やられた場合、削除フラグを立てる。
 	if (!M_Entity.MSF_Alive) { M_MainCharaEnd--; }
-	if (M_MainCharaEnd <= 0) { M_Entity.MSF_Delete = true; }
+	if (M_MainCharaEnd <= 0)
+	{ 
+		M_Entity.MSF_Delete = true; 
+	}
 
 	M_Anime += 0.5f;
 	if (M_Anime >= 6)
@@ -283,6 +301,7 @@ void C_MainCharacter_MainGame::Update()
 	}
 
 
+
 }
 
 // 描画内容はここに(行列(Matrix等)はUpdateに含まれる)
@@ -301,7 +320,6 @@ void C_MainCharacter_MainGame::Draw()
 		SHADER.m_spriteShader.DrawColorTex(&M_Entity.MS_Texture, RcMainChara, M_Entity.MS_Color_Normal);
 	}
 
-
 	if (M_Entity.MSF_Alive && M_Entity.MSF_Damage)
 	{
 		M_Explosion_Damage.MS_DeathCount += 5;
@@ -319,7 +337,6 @@ void C_MainCharacter_MainGame::Draw()
 		}
 	}
 	
-	
 	if (!M_Entity.MSF_Alive && !M_Entity.MSF_Delete && M_Entity.MS_DeathCount < (32 * 3.9f))
 	{
 		M_Explosion_Death.MS_ScaleMatrix = Math::Matrix::CreateScale(M_Explosion_Death.MS_NormalSize);
@@ -335,7 +352,6 @@ void C_MainCharacter_MainGame::Draw()
 		SHADER.m_spriteShader.SetMatrix(M_Explosion_Death.MS_Matrix);
 		SHADER.m_spriteShader.DrawColorTex(&M_Explosion_Death.MS_Texture, M_Explosion_Death.MS_Rectangle, M_Explosion_Death.MS_Color_Normal);
 	}
-
 
 }
 

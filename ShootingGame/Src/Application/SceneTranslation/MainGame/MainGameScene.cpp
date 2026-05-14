@@ -79,6 +79,8 @@ void C_MainGameScene::PreUpdate()
 // 更新内容はここに(描画に使うMatrix(行列)の作成や画像の指定もここ)
 void C_MainGameScene::Update()
 {
+	SCENE.Setter_EnemyAliveNum(M_Enemy1_RemainingNumber);
+
 	if (GetAsyncKeyState('H') & 0x8000) { M_Enemy1_RemainingNumber = 1; }
 
 	// 各キャラの操作系の更新処理
@@ -86,8 +88,6 @@ void C_MainGameScene::Update()
 	
 	// 当たり判定の確認をここで行う。
 	Update_Entity_HitJudgment();
-
-	SCENE.Setter_EnemyAliveNum(M_Enemy1_RemainingNumber);
 
 	// 各キャラの更新処理
 	for (auto& Row : CM_Entity)
@@ -98,6 +98,46 @@ void C_MainGameScene::Update()
 			Column->Update(); 
 		} 
 	}
+
+	if ((CM_Entity[C_MainGameScene::E_EntityNumber::ME_Enemy1].size() != 0) && (M_Enemy1_RemainingNumber == 1))
+	{
+		CM_Entity[C_MainGameScene::E_EntityNumber::ME_Enemy1][0]->Setter_LastEnemy(true);
+	}
+
+	if (M_Enemy1_RemainingNumber <= 0) { M_ChangeResultTime--; }
+
+	if (!SCENE.Getter_MainCharaAlive() || M_Enemy1_RemainingNumber <= 0)
+	{ 
+		M_UIAlpha -= M_UIDelta;
+		if (M_UIAlpha < 0) { M_UIAlpha = 0; }
+		M_FinishSlide = -15; 
+	}
+	else
+	{
+		M_UIAlpha += M_UIDelta;
+		if (M_UIAlpha > 1) { M_UIAlpha = 1; }
+	}
+
+	if (CM_Entity[C_MainGameScene::E_EntityNumber::ME_Enemy1].size() != 0)
+	{
+		if (CM_Entity[C_MainGameScene::E_EntityNumber::ME_MainCharacter][0]->Getter_DeleteFlag())
+		{
+			M_ChangeGameOverTime--;
+		}
+	}
+
+	//M_UIUnder.MS_Position.x += M_FinishSlide;
+	//if (CM_Entity[C_MainGameScene::E_EntityNumber::ME_MainCharacter].size() != 0)
+	//{
+	//	for (int i = 0; i < CM_Entity[C_MainGameScene::E_EntityNumber::ME_MainCharacter][0]->Getter_HP(); i++)
+	//	{
+	//		M_UIMainCharaHP[i].MS_Position.x += M_FinishSlide;
+	//	}
+	//}
+	//for (int i = 0; i < M_Enemy1_RemainingNumber; i++)
+	//{
+	//	M_UIEnemyNum[i].MS_Position.x += M_FinishSlide;
+	//}
 
 	// 敵１の削除許可が出たら敵１の残りの数を減らす。
 	Update_Enemy1_RemainingNumber_Subtract();
@@ -146,21 +186,21 @@ void C_MainGameScene::DrawSprite()
 	for (auto& Row : CM_Entity) { for (auto& Column : Row) { Column->Draw(); } }
 
 	SHADER.m_spriteShader.SetMatrix(M_UIUnder.MS_Matrix);
-	SHADER.m_spriteShader.DrawTex(&M_UIUnder.MS_Texture, Math::Rectangle{ 0, 0, 1280, 128 }, 1.0f);
+	SHADER.m_spriteShader.DrawTex(&M_UIUnder.MS_Texture, Math::Rectangle{ 0, 0, 1280, 128 }, M_UIAlpha);
 
 	if (CM_Entity[C_MainGameScene::E_EntityNumber::ME_MainCharacter].size() != 0)
 	{
 		for (int i = 0; i < CM_Entity[C_MainGameScene::E_EntityNumber::ME_MainCharacter][0]->Getter_HP(); i++)
 		{
 			SHADER.m_spriteShader.SetMatrix(M_UIMainCharaHP[i].MS_Matrix);
-			SHADER.m_spriteShader.DrawColorTex(&M_UIMainCharaHP[i].MS_Texture, Math::Rectangle{ 0, 0, 6, 58 }, Math::Color{ 1, 1, 1, 1 });
+			SHADER.m_spriteShader.DrawColorTex(&M_UIMainCharaHP[i].MS_Texture, Math::Rectangle{ 0, 0, 6, 58 }, Math::Color{ 1, 1, 1, M_UIAlpha });
 		}
 	}
 
 	for (int i = 0; i < M_Enemy1_RemainingNumber; i++)
 	{
 		SHADER.m_spriteShader.SetMatrix(M_UIEnemyNum[i].MS_Matrix);
-		SHADER.m_spriteShader.DrawColorTex(&M_UIEnemyNum[i].MS_Texture, Math::Rectangle{ 0, 0, 6, 58 }, Math::Color{ 1, 1, 1, 1 });
+		SHADER.m_spriteShader.DrawColorTex(&M_UIEnemyNum[i].MS_Texture, Math::Rectangle{ 0, 0, 6, 58 }, Math::Color{ 1, 1, 1, M_UIAlpha });
 	}
 }
 
@@ -190,6 +230,8 @@ void C_MainGameScene::Release()
 // 当たり判定の処理。
 void C_MainGameScene::Update_Entity_HitJudgment()
 {
+	if (!SCENE.Getter_MainCharaAlive() || M_Enemy1_RemainingNumber <= 0) return;
+
 	// 接触しているかどうか調べる
 	// メインキャラと敵１
 	Update_Entity_HitJudgment_MainCharacter＆Enemy1();
@@ -300,9 +342,9 @@ void C_MainGameScene::Update_Entity_HitJudgment_Enemy1＆Bullet_MainCharacter()
 	// 敵１と弾の行から列を一つずつ取り出し、全通り見ていく。
 	// 座標と半径を渡し、接触しているか確認する。
 	// 接触している(戻り値がtrue)場合はお互いの生存フラグを折る(やられた判定にさせる)。
-	for (auto& Column1 : CM_Entity[C_MainGameScene::E_EntityNumber::ME_Enemy1])
+	for (auto& Column1 : CM_Entity[C_MainGameScene::E_EntityNumber::ME_Bullet_MainCharacter])
 	{
-		for (auto& Column2 : CM_Entity[C_MainGameScene::E_EntityNumber::ME_Bullet_MainCharacter])
+		for (auto& Column2 : CM_Entity[C_MainGameScene::E_EntityNumber::ME_Enemy1])
 		{
 			// もし既にやられた判定だったら当たり判定の確認をさせない。
 			if (!Column1->Getter_AliveFlag() || !Column2->Getter_AliveFlag()) continue;
@@ -393,8 +435,11 @@ void C_MainGameScene::Update_Enemy1_RemainingNumber_Subtract()
 		// 削除許可が出た時に敵１の残りの数を減らしていく。
 		if (Column->Getter_DeleteFlag())
 		{
-			M_Enemy1_RemainingNumber--;
-			SCENE.Setter_EnemyAliveNum(M_Enemy1_RemainingNumber);
+			if (M_Enemy1_RemainingNumber > 0)
+			{
+				M_Enemy1_RemainingNumber--;
+				SCENE.Setter_EnemyAliveNum(M_Enemy1_RemainingNumber);
+			}
 		}
 	}
 }
@@ -426,6 +471,7 @@ void C_MainGameScene::PreUpdate_CreateEntity()
 // 敵１のインスタンスを生成する関数。
 void C_MainGameScene::PreUpdate_CreateEnemy1()
 {
+	if (!SCENE.Getter_MainCharaAlive()) return;
 	// 条件１：ランダム値が出現可能な数値の場合
 	// 条件２：敵の数が上限に達していない(.size()だと添え字基準で現在出現している数が1つ少なくカウントされる)
 	// 条件３：残りの敵１の数を上回る数を出現させていない
@@ -448,7 +494,7 @@ void C_MainGameScene::PreUpdate_CreateEnemy1()
 			//		OutDistance = CM_Entity[C_MainGameScene::E_EntityNumber::ME_Enemy1][i]->Getter_Radius().y - CM_Entity[C_MainGameScene::E_EntityNumber::ME_Enemy1].back()->Getter_Radius().y;
 			//	}
 			//}
-			M_SpownEnemy1Count = (2.5f * 60);
+			M_SpownEnemy1Count = (2.8f * 60);
 		}
 	}
 	if ((M_SpownEnemy1Count == 0) && ((CM_Entity[C_MainGameScene::E_EntityNumber::ME_Enemy1].size() + 1) <= M_Enemy1_MaxNumber) && ((CM_Entity[C_MainGameScene::E_EntityNumber::ME_Enemy1].size() + 1) <= M_Enemy1_RemainingNumber))
@@ -457,13 +503,18 @@ void C_MainGameScene::PreUpdate_CreateEnemy1()
 		CM_Entity[C_MainGameScene::E_EntityNumber::ME_Enemy1].push_back(std::make_unique<C_Enemy1_MainGame>());
 		CM_Entity[C_MainGameScene::E_EntityNumber::ME_Enemy1].back()->Init();
 
-		M_SpownEnemy1Count = (2.5f * 60);
+		M_SpownEnemy1Count = (2.8f * 60);
+	}
+	if ((CM_Entity[C_MainGameScene::E_EntityNumber::ME_Enemy1].size() + 1) > M_Enemy1_MaxNumber)
+	{
+		M_SpownEnemy1Count = (2.8f * 60);
 	}
 }
 
 // 弾のインスタンスを生成する関数。
 void C_MainGameScene::PreUpdate_CreateBullet()
 {
+	if (!SCENE.Getter_MainCharaAlive()) return;
 	// メインキャラの弾発射処理
 	// Updateループ処理はCM_Entityの要素の数だけ行うように指示している為、弾を生成するなら一回CM_Entity関連のループを抜ける必要がある。
 	for (auto& Column : CM_Entity[C_MainGameScene::E_EntityNumber::ME_MainCharacter])
@@ -504,7 +555,7 @@ void C_MainGameScene::PostUpdate_ChangeResultScene()
 {
 	// リザルトシーンに移りたいとSceneManager伝える。
 	// 残りの敵１がゼロになったらリザルトに移る。
-	if (M_Enemy1_RemainingNumber == 0) { C_SceneManager::Instance().SetterNextScene(C_SceneManager::E_SceneType::ME_Result); }
+	if (M_ChangeResultTime == 0) { C_SceneManager::Instance().SetterNextScene(C_SceneManager::E_SceneType::ME_Result); }
 	
 }
 

@@ -35,7 +35,18 @@ private:
 	S_Entity M_Back;
 	S_Entity M_Logo;
 	S_Entity M_Press;
+	S_Entity M_Rank;
+	S_Entity M_MainChara;
+	S_Entity M_RankC;
+
+	static const int M_MainCharaMAXHP = 7;
+	static const int M_EnemyMAXNum = 32;
+
+	S_Entity M_UIMainCharaHP[M_MainCharaMAXHP];
+	S_Entity M_UIEnemyNum[M_EnemyMAXNum];
 
 	bool MF_StartFlag;
+
+	float M_Anime = 0;
 
 };

@@ -50,6 +50,8 @@ public:
 	// 相手が旋回しているかどうか
 	void Setter_OpponentTurningFlag(bool AF_Turning) { M_Entity.MSF_OpponentTurningFlag = AF_Turning; }
 
+	void Setter_LastEnemy(bool AF_Last) { M_LastEnemy = AF_Last; }
+
 	// 当たり判定
 	bool HitEntity(Math::Vector2 A_Pos1, Math::Vector2 A_Pos2, Math::Vector2 A_Radius1, Math::Vector2 A_Radius2);
 
@@ -159,7 +161,9 @@ public:
 	// ノックバックさせたい距離の最小値
 	float M_Knockback_Minimum;
 
+	bool M_LastEnemy;
 
+	float M_FinishSlide;
 	
 private:
 

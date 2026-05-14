@@ -38,7 +38,7 @@ private:
 	int M_StopPosition;
 
 	// 弾を撃つまでのクールタイム
-	float M_NowShootingCoolTime = M_ShootingCoolTime;
+	float M_NowShootingCoolTime = 1 * 60;
 
 	// クールタイムの長さが入っている。
 	float M_ShootingCoolTime = 3.0f * 60;
