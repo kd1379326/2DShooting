@@ -262,7 +262,7 @@ void C_Enemy1_MainGame::Update()
 		M_Anime = 0;
 	}
 
-	if (!SCENE.Getter_MainCharaAlive() || (SCENE.Getter_EnemyAliveNum() <= 0)) { M_FinishSlide = -30; }
+	if (SCENE.Getter_MainCharaDelete() || (SCENE.Getter_EnemyAliveNum() <= 0)) { M_FinishSlide = -30; }
 	M_Entity.MS_Position.x += M_FinishSlide;
 
 	// ù‰ñ‚·‚éê‡‚Í”½“]‚³‚¹‚é

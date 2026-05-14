@@ -70,6 +70,8 @@ void C_MainCharacter_MainGame::Init(Math::Vector2 A_Position, bool AF_Turning)
 		M_Entity.MSF_OpponentTurningFlag = false;
 		// ダメージは受けていない
 		M_Entity.MSF_Damage = false;
+
+		SCENE.Setter_MainCharaDelete(M_Entity.MSF_Delete);
 	}
 
 	// M_Explosion_Damage
@@ -258,7 +260,7 @@ void C_MainCharacter_MainGame::Update()
 	SCENE.Setter_MainCharaHP(M_Entity.MS_HP);
 	SCENE.Setter_MainCharaAlive(M_Entity.MSF_Alive);
 
-	if (!SCENE.Getter_MainCharaAlive() || (SCENE.Getter_EnemyAliveNum() <= 0)) { M_FinishSlide = -30; }
+	if (SCENE.Getter_MainCharaDelete() || (SCENE.Getter_EnemyAliveNum() <= 0)) { M_FinishSlide = -30; }
 	M_Entity.MS_Position.x += M_FinishSlide;
 
 	// やられた場合、削除フラグを立てる。
@@ -267,6 +269,8 @@ void C_MainCharacter_MainGame::Update()
 	{ 
 		M_Entity.MSF_Delete = true; 
 	}
+
+	SCENE.Setter_MainCharaDelete(M_Entity.MSF_Delete);
 
 	M_Anime += 0.5f;
 	if (M_Anime >= 6)

@@ -106,7 +106,7 @@ void C_MainGameScene::Update()
 
 	if (M_Enemy1_RemainingNumber <= 0) { M_ChangeResultTime--; }
 
-	if (!SCENE.Getter_MainCharaAlive() || M_Enemy1_RemainingNumber <= 0)
+	if (SCENE.Getter_MainCharaDelete() || M_Enemy1_RemainingNumber <= 0)
 	{ 
 		M_UIAlpha -= M_UIDelta;
 		if (M_UIAlpha < 0) { M_UIAlpha = 0; }
@@ -118,12 +118,9 @@ void C_MainGameScene::Update()
 		if (M_UIAlpha > 1) { M_UIAlpha = 1; }
 	}
 
-	if (CM_Entity[C_MainGameScene::E_EntityNumber::ME_Enemy1].size() != 0)
+	if (SCENE.Getter_MainCharaDelete())
 	{
-		if (CM_Entity[C_MainGameScene::E_EntityNumber::ME_MainCharacter][0]->Getter_DeleteFlag())
-		{
-			M_ChangeGameOverTime--;
-		}
+		M_ChangeGameOverTime--;
 	}
 
 	//M_UIUnder.MS_Position.x += M_FinishSlide;
@@ -563,7 +560,7 @@ void C_MainGameScene::PostUpdate_ChangeResultScene()
 void C_MainGameScene::PostUpdate_ChangeGameOverScene()
 {
 	// メインキャラに削除許可が出たらゲームオーバーシーンに移りたいとSceneManager伝える。
-	if (CM_Entity[C_MainGameScene::E_EntityNumber::ME_MainCharacter][0]->Getter_DeleteFlag()) { C_SceneManager::Instance().SetterNextScene(C_SceneManager::E_SceneType::ME_GameOver); }
+	if (M_ChangeGameOverTime <= 0) { C_SceneManager::Instance().SetterNextScene(C_SceneManager::E_SceneType::ME_GameOver); }
 	
 }
 

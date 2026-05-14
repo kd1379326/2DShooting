@@ -33,7 +33,7 @@ private:
 		Math::Vector2 M_StarPos[M_StarNumMAX][M_StarTexMAX];
 		Math::Matrix M_StarMat[M_StarNumMAX][M_StarTexMAX];
 
-	int M_MainCharaHP = 7;
+	int M_MainCharaHP = 0;
 
 	int M_EnemyAliveNum = 0;
 

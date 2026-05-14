@@ -97,7 +97,7 @@ void C_Bullet_Enemy1::Update()
 	// ‘Ì—Í‚ª0‚É‚È‚Á‚½‚ç‚â‚ç‚ê‚½”»’è‚É‚·‚éB
 	if (M_Entity.MS_HP <= 0) { M_Entity.MSF_Alive = false; }
 
-	if (!SCENE.Getter_MainCharaAlive() || (SCENE.Getter_EnemyAliveNum() <= 0)) { M_FinishSlide = -30; }
+	if (SCENE.Getter_MainCharaDelete() || (SCENE.Getter_EnemyAliveNum() <= 0)) { M_FinishSlide = -30; }
 	M_Entity.MS_Position.x += M_FinishSlide;
 
 	if (M_Entity.MSF_Alive)

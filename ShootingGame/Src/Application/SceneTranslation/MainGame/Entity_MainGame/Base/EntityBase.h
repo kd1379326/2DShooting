@@ -64,6 +64,7 @@ public:
 	void ApplyKnockback(Math::Vector2 A_Dir, float A_Power);
 	void ApplyKnockbackBullet(Math::Vector2 A_Dir, float A_Power);
 
+
 	// エンティティ(画像)を描画するために必要なもの(構造体)
 	struct S_EntityCharacter
 	{
