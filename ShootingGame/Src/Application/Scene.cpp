@@ -136,7 +136,7 @@ void Scene::Update()
 // 初期化内容はここに
 void Scene::Init()
 {
-	ShowCursor(FALSE);
+	ShowCursor(TRUE);
 
 	// 取り出す数値をシャッフルする。
 	srand(timeGetTime());
@@ -187,7 +187,7 @@ void Scene::Release()
 // デバッグ画面に表示するものはここに
 void Scene::ImGuiUpdate()
 {
-	return;
+	//return;
 
 	ImGui::SetNextWindowPos(ImVec2(20, 20), ImGuiSetCond_Once);
 	ImGui::SetNextWindowSize(ImVec2(200, 100), ImGuiSetCond_Once);

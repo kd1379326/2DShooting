@@ -120,6 +120,8 @@ private:
 	// 敵出現カウント
 	float M_SpownEnemy1Count = (5 * 60);
 
+	bool M_SpownBoss = false;
+
 	// それぞれのキャラの格納場所(行)
 	enum E_EntityNumber
 	{

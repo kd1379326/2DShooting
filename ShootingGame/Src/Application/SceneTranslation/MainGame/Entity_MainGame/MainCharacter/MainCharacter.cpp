@@ -258,7 +258,7 @@ void C_MainCharacter_MainGame::Update()
 	SCENE.Setter_MainCharaHP(M_Entity.MS_HP);
 	SCENE.Setter_MainCharaAlive(M_Entity.MSF_Alive);
 
-	if ((SCENE.Getter_EnemyAliveNum() <= 0)) { M_FinishSlide = -10; }
+	if (!SCENE.Getter_MainCharaAlive() || (SCENE.Getter_EnemyAliveNum() <= 0)) { M_FinishSlide = -30; }
 	M_Entity.MS_Position.x += M_FinishSlide;
 
 	// やられた場合、削除フラグを立てる。

@@ -26,7 +26,7 @@ C_Boss_MainGame::~C_Boss_MainGame()
 void C_Boss_MainGame::Init(Math::Vector2 A_Position, bool AF_Turning)
 {
 	// 画像のパス(在処)を伝える
-		M_Entity.MS_Texture.Load("Texture/MainCharacter/MainCharacter仮.png");
+		M_Entity.MS_Texture.Load("Texture/MainCharacter/Boss.png");
 		M_Explosion_Damage.MS_Texture.Load("Texture/Blue Effect Bullet Impact Explosion 32x32.png");
 		M_Smoke.MS_Texture.Load("Texture/Blue Effect Bullet Impact Explosion 32x32.png");
 		M_Explosion_Death.MS_Texture.Load("Texture/Blue Effect Bullet Impact Explosion 32x32.png");
@@ -45,7 +45,7 @@ void C_Boss_MainGame::Init(Math::Vector2 A_Position, bool AF_Turning)
 			// 移動スピード
 			M_Entity.MS_MoveSpeed = { 3, 3 };
 			// 画像の切り取り範囲
-			M_Entity.MS_Rectangle = { 0, 0, 50, 50 };
+			M_Entity.MS_Rectangle = { 0, 0, 111, 128 };
 			// 画像の通常時の色(設定なし)
 			M_Entity.MS_Color_Normal = { 1, 0, 0, 1 };
 			// 残りの硬直時間
@@ -307,14 +307,14 @@ void C_Boss_MainGame::Draw()
 	if (M_Entity.MSF_Alive && M_Entity.MSF_Damage)
 	{
 		M_Explosion_Damage.MS_DeathCount += 5;
-		if (M_Explosion_Damage.MS_DeathCount >= (32 * 3.9f)) { M_Explosion_Damage.MS_DeathCount = (32 * 3.9f); }
+		if (M_Explosion_Damage.MS_DeathCount >= (111 * 3.9f)) { M_Explosion_Damage.MS_DeathCount = (111 * 3.9f); }
 		// 画像の切り取り範囲
-		M_Explosion_Damage.MS_Rectangle = { (32 * 16) + (32 * (int)(M_Explosion_Damage.MS_DeathCount / 32)), (32 * 11), 32, 32 };
+		M_Explosion_Damage.MS_Rectangle = { (111 * 16) + (111 * (int)(M_Explosion_Damage.MS_DeathCount / 111)), (111 * 11), 111, 111 };
 
 		SHADER.m_spriteShader.SetMatrix(M_Explosion_Damage.MS_Matrix);
 		SHADER.m_spriteShader.DrawColorTex(&M_Explosion_Damage.MS_Texture, M_Explosion_Damage.MS_Rectangle, M_Explosion_Damage.MS_Color_Normal);
 
-		if (M_Explosion_Damage.MS_DeathCount >= (32 * 3.9f))
+		if (M_Explosion_Damage.MS_DeathCount >= (111 * 3.9f))
 		{
 			M_Explosion_Damage.MS_DeathCount = 0;
 			M_Entity.MSF_Damage = false;

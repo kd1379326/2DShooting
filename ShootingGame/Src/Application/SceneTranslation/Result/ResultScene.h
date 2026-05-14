@@ -38,12 +38,16 @@ private:
 	S_Entity M_Rank;
 	S_Entity M_MainChara;
 	S_Entity M_RankC;
+	S_Entity M_Black;
 
 	static const int M_MainCharaMAXHP = 7;
-	static const int M_EnemyMAXNum = 32;
 
 	S_Entity M_UIMainCharaHP[M_MainCharaMAXHP];
-	S_Entity M_UIEnemyNum[M_EnemyMAXNum];
+	S_Entity M_UIMainCharaNotHP[M_MainCharaMAXHP];
+
+	float M_RankAlpha = 0;
+
+	float M_RankDelta = 0.03f;
 
 	bool MF_StartFlag;
 
