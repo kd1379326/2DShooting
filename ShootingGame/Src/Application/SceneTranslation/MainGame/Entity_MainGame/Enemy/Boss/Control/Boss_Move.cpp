@@ -1,0 +1,115 @@
+#include "Boss_Move.h"
+
+// ランダム値を返してくれるクラス
+#include "../../../../../../Tool/RandomNumericalValue.h"
+
+// 画面サイズを持ってくるため
+#include "../../../../../../Scene.h"
+
+// このクラスが生成された時に動かしたいものをここに(コンストラクタ)
+C_Boss_Move::C_Boss_Move()
+{
+
+}
+
+// このクラスが削除される時に動かしたいものをここに(デストラクタ)
+C_Boss_Move::~C_Boss_Move()
+{
+	// 自動で領域解放処理を行う。
+	Release();
+}
+
+// 初期化処理
+void C_Boss_Move::Init(C_EntityBase_MainGame::S_EntityCharacter& A_Entity)
+{
+	// 出現後、前に出る座標。
+	M_StopPosition = C_RandomNumericalValue::Instance().RandomNumericalValue(-500, (Scene::Instance().Getter_ScreenSize_Left() + A_Entity.MS_Radius.x));
+}
+
+// 更新内容
+void C_Boss_Move::Action(C_EntityBase_MainGame::S_EntityCharacter& A_Entity)
+{
+	// 弾発射許可の処理
+	ShootingPermission(A_Entity.MSF_Alive);
+
+	// 移動処理
+	Move(A_Entity);
+
+	// クールタイムが発生した時にのみ減らしていく。
+	if (M_NowShootingCoolTime > 0) { M_NowShootingCoolTime -= 1; }
+}
+
+// 解放処理
+void C_Boss_Move::Release()
+{
+
+}
+
+// クールタイムが無くなれば弾を発射する
+bool C_Boss_Move::ShootingPermission(bool& AF_Alive)
+{
+	if (!AF_Alive) return C_EntityBase_MainGame::E_BulletKind::ME_None;
+	if (M_NowShootingCoolTime <= 0)
+	{
+		// クールタイムをリセット
+		M_NowShootingCoolTime = M_ShootingCoolTime; 
+		return C_EntityBase_MainGame::E_BulletKind::ME_Above;
+	}
+	// クールタイムが終わっていなけらば無条件で許可無し。
+	else { return C_EntityBase_MainGame::E_BulletKind::ME_None; }
+}
+
+// 移動処理
+void C_Boss_Move::Move(C_EntityBase_MainGame::S_EntityCharacter& A_Entity)
+{
+	// 旋回するタイミングは左端を完全に通り過ぎた時
+	// 条件１：左端を通り過ぎる(画面左端+半径分)
+	// 条件２：旋回フラグが立っていない
+
+	if ((A_Entity.MS_Position.x < (Scene::Instance().Getter_ScreenSize_Left() - A_Entity.MS_Radius.x - 50)) && !A_Entity.MSF_TurningFlag) { A_Entity.MSF_TurningFlag = true; }
+
+	// 直線移動
+	if (!A_Entity.MSF_TurningFlag)	{ A_Entity.MS_Move.x =  A_Entity.MS_MoveSpeed.x; }
+	else					
+	{ 
+		// 旋回後用の移動速度を設定する。
+		const float TurningMoveSpeed = -6;
+		A_Entity.MS_Move.x = TurningMoveSpeed; 
+	}
+	// 座標移動
+	A_Entity.MS_Position.x -= A_Entity.MS_Move.x;
+
+	// ノックバック処理
+	//if (A_Entity.MSF_Knockback)
+	//{
+	//	// ノックバックさせたい(ノックバックする値が0じゃない)時のみ通す。
+	//	if (M_NowKnockback > 0)
+	//	{
+	//		// 現在の座標からノックバックしたい距離を計算する。
+	//		A_Entity.MS_Position.x += M_NowKnockback;
+	//		// ノックバックの距離を縮めていく。
+	//		M_NowKnockback *= M_Knockback_Subtract;
+	//		// ノックバックの値がある程度小さくなったら強制的に0にする。
+	//		if (M_NowKnockback < M_Knockback_Minimum) { M_NowKnockback = 0; }
+	//	}
+	//	else
+	//	{
+	//		// ノックバックさせ終えたらノックバックしないと伝える。
+	//		A_Entity.MSF_Knockback = false;
+	//	}
+	//}
+	//else
+	//{
+	//	// ノックバック処理が終わった後にノックバックさせたい距離を代入する。
+	//	M_NowKnockback = M_KnockbackDistance;
+	//}
+
+	// 座標が画面端を超えた場合、端の座標と半径を計算して画面内に納まるよう固定する。
+	if ((A_Entity.MS_Position.y + A_Entity.MS_Radius.y) > SCENE.Getter_ScreenSize_Top())	{ A_Entity.MS_Position.y = (SCENE.Getter_ScreenSize_Top() - A_Entity.MS_Radius.y); }
+	if ((A_Entity.MS_Position.y - A_Entity.MS_Radius.y) < SCENE.Getter_ScreenSize_Bottom()) { A_Entity.MS_Position.y = (SCENE.Getter_ScreenSize_Bottom() + A_Entity.MS_Radius.y); }
+
+	// 前に出てくる座標
+	// 条件１：X座標が指定の座標を越える
+	// 条件２：旋回する場合
+	if ((A_Entity.MS_Position.x > M_StopPosition) && A_Entity.MSF_TurningFlag) { A_Entity.MS_Position.x = M_StopPosition; }
+}

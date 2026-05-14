@@ -52,7 +52,7 @@ void C_MainCharacter_MainGame::Init(Math::Vector2 A_Position, bool AF_Turning)
 		// 死亡時のアニメーションカウント
 		M_Entity.MS_DeathCount = 0;
 		// 体力
-		M_Entity.MS_HP = 5;
+		M_Entity.MS_HP = 7;
 		// 攻撃力
 		M_Entity.MS_Power = 2;
 		// 生存している状態にする
@@ -322,6 +322,11 @@ void C_MainCharacter_MainGame::Draw()
 	
 	if (!M_Entity.MSF_Alive && !M_Entity.MSF_Delete && M_Entity.MS_DeathCount < (32 * 3.9f))
 	{
+		M_Explosion_Death.MS_ScaleMatrix = Math::Matrix::CreateScale(M_Explosion_Death.MS_NormalSize);
+		M_Explosion_Death.MS_TranslationMatrix = Math::Matrix::CreateTranslation(M_Entity.MS_Position.x, M_Entity.MS_Position.y, 0);
+		// 描画の詳細をまとめる
+		M_Explosion_Death.MS_Matrix = M_Explosion_Death.MS_ScaleMatrix * M_Explosion_Death.MS_TranslationMatrix;
+
 		M_Entity.MS_DeathCount += 1;
 		if (M_Entity.MS_DeathCount >= (32 * 3.9f)) { M_Entity.MS_DeathCount = (32 * 3.9f); }
 		// 画像の切り取り範囲

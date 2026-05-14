@@ -80,9 +80,15 @@ private:
 	// ゲームオーバーに移る処理。
 	void PostUpdate_ChangeGameOverScene();
 
+	static const int M_MainCharaMAXHP = 7;
+	static const int M_EnemyMAXNum = 32;
+
 	// 「Game」の文字用の構造体変数
 	S_Entity M_Game;
 	S_Entity M_Back;
+	S_Entity M_UIUnder;
+	S_Entity M_UIMainCharaHP[M_MainCharaMAXHP];
+	S_Entity M_UIEnemyNum[M_EnemyMAXNum];
 
 	// EntityBase(キャラ達の親クラス)型の動的二次元配列
 	std::vector<std::vector<std::unique_ptr<C_EntityBase_MainGame>>> CM_Entity;
@@ -94,7 +100,9 @@ private:
 	const int M_Enemy1_MaxNumber = 10;
 
 	// 残りの敵１の数
-	int M_Enemy1_RemainingNumber = 30;
+	int M_Enemy1_RemainingNumber = 32;
+
+	int M_ChangeResultTime = 5 * 60;
 
 	Math::Vector2 BulletUP = { 0, -3 };
 	//Math::Vector2 BulletDOWN = { 0, -12 };

@@ -61,7 +61,7 @@ private:
 	// ここにアップキャストしてシーンのクラスを一括で扱う。
 	std::shared_ptr<C_State>M_CurrentScene;
 	// 現在のシーン
-	E_SceneType M_CurrentSceneType = E_SceneType::ME_MainGame;
+	E_SceneType M_CurrentSceneType = E_SceneType::ME_Title;
 	// 移りたいシーンをここに入れる。
 	E_SceneType M_NextSceneType = M_CurrentSceneType;
 };

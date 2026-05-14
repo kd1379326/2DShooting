@@ -40,6 +40,8 @@ public:
 	// 旋回するか
 	bool			Getter_TurningFlag() { return M_Entity.MSF_TurningFlag; }
 
+	int             Getter_HP() { return M_Entity.MS_HP; }
+
 	// 値を入れるセッター
 	// やられた時にfalseをここに入れる。
 	void Setter_AliveFlag(bool A_Alive) { M_Entity.MSF_Alive = A_Alive; }

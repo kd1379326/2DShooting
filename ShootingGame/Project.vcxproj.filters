@@ -103,6 +103,9 @@
     <Filter Include="Src\Application\SceneTranslation\MainGame\Entity_MainGame\Enemy\Boss">
       <UniqueIdentifier>{f56c656e-22f7-468e-abac-797b4d00e43c}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Src\Application\SceneTranslation\MainGame\Entity_MainGame\Enemy\Boss\Control">
+      <UniqueIdentifier>{39b08d9d-8820-4744-bc1c-ab037fc4739b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Pch.h">
@@ -219,9 +222,6 @@
     <ClInclude Include="Src\Application\SceneTranslation\MainGame\Entity_MainGame\Base\EntityBase.h">
       <Filter>Src\Application\SceneTranslation\MainGame\Entity_MainGame\Base</Filter>
     </ClInclude>
-    <ClInclude Include="Src\Application\SceneTranslation\MainGame\Entity_MainGame\MainCharacter\MainCharacter.h">
-      <Filter>Src\Application\SceneTranslation\MainGame\Entity_MainGame\MainCharacter</Filter>
-    </ClInclude>
     <ClInclude Include="Src\Application\SceneTranslation\MainGame\Entity_MainGame\MainCharacter\Control\KeyControl.h">
       <Filter>Src\Application\SceneTranslation\MainGame\Entity_MainGame\MainCharacter\Control</Filter>
     </ClInclude>
@@ -245,6 +245,15 @@
     </ClInclude>
     <ClInclude Include="Src\Application\SceneTranslation\MainGame\Entity_MainGame\Bullet\Enemy1\Bullet_Enemy1.h">
       <Filter>Src\Application\SceneTranslation\MainGame\Entity_MainGame\Bullet\Enemy1</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Application\SceneTranslation\MainGame\Entity_MainGame\Enemy\Boss\Boss.h">
+      <Filter>Src\Application\SceneTranslation\MainGame\Entity_MainGame\Enemy\Boss</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Application\SceneTranslation\MainGame\Entity_MainGame\Enemy\Boss\Control\Boss_Move.h">
+      <Filter>Src\Application\SceneTranslation\MainGame\Entity_MainGame\Enemy\Boss\Control</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Application\SceneTranslation\MainGame\Entity_MainGame\MainCharacter\MainCharacter.h">
+      <Filter>Src\Application\SceneTranslation\MainGame\Entity_MainGame\MainCharacter</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -355,6 +364,12 @@
     </ClCompile>
     <ClCompile Include="Src\Application\SceneTranslation\MainGame\Entity_MainGame\Bullet\MainCharacter\BulletBack_MainCharacter.cpp">
       <Filter>Src\Application\SceneTranslation\MainGame\Entity_MainGame\Bullet\MainCharacter</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Application\SceneTranslation\MainGame\Entity_MainGame\Enemy\Boss\Boss.cpp">
+      <Filter>Src\Application\SceneTranslation\MainGame\Entity_MainGame\Enemy\Boss</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Application\SceneTranslation\MainGame\Entity_MainGame\Enemy\Boss\Control\Boss_Move.cpp">
+      <Filter>Src\Application\SceneTranslation\MainGame\Entity_MainGame\Enemy\Boss\Control</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

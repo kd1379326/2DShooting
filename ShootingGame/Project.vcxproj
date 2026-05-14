@@ -166,6 +166,8 @@
     <ClInclude Include="Src\Application\SceneTranslation\MainGame\Entity_MainGame\Bullet\Enemy1\Bullet_Enemy1.h" />
     <ClInclude Include="Src\Application\SceneTranslation\MainGame\Entity_MainGame\Bullet\MainCharacter\BulletAbove_MainCharacter.h" />
     <ClInclude Include="Src\Application\SceneTranslation\MainGame\Entity_MainGame\Bullet\MainCharacter\BulletBack_MainCharacter.h" />
+    <ClInclude Include="Src\Application\SceneTranslation\MainGame\Entity_MainGame\Enemy\Boss\Boss.h" />
+    <ClInclude Include="Src\Application\SceneTranslation\MainGame\Entity_MainGame\Enemy\Boss\Control\Boss_Move.h" />
     <ClInclude Include="Src\Application\SceneTranslation\MainGame\Entity_MainGame\Enemy\Enemy1\Control\Enemy1_Move.h" />
     <ClInclude Include="Src\Application\SceneTranslation\MainGame\Entity_MainGame\Enemy\Enemy1\Enemy1.h" />
     <ClInclude Include="Src\Application\SceneTranslation\MainGame\Entity_MainGame\HitJudgment\HitJudgment.h" />
@@ -207,6 +209,8 @@
     <ClCompile Include="Src\Application\SceneTranslation\MainGame\Entity_MainGame\Bullet\Enemy1\Bullet_Enemy1.cpp" />
     <ClCompile Include="Src\Application\SceneTranslation\MainGame\Entity_MainGame\Bullet\MainCharacter\BulletAbove_MainCharacter.cpp" />
     <ClCompile Include="Src\Application\SceneTranslation\MainGame\Entity_MainGame\Bullet\MainCharacter\BulletBack_MainCharacter.cpp" />
+    <ClCompile Include="Src\Application\SceneTranslation\MainGame\Entity_MainGame\Enemy\Boss\Boss.cpp" />
+    <ClCompile Include="Src\Application\SceneTranslation\MainGame\Entity_MainGame\Enemy\Boss\Control\Boss_Move.cpp" />
     <ClCompile Include="Src\Application\SceneTranslation\MainGame\Entity_MainGame\Enemy\Enemy1\Control\Enemy1_Move.cpp" />
     <ClCompile Include="Src\Application\SceneTranslation\MainGame\Entity_MainGame\Enemy\Enemy1\Enemy1.cpp" />
     <ClCompile Include="Src\Application\SceneTranslation\MainGame\Entity_MainGame\HitJudgment\HitJudgment.cpp" />

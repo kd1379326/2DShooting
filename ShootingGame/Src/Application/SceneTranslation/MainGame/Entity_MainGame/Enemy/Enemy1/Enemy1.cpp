@@ -310,8 +310,21 @@ void C_Enemy1_MainGame::Draw()
 		KdShaderManager::GetInstance().m_spriteShader.DrawColorTex(&M_Entity.MS_Texture, RcEnemy, M_Entity.MS_Color_Normal);
 	}
 
+	if (!M_Entity.MSF_Alive && !M_Entity.MSF_Delete)
+	{
+		M_Explosion_Death.MS_ScaleMatrix = Math::Matrix::CreateScale(M_Explosion_Death.MS_NormalSize);
+		M_Explosion_Death.MS_TranslationMatrix = Math::Matrix::CreateTranslation(M_Entity.MS_Position.x, M_Entity.MS_Position.y, 0);
+		// •`‰æ‚ÌÚ×‚ğ‚Ü‚Æ‚ß‚é
+		M_Explosion_Death.MS_Matrix = M_Explosion_Death.MS_ScaleMatrix * M_Explosion_Death.MS_TranslationMatrix;
+	}
+
 	if (M_Entity.MSF_Alive && M_Entity.MSF_Damage)
 	{
+		M_Explosion_Damage.MS_ScaleMatrix = Math::Matrix::CreateScale(M_Explosion_Damage.MS_NormalSize);
+		M_Explosion_Damage.MS_TranslationMatrix = Math::Matrix::CreateTranslation(M_Entity.MS_Position.x, M_Entity.MS_Position.y, 0);
+		// •`‰æ‚ÌÚ×‚ğ‚Ü‚Æ‚ß‚é
+		M_Explosion_Damage.MS_Matrix = M_Explosion_Damage.MS_ScaleMatrix * M_Explosion_Damage.MS_TranslationMatrix;
+
 		M_Explosion_Damage.MS_DeathCount += 5;
 		if (M_Explosion_Damage.MS_DeathCount >= (32 * 3.9f)) { M_Explosion_Damage.MS_DeathCount = (32 * 3.9f); }
 		// ‰æ‘œ‚ÌØ‚èæ‚è”ÍˆÍ
@@ -327,9 +340,13 @@ void C_Enemy1_MainGame::Draw()
 		}
 	}
 
-
 	if (!M_Entity.MSF_Alive && !M_Entity.MSF_Delete && M_Entity.MS_DeathCount < (32 * 3.9f))
 	{
+		M_Explosion_Death.MS_ScaleMatrix = Math::Matrix::CreateScale(M_Explosion_Death.MS_NormalSize);
+		M_Explosion_Death.MS_TranslationMatrix = Math::Matrix::CreateTranslation(M_Entity.MS_Position.x, M_Entity.MS_Position.y, 0);
+		// •`‰æ‚ÌÚ×‚ğ‚Ü‚Æ‚ß‚é
+		M_Explosion_Death.MS_Matrix = M_Explosion_Death.MS_ScaleMatrix * M_Explosion_Death.MS_TranslationMatrix;
+
 		M_Entity.MS_DeathCount += 5;
 		if (M_Entity.MS_DeathCount >= (32 * 3.9f)) { M_Entity.MS_DeathCount = (32 * 3.9f); }
 		// ‰æ‘œ‚ÌØ‚èæ‚è”ÍˆÍ

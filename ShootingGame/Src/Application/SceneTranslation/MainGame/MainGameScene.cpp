@@ -23,7 +23,25 @@
 C_MainGameScene::C_MainGameScene()
 {
 	M_Back.MS_Texture.Load("Texture/”wŒi‚Q.png");
+	M_UIUnder.MS_Texture.Load("Texture/UIUnder.png");
+	for (int i = 0; i < M_MainCharaMAXHP; i++) { M_UIMainCharaHP[i].MS_Texture.Load("Texture/UIHP1.png"); }
+	for (int i = 0; i < M_EnemyMAXNum; i++) { M_UIEnemyNum[i].MS_Texture.Load("Texture/UIHP1.png"); }
+
 	M_Game.MS_Position = { 0,0 };
+	M_UIUnder.MS_Position = { 0, -360 + 64 };
+
+	M_UIMainCharaHP[0].MS_Position = { -501, -357 + 64 };
+	for (int i = 1; i < M_MainCharaMAXHP; i++)
+	{
+		M_UIMainCharaHP[i].MS_Position = { M_UIMainCharaHP[0].MS_Position.x + (float)(9 * i), -357 + 64};
+	}
+
+	M_UIEnemyNum[0].MS_Position = { 271, -357 + 64 };
+	for (int i = 1; i < M_EnemyMAXNum; i++)
+	{
+		M_UIEnemyNum[i].MS_Position = { M_UIEnemyNum[0].MS_Position.x + (float)(9 * i), -357 + 64 };
+	}
+
 	// ƒV[ƒ“‘JˆÚ‚³‚¹‚È‚¢‚æ‚¤ƒtƒ‰ƒO‚ð—§‚Ä‚éB
 	MF_Stop_ContinuitySceneTransition = true;
 }
@@ -84,6 +102,19 @@ void C_MainGameScene::Update()
 	// “G‚P‚Ìíœ‹–‰Â‚ªo‚½‚ç“G‚P‚ÌŽc‚è‚Ì”‚ðŒ¸‚ç‚·B
 	Update_Enemy1_RemainingNumber_Subtract();
 	M_Back.MS_Matrix = Math::Matrix::CreateTranslation(0, 0, 0);
+	M_UIUnder.MS_Matrix = Math::Matrix::CreateTranslation(M_UIUnder.MS_Position.x, M_UIUnder.MS_Position.y, 0);
+
+	if (CM_Entity[C_MainGameScene::E_EntityNumber::ME_MainCharacter].size() != 0)
+	{
+		for (int i = 0; i < CM_Entity[C_MainGameScene::E_EntityNumber::ME_MainCharacter][0]->Getter_HP(); i++)
+		{
+			M_UIMainCharaHP[i].MS_Matrix = Math::Matrix::CreateTranslation(M_UIMainCharaHP[i].MS_Position.x, M_UIMainCharaHP[i].MS_Position.y, 0);
+		}
+	}
+	for (int i = 0; i < M_Enemy1_RemainingNumber; i++)
+	{
+		M_UIEnemyNum[i].MS_Matrix = Math::Matrix::CreateTranslation(M_UIEnemyNum[i].MS_Position.x, M_UIEnemyNum[i].MS_Position.y, 0);
+	}
 
 }
 
@@ -113,11 +144,31 @@ void C_MainGameScene::DrawSprite()
 
 	// ŠeƒLƒƒƒ‰‚Ì•`‰æˆ—
 	for (auto& Row : CM_Entity) { for (auto& Column : Row) { Column->Draw(); } }
+
+	SHADER.m_spriteShader.SetMatrix(M_UIUnder.MS_Matrix);
+	SHADER.m_spriteShader.DrawTex(&M_UIUnder.MS_Texture, Math::Rectangle{ 0, 0, 1280, 128 }, 1.0f);
+
+	if (CM_Entity[C_MainGameScene::E_EntityNumber::ME_MainCharacter].size() != 0)
+	{
+		for (int i = 0; i < CM_Entity[C_MainGameScene::E_EntityNumber::ME_MainCharacter][0]->Getter_HP(); i++)
+		{
+			SHADER.m_spriteShader.SetMatrix(M_UIMainCharaHP[i].MS_Matrix);
+			SHADER.m_spriteShader.DrawColorTex(&M_UIMainCharaHP[i].MS_Texture, Math::Rectangle{ 0, 0, 6, 58 }, Math::Color{ 1, 1, 1, 1 });
+		}
+	}
+
+	for (int i = 0; i < M_Enemy1_RemainingNumber; i++)
+	{
+		SHADER.m_spriteShader.SetMatrix(M_UIEnemyNum[i].MS_Matrix);
+		SHADER.m_spriteShader.DrawColorTex(&M_UIEnemyNum[i].MS_Texture, Math::Rectangle{ 0, 0, 6, 58 }, Math::Color{ 1, 1, 1, 1 });
+	}
 }
 
 // ƒfƒoƒbƒO‰æ–Ê‚É•\Ž¦‚³‚¹‚½‚¢‚à‚Ì‚Í‚±‚±‚É
 void C_MainGameScene::ImGuiUpdate()
 {
+	//ImGui::SliderFloat(u8"‘¾—z‚Ì”", &M_UIEnemyNum[0].MS_Position.x, -640, 640);
+	//ImGui::SliderFloat(u8"‘¾—z‚Ì”", &M_UIMainCharaHP[0].MS_Position.y, -640, 640);
 	// ƒGƒ“ƒeƒBƒeƒB‚Ì”‚âŽí—Þ‚ð•\Ž¦‚·‚éŠÖ”B
 	ImGui_EntityNumber();
 
@@ -131,6 +182,9 @@ void C_MainGameScene::Release()
 {
 
 	M_Back.MS_Texture.Release();
+	M_UIUnder.MS_Texture.Release();
+	for (int i = 0; i < M_MainCharaMAXHP; i++) { M_UIMainCharaHP[i].MS_Texture.Release(); }
+	for (int i = 0; i < M_EnemyMAXNum; i++) { M_UIEnemyNum[i].MS_Texture.Release(); }
 }
 
 // “–‚½‚è”»’è‚Ìˆ—B

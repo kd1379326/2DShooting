@@ -1,4 +1,4 @@
-#include "Enemy1.h"
+#include "Boss.h"
 
 // Sceneクラスのヘッダー
 #include "../../../../../Scene.h"
@@ -7,23 +7,23 @@
 #include "../../../../../Tool/RandomNumericalValue.h"
 
 // 動作処理を行うクラス
-#include "Control/Enemy1_Move.h"
+#include "Control/Boss_Move.h"
 
 
 // このクラスが生成された時に動かしたいものをここに(コンストラクタ)
-C_Enemy1_MainGame::C_Enemy1_MainGame()
+C_Boss_MainGame::C_Boss_MainGame()
 {
 }
 
 // このクラスが削除される時に動かしたいものをここに(デストラクタ)
-C_Enemy1_MainGame::~C_Enemy1_MainGame()
+C_Boss_MainGame::~C_Boss_MainGame()
 {
 	// 自動で領域解放処理を行う。
 	Release();
 }
 
 // 初期化内容はここに
-void C_Enemy1_MainGame::Init(Math::Vector2 A_Position, bool AF_Turning)
+void C_Boss_MainGame::Init(Math::Vector2 A_Position, bool AF_Turning)
 {
 	// 画像のパス(在処)を伝える
 		M_Entity.MS_Texture.Load("Texture/MainCharacter/MainCharacter仮.png");
@@ -215,13 +215,13 @@ void C_Enemy1_MainGame::Init(Math::Vector2 A_Position, bool AF_Turning)
 		}
 
 	// 操作処理を行うクラスのインスタンスを作成
-		if (!CMP_Control) { CMP_Control = std::make_shared<C_Enemy1_Move>(); }
-	// C_Enemy1_Moveの初期化
+		if (!CMP_Control) { CMP_Control = std::make_shared<C_Boss_Move>(); }
+	// C_Boss_Moveの初期化
 		CMP_Control->Init(M_Entity);
 }
 
 // 操作関連の更新内容はここに
-void C_Enemy1_MainGame::Action()
+void C_Boss_MainGame::Action()
 {
 	// ノックバック中は操作不能にする。
 	//if (!M_Entity.MSF_Knockback)
@@ -231,7 +231,7 @@ void C_Enemy1_MainGame::Action()
 }
 
 // 更新内容はここに(描画に使うMatrix(行列)の作成や画像の指定もここ)
-void C_Enemy1_MainGame::Update()
+void C_Boss_MainGame::Update()
 {
 
 	// やられた場合、削除フラグを立てる。
@@ -291,7 +291,7 @@ void C_Enemy1_MainGame::Update()
 }
 
 // 描画処理はここに
-void C_Enemy1_MainGame::Draw()
+void C_Boss_MainGame::Draw()
 {
 	// 体力が0になったらやられた判定にする。
 	if (M_Entity.MS_HP <= 0) { M_Entity.MSF_Alive = false; }
@@ -335,20 +335,20 @@ void C_Enemy1_MainGame::Draw()
 }
 
 // デバッグ画面に表示させたいものはここに
-void C_Enemy1_MainGame::ImGuiUpdate()
+void C_Boss_MainGame::ImGuiUpdate()
 {
 	ImGui::Text(u8"敵の座標：X-%.0f｜Y-%.0f", M_Entity.MS_Position.x, M_Entity.MS_Position.y);
 }
 
 // 弾を撃つかどうか判断する
-int C_Enemy1_MainGame::ShootBullet()
+int C_Boss_MainGame::ShootBullet()
 {
 	// 射撃用のクールタイムが無い且つエンターキーが押されたらtrueが返される。
 	return CMP_Control->ShootingPermission(M_Entity.MSF_Alive);
 }
 
 // このクラスの実体が削除された時に行う領域解放処理。
-void C_Enemy1_MainGame::Release()
+void C_Boss_MainGame::Release()
 {
 	// 画像を入れている領域を解放する。
 	M_Entity.MS_Texture.Release();
@@ -358,4 +358,4 @@ void C_Enemy1_MainGame::Release()
 }
 
 // 旋回フラグ
-bool C_Enemy1_MainGame::Getter_TurningFlag() { return CMP_Control->Getter_TurningFlag(); }
+bool C_Boss_MainGame::Getter_TurningFlag() { return CMP_Control->Getter_TurningFlag(); }

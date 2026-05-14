@@ -4,16 +4,16 @@
 #include "../../Base/EntityBase.h"
 
 // 動作処理を行うクラス
-class C_Enemy1_Move;
+class C_Boss_Move;
 
 
-class C_Enemy1_MainGame :public C_EntityBase_MainGame
+class C_Boss_MainGame :public C_EntityBase_MainGame
 {
 public:
 
 	// コンストラクタとデストラクタ
-	C_Enemy1_MainGame();
-	~C_Enemy1_MainGame()					override;
+	C_Boss_MainGame();
+	~C_Boss_MainGame()					override;
 
 	// 初期化内容
 		void Init(Math::Vector2 A_Position, bool AF_Turning)	override;
@@ -39,6 +39,6 @@ private:
 	// 領域解放処理はこの実体が削除された時にデストラクタで自動で呼び出されるためprivateに置く。
 	void Release();
 
-	std::shared_ptr<C_Enemy1_Move> CMP_Control = nullptr;
+	std::shared_ptr<C_Boss_Move> CMP_Control = nullptr;
 
 };
