@@ -142,9 +142,12 @@ void C_ResultScene::Update()
 		M_Anime = 0;
 	}
 
-	M_RankAlpha += M_RankDelta;
-	if (M_RankAlpha > 1) { M_RankAlpha = 1; }
-	if (M_RankAlpha < 0) { M_RankAlpha = 0; }
+	if (M_Logo.MS_Position.x <= 0)
+	{
+		M_RankAlpha += M_RankDelta;
+		if (M_RankAlpha > 1) { M_RankAlpha = 1; }
+		if (M_RankAlpha < 0) { M_RankAlpha = 0; }
+	}
 
 	M_Press.MS_Position.x -= 20;
 	if ((M_Press.MS_Position.x < 0) && !MF_StartFlag) { M_Press.MS_Position.x = 0; }

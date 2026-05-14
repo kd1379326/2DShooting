@@ -41,6 +41,8 @@ private:
 
 	bool M_MainCharaDelete = false;
 
+	bool M_BossDelete = false;
+
 public:
 
 	// ‰Šúİ’è
@@ -74,11 +76,13 @@ public:
 		int Getter_EnemyAliveNum() { return M_EnemyAliveNum; }
 		bool Getter_MainCharaAlive() { return M_MainCharaAlive; }
 		bool Getter_MainCharaDelete() { return M_MainCharaDelete; }
+		bool Getter_BossDelete() { return M_BossDelete; }
 
 		void Setter_MainCharaHP(int A_HP) { M_MainCharaHP = A_HP; }
 		void Setter_EnemyAliveNum(int A_AliveNum) { M_EnemyAliveNum = A_AliveNum; }
 		void Setter_MainCharaAlive(bool A_Alive) { M_MainCharaAlive = A_Alive; }
 		void Setter_MainCharaDelete(bool A_Delete) { M_MainCharaDelete = A_Delete; }
+		void Setter_BossDelete(bool A_Delete) { M_BossDelete = A_Delete; }
 
 private:
 

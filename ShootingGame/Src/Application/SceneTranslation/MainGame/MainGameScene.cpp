@@ -15,6 +15,7 @@
 #include "Entity_MainGame/Enemy/Enemy1/Enemy1.h"
 // 敵１の弾
 #include "Entity_MainGame/Bullet/Enemy1/Bullet_Enemy1.h"
+#include "Entity_MainGame/Enemy/Boss/Boss.h"
 
 // 当たり判定をするクラス
 #include "Entity_MainGame/HitJudgment/HitJudgment.h"
@@ -44,6 +45,8 @@ C_MainGameScene::C_MainGameScene()
 
 	// シーン遷移させないようフラグを立てる。
 	MF_Stop_ContinuitySceneTransition = true;
+
+	SCENE.Setter_BossDelete(false);
 }
 
 // このクラスが削除された時に処理したい内容はここに
@@ -104,9 +107,25 @@ void C_MainGameScene::Update()
 		CM_Entity[C_MainGameScene::E_EntityNumber::ME_Enemy1][0]->Setter_LastEnemy(true);
 	}
 
-	if (M_Enemy1_RemainingNumber <= 0) { M_ChangeResultTime--; }
+	if ((CM_Entity[C_MainGameScene::E_EntityNumber::ME_MainCharacter].size() != 0) && (CM_Entity[C_MainGameScene::E_EntityNumber::ME_Boss].size() != 0))
+	{
+		if ((CM_Entity[C_MainGameScene::E_EntityNumber::ME_MainCharacter][0]->Getter_MyPosition().y - 15) > CM_Entity[C_MainGameScene::E_EntityNumber::ME_Boss][0]->Getter_MyPosition().y)
+		{
+			CM_Entity[C_MainGameScene::E_EntityNumber::ME_Boss][0]->MoveSpeedAlenge(3);
+		}
+		else if ((CM_Entity[C_MainGameScene::E_EntityNumber::ME_MainCharacter][0]->Getter_MyPosition().y + 15) < CM_Entity[C_MainGameScene::E_EntityNumber::ME_Boss][0]->Getter_MyPosition().y)
+		{
+			CM_Entity[C_MainGameScene::E_EntityNumber::ME_Boss][0]->MoveSpeedAlenge(-3);
+		}
+		else
+		{
+			CM_Entity[C_MainGameScene::E_EntityNumber::ME_Boss][0]->MoveSpeedAlenge(0);
+		}
+	}
 
-	if (SCENE.Getter_MainCharaDelete() || M_Enemy1_RemainingNumber <= 0)
+	if (SCENE.Getter_BossDelete()) { M_ChangeResultTime--; }
+
+	if (SCENE.Getter_MainCharaDelete() || SCENE.Getter_BossDelete())
 	{ 
 		M_UIAlpha -= M_UIDelta;
 		if (M_UIAlpha < 0) { M_UIAlpha = 0; }
@@ -194,10 +213,24 @@ void C_MainGameScene::DrawSprite()
 		}
 	}
 
-	for (int i = 0; i < M_Enemy1_RemainingNumber; i++)
+	if (!M_SpownBoss)
 	{
-		SHADER.m_spriteShader.SetMatrix(M_UIEnemyNum[i].MS_Matrix);
-		SHADER.m_spriteShader.DrawColorTex(&M_UIEnemyNum[i].MS_Texture, Math::Rectangle{ 0, 0, 6, 58 }, Math::Color{ 1, 1, 1, M_UIAlpha });
+		for (int i = 0; i < M_Enemy1_RemainingNumber; i++)
+		{
+			SHADER.m_spriteShader.SetMatrix(M_UIEnemyNum[i].MS_Matrix);
+			SHADER.m_spriteShader.DrawColorTex(&M_UIEnemyNum[i].MS_Texture, Math::Rectangle{ 0, 0, 6, 58 }, Math::Color{ 1, 1, 1, M_UIAlpha });
+		}
+	}
+	if (M_SpownBoss)
+	{
+		if (CM_Entity[C_MainGameScene::E_EntityNumber::ME_Boss].size() != 0)
+		{
+			for (int i = 0; i < CM_Entity[C_MainGameScene::E_EntityNumber::ME_Boss][0]->Getter_HP(); i++)
+			{
+				SHADER.m_spriteShader.SetMatrix(M_UIEnemyNum[i].MS_Matrix);
+				SHADER.m_spriteShader.DrawColorTex(&M_UIEnemyNum[i].MS_Texture, Math::Rectangle{ 0, 0, 6, 58 }, Math::Color{ 1, 1, 1, M_UIAlpha });
+			}
+		}
 	}
 }
 
@@ -227,17 +260,19 @@ void C_MainGameScene::Release()
 // 当たり判定の処理。
 void C_MainGameScene::Update_Entity_HitJudgment()
 {
-	if (!SCENE.Getter_MainCharaAlive() || M_Enemy1_RemainingNumber <= 0) return;
+	if (!SCENE.Getter_MainCharaAlive() || SCENE.Getter_BossDelete()) return;
 
 	// 接触しているかどうか調べる
 	// メインキャラと敵１
 	Update_Entity_HitJudgment_MainCharacter＆Enemy1();
+	Update_Entity_HitJudgment_MainCharacter＆Boss();
 
 	// メインキャラと敵１の弾
 	Update_Entity_HitJudgment_MainCharacter＆Bullet_Enemy1();
 	
 	// 敵１とメインキャラの弾
 	Update_Entity_HitJudgment_Enemy1＆Bullet_MainCharacter();
+	Update_Entity_HitJudgment_Boss＆Bullet_MainCharacter();
 
 	// メインキャラの弾と敵１の弾
 	Update_Entity_HitJudgment_Bullet_MainCharacter＆Bullet_Enemy1();
@@ -280,6 +315,47 @@ void C_MainGameScene::Update_Entity_HitJudgment_MainCharacter＆Enemy1()
 				{
 					KnockDir.Normalize();
 					Column1->ApplyKnockback(KnockDir, 25.0f);
+				}
+				break;
+
+			}
+		}
+	}
+}
+
+void C_MainGameScene::Update_Entity_HitJudgment_MainCharacter＆Boss()
+{
+	// メインキャラと敵１の行から列を一つずつ取り出し、全通り見ていく。
+	// 座標と半径を渡し、接触しているか確認する。
+	// 接触している(戻り値がtrue)場合はお互いの生存フラグを折る(やられた判定にさせる)。
+	for (auto& Column1 : CM_Entity[C_MainGameScene::E_EntityNumber::ME_MainCharacter])
+	{
+		for (auto& Column2 : CM_Entity[C_MainGameScene::E_EntityNumber::ME_Boss])
+		{
+			// もし既にやられた判定だったら当たり判定の確認をさせない。
+			if (!Column1->Getter_AliveFlag() || !Column2->Getter_AliveFlag()) continue;
+			if (C_HitJudgment::Instance().HitJudgment(Column1->Getter_MyPosition(), Column1->Getter_Radius(), Column2->Getter_MyPosition(), Column2->Getter_Radius()) == true)
+			{
+				// 攻撃力分体力を削る
+				Column1->Damage(Column2->Getter_Power());
+				Column2->Damage(Column1->Getter_Power());
+
+				Math::Vector2 KnockDir = Column2->Getter_MyPosition() - Column1->Getter_MyPosition();
+				float Length = KnockDir.Length();
+
+				if (Length > 0.0f)
+				{
+					KnockDir.Normalize();
+					Column2->ApplyKnockback(KnockDir, 5.0f);
+				}
+
+				KnockDir = Column1->Getter_MyPosition() - Column2->Getter_MyPosition();
+				Length = KnockDir.Length();
+
+				if (Length > 0.0f)
+				{
+					KnockDir.Normalize();
+					Column1->ApplyKnockback(KnockDir, 30.0f);
 				}
 				break;
 
@@ -361,6 +437,50 @@ void C_MainGameScene::Update_Entity_HitJudgment_Enemy1＆Bullet_MainCharacter()
 				{
 					KnockDir.Normalize();
 					Column2->ApplyKnockbackBullet(KnockDir, 20.0f);
+				}
+
+				KnockDir = Column1->Getter_MyPosition() - Column2->Getter_MyPosition();
+				Length = KnockDir.Length();
+
+				if (Length > 0.0f)
+				{
+					KnockDir.Normalize();
+					Column1->ApplyKnockbackBullet(KnockDir, 20.0f);
+				}
+
+				break;
+			}
+		}
+	}
+}
+
+void C_MainGameScene::Update_Entity_HitJudgment_Boss＆Bullet_MainCharacter()
+{
+	// 敵１と弾の行から列を一つずつ取り出し、全通り見ていく。
+	// 座標と半径を渡し、接触しているか確認する。
+	// 接触している(戻り値がtrue)場合はお互いの生存フラグを折る(やられた判定にさせる)。
+	for (auto& Column1 : CM_Entity[C_MainGameScene::E_EntityNumber::ME_Bullet_MainCharacter])
+	{
+		for (auto& Column2 : CM_Entity[C_MainGameScene::E_EntityNumber::ME_Boss])
+		{
+			// もし既にやられた判定だったら当たり判定の確認をさせない。
+			if (!Column1->Getter_AliveFlag() || !Column2->Getter_AliveFlag()) continue;
+			// 当たり判定を行う関数に座標や半径を渡す。
+			if (C_HitJudgment::Instance().HitJudgment(Column1->Getter_MyPosition(), Column1->Getter_Radius(), Column2->Getter_MyPosition(), Column2->Getter_Radius()) == true)
+			{
+				// 攻撃力分体力を削る
+				Column1->Damage(Column2->Getter_Power());
+				Column2->Damage(Column1->Getter_Power());
+
+				// ノックバック処理
+				Column1->Setter_KnockbackFlag(true);
+				Math::Vector2 KnockDir = Column2->Getter_MyPosition() - Column1->Getter_MyPosition();
+				float Length = KnockDir.Length();
+
+				if (Length > 0.0f)
+				{
+					KnockDir.Normalize();
+					Column2->ApplyKnockbackBullet(KnockDir, 5.0f);
 				}
 
 				KnockDir = Column1->Getter_MyPosition() - Column2->Getter_MyPosition();
@@ -463,6 +583,13 @@ void C_MainGameScene::PreUpdate_CreateEntity()
 	PreUpdate_CreateEnemy1();
 	// 弾のインスタンスを生成。
 	PreUpdate_CreateBullet();
+
+	if ((CM_Entity[C_MainGameScene::E_EntityNumber::ME_Enemy1].size() <= 0) && (M_Enemy1_RemainingNumber <= 0) && !M_SpownBoss)
+	{
+		CM_Entity[C_MainGameScene::E_EntityNumber::ME_Boss].push_back(std::make_unique<C_Boss_MainGame>());
+		CM_Entity[C_MainGameScene::E_EntityNumber::ME_Boss].back()->Init();
+		M_SpownBoss = true;
+	}
 }	
 
 // 敵１のインスタンスを生成する関数。
@@ -474,7 +601,7 @@ void C_MainGameScene::PreUpdate_CreateEnemy1()
 	// 条件３：残りの敵１の数を上回る数を出現させていない
 	if ((C_RandomNumericalValue::Instance().RandomNumericalValue(30) == 1) && ((CM_Entity[C_MainGameScene::E_EntityNumber::ME_Enemy1].size() + 1) <= M_Enemy1_MaxNumber) && ((CM_Entity[C_MainGameScene::E_EntityNumber::ME_Enemy1].size() + 1) <= M_Enemy1_RemainingNumber))
 	{
-		if (M_SpownEnemy1Count <= (1.5f * 60))
+		if (M_SpownEnemy1Count <= (1.8f * 60))
 		{
 			// 配列の列を追加し、敵１クラスの実体を生成→初期化する。
 			CM_Entity[C_MainGameScene::E_EntityNumber::ME_Enemy1].push_back(std::make_unique<C_Enemy1_MainGame>());
@@ -504,7 +631,7 @@ void C_MainGameScene::PreUpdate_CreateEnemy1()
 	}
 	if ((CM_Entity[C_MainGameScene::E_EntityNumber::ME_Enemy1].size() + 1) > M_Enemy1_MaxNumber)
 	{
-		M_SpownEnemy1Count = (2.8f * 60);
+		M_SpownEnemy1Count = (5 * 60);
 	}
 }
 
@@ -523,12 +650,12 @@ void C_MainGameScene::PreUpdate_CreateBullet()
 			CM_Entity[C_MainGameScene::E_EntityNumber::ME_Bullet_MainCharacter].back()->Init((Column->Getter_MyPosition() + BulletUP), Column->Getter_TurningFlag());
 
 		}
-		if (Column->ShootBullet() == C_EntityBase_MainGame::E_BulletKind::ME_Back)
-		{
-			// 弾の実体を作成し、初期化する。
-			CM_Entity[C_MainGameScene::E_EntityNumber::ME_Bullet_MainCharacter].push_back(std::make_unique<C_BulletAbove_MainCharacter>());
-			CM_Entity[C_MainGameScene::E_EntityNumber::ME_Bullet_MainCharacter].back()->Init(Column->Getter_MyPosition(), true);
-		}
+		//if (Column->ShootBullet() == C_EntityBase_MainGame::E_BulletKind::ME_Back)
+		//{
+		//	// 弾の実体を作成し、初期化する。
+		//	CM_Entity[C_MainGameScene::E_EntityNumber::ME_Bullet_MainCharacter].push_back(std::make_unique<C_BulletAbove_MainCharacter>());
+		//	CM_Entity[C_MainGameScene::E_EntityNumber::ME_Bullet_MainCharacter].back()->Init(Column->Getter_MyPosition(), true);
+		//}
 	}
 	// 必要数弾を生成したら放たれた弾の数を０に戻す。
 	//M_ShootBulletNumber = 0;
@@ -542,6 +669,30 @@ void C_MainGameScene::PreUpdate_CreateBullet()
 			// 弾の実体を作成し、初期化する。
 			CM_Entity[C_MainGameScene::E_EntityNumber::ME_Bullet_Enemy1].push_back(std::make_unique<C_Bullet_Enemy1>());
 			CM_Entity[C_MainGameScene::E_EntityNumber::ME_Bullet_Enemy1].back()->Init((Column->Getter_MyPosition() + BulletUP), Column->Getter_TurningFlag());
+
+		}
+	}
+
+	for (auto& Column : CM_Entity[C_MainGameScene::E_EntityNumber::ME_Boss])
+	{
+		if (Column->ShootBullet() == C_EntityBase_MainGame::E_BulletKind::ME_Above)
+		{
+			if (!Column->Getter_TurningFlag() && Column->Getter_MyPosition().x < (CM_Entity[C_MainGameScene::E_EntityNumber::ME_MainCharacter][0]->Getter_MyPosition().x + CM_Entity[C_MainGameScene::E_EntityNumber::ME_MainCharacter][0]->Getter_Radius().x)) { continue; }
+
+			Math::Vector2 One;
+
+			if (!CM_Entity[C_MainGameScene::E_EntityNumber::ME_Boss][0]->Getter_TurningFlag()) { One = { Column->Getter_MyPosition().x - 50 , Column->Getter_MyPosition().y }; }
+			if (CM_Entity[C_MainGameScene::E_EntityNumber::ME_Boss][0]->Getter_TurningFlag()) { One = { Column->Getter_MyPosition().x + 50 , Column->Getter_MyPosition().y }; }
+			Math::Vector2 Tow = { Column->Getter_MyPosition().x , Column->Getter_MyPosition().y + 50 };
+			Math::Vector2 Three = { Column->Getter_MyPosition().x , Column->Getter_MyPosition().y - 50 };
+
+			// 弾の実体を作成し、初期化する。
+			CM_Entity[C_MainGameScene::E_EntityNumber::ME_Bullet_Enemy1].push_back(std::make_unique<C_Bullet_Enemy1>());
+			CM_Entity[C_MainGameScene::E_EntityNumber::ME_Bullet_Enemy1].back()->Init((One + BulletUP), Column->Getter_TurningFlag());
+			CM_Entity[C_MainGameScene::E_EntityNumber::ME_Bullet_Enemy1].push_back(std::make_unique<C_Bullet_Enemy1>());
+			CM_Entity[C_MainGameScene::E_EntityNumber::ME_Bullet_Enemy1].back()->Init((Tow + BulletUP), Column->Getter_TurningFlag());
+			CM_Entity[C_MainGameScene::E_EntityNumber::ME_Bullet_Enemy1].push_back(std::make_unique<C_Bullet_Enemy1>());
+			CM_Entity[C_MainGameScene::E_EntityNumber::ME_Bullet_Enemy1].back()->Init((Three + BulletUP), Column->Getter_TurningFlag());
 
 		}
 	}

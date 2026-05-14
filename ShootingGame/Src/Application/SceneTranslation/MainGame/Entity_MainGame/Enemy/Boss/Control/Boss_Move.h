@@ -41,7 +41,7 @@ private:
 	float M_NowShootingCoolTime = M_ShootingCoolTime;
 
 	// クールタイムの長さが入っている。
-	float M_ShootingCoolTime = 3.0f * 60;
+	float M_ShootingCoolTime = 2.0f * 60;
 
 	// ノックバックする距離
 	int M_KnockbackDistance = 30;

@@ -49,12 +49,14 @@ private:
 
 	// ƒƒCƒ“ƒLƒƒƒ‰‚Æ“G‚P‚ÌÚG‚Ìˆ—
 	void Update_Entity_HitJudgment_MainCharacter•Enemy1();
+	void Update_Entity_HitJudgment_MainCharacter•Boss();
 
 	// ƒƒCƒ“ƒLƒƒƒ‰‚Æ“G‚P‚Ì’e‚ÌÚG‚Ìˆ—
 	void Update_Entity_HitJudgment_MainCharacter•Bullet_Enemy1();
 
 	// “G‚P‚ÆƒƒCƒ“ƒLƒƒƒ‰‚Ì’e‚ÌÚG‚Ìˆ—
 	void Update_Entity_HitJudgment_Enemy1•Bullet_MainCharacter();
+	void Update_Entity_HitJudgment_Boss•Bullet_MainCharacter();
 
 	// ƒƒCƒ“ƒLƒƒƒ‰‚Ì’e‚Æ“G‚P‚Ì’e‚ÌÚG‚Ìˆ—
 	void Update_Entity_HitJudgment_Bullet_MainCharacter•Bullet_Enemy1();

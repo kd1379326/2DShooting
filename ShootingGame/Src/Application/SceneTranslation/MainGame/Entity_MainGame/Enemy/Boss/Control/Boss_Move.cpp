@@ -23,7 +23,7 @@ C_Boss_Move::~C_Boss_Move()
 void C_Boss_Move::Init(C_EntityBase_MainGame::S_EntityCharacter& A_Entity)
 {
 	// 出現後、前に出る座標。
-	M_StopPosition = C_RandomNumericalValue::Instance().RandomNumericalValue(-500, (Scene::Instance().Getter_ScreenSize_Left() + A_Entity.MS_Radius.x));
+	M_StopPosition = -640 + 55 + 32;
 }
 
 // 更新内容
@@ -78,6 +78,12 @@ void C_Boss_Move::Move(C_EntityBase_MainGame::S_EntityCharacter& A_Entity)
 	}
 	// 座標移動
 	A_Entity.MS_Position.x -= A_Entity.MS_Move.x;
+
+	if (A_Entity.MSF_Alive)
+	{
+		A_Entity.MS_Move.y = A_Entity.MS_MoveSpeed.y;
+		A_Entity.MS_Position.y += A_Entity.MS_Move.y;
+	}
 
 	// ノックバック処理
 	//if (A_Entity.MSF_Knockback)

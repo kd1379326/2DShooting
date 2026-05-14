@@ -227,14 +227,14 @@ void C_MainCharacter_MainGame::Action()
 
 		if (!M_Entity.MSF_Damage)
 		{
-			if (SCENE.Getter_EnemyAliveNum() > 0)
+			if (!SCENE.Getter_BossDelete())
 			{
 				// キー操作による移動機能
 				CM_Control->MoveKeyControl(M_Entity.MS_Position, M_Entity.MS_Move, M_Entity.MS_MoveSpeed, M_Entity.MS_Radius);
 			}
 		}
 
-		if (SCENE.Getter_EnemyAliveNum() > 0)
+		if (!SCENE.Getter_BossDelete())
 		{
 			// 座標が画面端を超えた場合、端の座標と半径を計算して画面内に納まるよう固定する。
 			if ((M_Entity.MS_Position.y + M_Entity.MS_Radius.y) > SCENE.Getter_ScreenSize_Top()) { M_Entity.MS_Position.y = (SCENE.Getter_ScreenSize_Top() - M_Entity.MS_Radius.y); }
@@ -251,7 +251,7 @@ void C_MainCharacter_MainGame::Update()
 {
 	if (GetAsyncKeyState('L') & 0x8000) { M_NotDeath = true; }
 
-	if (SCENE.Getter_EnemyAliveNum() > 0)
+	if (!SCENE.Getter_BossDelete())
 	{
 		// キー操作クラスの更新処理
 		CM_Control->Update();
@@ -260,7 +260,7 @@ void C_MainCharacter_MainGame::Update()
 	SCENE.Setter_MainCharaHP(M_Entity.MS_HP);
 	SCENE.Setter_MainCharaAlive(M_Entity.MSF_Alive);
 
-	if (SCENE.Getter_MainCharaDelete() || (SCENE.Getter_EnemyAliveNum() <= 0)) { M_FinishSlide = -30; }
+	if (SCENE.Getter_MainCharaDelete() || SCENE.Getter_BossDelete()) { M_FinishSlide = -30; }
 	M_Entity.MS_Position.x += M_FinishSlide;
 
 	// やられた場合、削除フラグを立てる。
