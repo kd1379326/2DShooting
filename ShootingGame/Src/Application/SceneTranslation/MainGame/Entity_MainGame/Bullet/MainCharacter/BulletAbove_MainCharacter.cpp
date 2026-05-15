@@ -98,6 +98,11 @@ void C_BulletAbove_MainCharacter::Update()
 	if (SCENE.Getter_MainCharaDelete() || SCENE.Getter_BossDelete()) { M_FinishSlide = -30; }
 	M_Entity.MS_Position.x += M_FinishSlide;
 
+	if (GetAsyncKeyState('C') & 0x8000)
+	{
+		M_Entity.MS_Power = 999;
+	}
+
 	if (M_Entity.MSF_Alive)
 	{
 		// ƒCƒ‰ƒXƒg‚ðŒX‚¯‚é

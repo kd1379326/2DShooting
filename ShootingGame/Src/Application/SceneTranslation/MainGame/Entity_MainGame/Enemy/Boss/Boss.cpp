@@ -39,8 +39,8 @@ void C_Boss_MainGame::Init(Math::Vector2 A_Position, bool AF_Turning)
 			// 座標(1280×720の範囲で出現させる)
 			// 画面サイズをSceneクラスから引っ張ってきて、半径分をも含めた値をランダム値を返す関数の引数に置く。
 			// 画面右端の見えない位置で上下は画面内に納まる座標をランダムに取り出す。
-			M_Entity.MS_Position.x = ((float)Scene::Instance().Getter_ScreenSize_Right() + M_Entity.MS_Radius.x);
-			M_Entity.MS_Position.y = (float)C_RandomNumericalValue::Instance().RandomNumericalValue((Scene::Instance().Getter_ScreenSize_Top() - M_Entity.MS_Radius.y), (Scene::Instance().Getter_ScreenSize_Bottom() + M_Entity.MS_Radius.y));
+			M_Entity.MS_Position.x = 700;
+			M_Entity.MS_Position.y = 0;
 			// 移動量
 			M_Entity.MS_Move = { 0, 0 };
 			// 移動スピード

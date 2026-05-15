@@ -88,7 +88,8 @@ private:
 	// 「Game」の文字用の構造体変数
 	S_Entity M_Game;
 	S_Entity M_Back;
-	S_Entity M_UIUnder;
+	S_Entity M_UIUnder1;
+	S_Entity M_UIUnder2;
 	S_Entity M_UIMainCharaHP[M_MainCharaMAXHP];
 	S_Entity M_UIEnemyNum[M_EnemyMAXNum];
 

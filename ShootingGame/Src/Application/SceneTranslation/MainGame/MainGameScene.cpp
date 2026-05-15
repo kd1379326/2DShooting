@@ -24,12 +24,14 @@
 C_MainGameScene::C_MainGameScene()
 {
 	M_Back.MS_Texture.Load("Texture/”wŒi‚Q.png");
-	M_UIUnder.MS_Texture.Load("Texture/UIUnder.png");
+	M_UIUnder1.MS_Texture.Load("Texture/UIUnder1.png");
+	M_UIUnder2.MS_Texture.Load("Texture/UIUnder2.png");
 	for (int i = 0; i < M_MainCharaMAXHP; i++) { M_UIMainCharaHP[i].MS_Texture.Load("Texture/UIHP1.png"); }
 	for (int i = 0; i < M_EnemyMAXNum; i++) { M_UIEnemyNum[i].MS_Texture.Load("Texture/UIHP1.png"); }
 
 	M_Game.MS_Position = { 0,0 };
-	M_UIUnder.MS_Position = { 0, -360 + 64 };
+	M_UIUnder1.MS_Position = { 0, -360 + 64 };
+	M_UIUnder2.MS_Position = { 0, -360 + 64 };
 
 	M_UIMainCharaHP[0].MS_Position = { -501, -357 + 64 };
 	for (int i = 1; i < M_MainCharaMAXHP; i++)
@@ -158,7 +160,8 @@ void C_MainGameScene::Update()
 	// “G‚P‚Ìíœ‹–‰Â‚ªo‚½‚ç“G‚P‚ÌŽc‚è‚Ì”‚ðŒ¸‚ç‚·B
 	Update_Enemy1_RemainingNumber_Subtract();
 	M_Back.MS_Matrix = Math::Matrix::CreateTranslation(0, 0, 0);
-	M_UIUnder.MS_Matrix = Math::Matrix::CreateTranslation(M_UIUnder.MS_Position.x, M_UIUnder.MS_Position.y, 0);
+	M_UIUnder1.MS_Matrix = Math::Matrix::CreateTranslation(M_UIUnder1.MS_Position.x, M_UIUnder1.MS_Position.y, 0);
+	M_UIUnder2.MS_Matrix = Math::Matrix::CreateTranslation(M_UIUnder2.MS_Position.x, M_UIUnder2.MS_Position.y, 0);
 
 	if (CM_Entity[C_MainGameScene::E_EntityNumber::ME_MainCharacter].size() != 0)
 	{
@@ -201,8 +204,17 @@ void C_MainGameScene::DrawSprite()
 	// ŠeƒLƒƒƒ‰‚Ì•`‰æˆ—
 	for (auto& Row : CM_Entity) { for (auto& Column : Row) { Column->Draw(); } }
 
-	SHADER.m_spriteShader.SetMatrix(M_UIUnder.MS_Matrix);
-	SHADER.m_spriteShader.DrawTex(&M_UIUnder.MS_Texture, Math::Rectangle{ 0, 0, 1280, 128 }, M_UIAlpha);
+	if (!M_SpownBoss)
+	{
+		SHADER.m_spriteShader.SetMatrix(M_UIUnder1.MS_Matrix);
+		SHADER.m_spriteShader.DrawTex(&M_UIUnder1.MS_Texture, Math::Rectangle{ 0, 0, 1280, 128 }, M_UIAlpha);
+	}
+
+	if (M_SpownBoss)
+	{
+		SHADER.m_spriteShader.SetMatrix(M_UIUnder2.MS_Matrix);
+		SHADER.m_spriteShader.DrawTex(&M_UIUnder2.MS_Texture, Math::Rectangle{ 0, 0, 1280, 128 }, M_UIAlpha);
+	}
 
 	if (CM_Entity[C_MainGameScene::E_EntityNumber::ME_MainCharacter].size() != 0)
 	{
@@ -252,7 +264,8 @@ void C_MainGameScene::Release()
 {
 
 	M_Back.MS_Texture.Release();
-	M_UIUnder.MS_Texture.Release();
+	M_UIUnder1.MS_Texture.Release();
+	M_UIUnder2.MS_Texture.Release();
 	for (int i = 0; i < M_MainCharaMAXHP; i++) { M_UIMainCharaHP[i].MS_Texture.Release(); }
 	for (int i = 0; i < M_EnemyMAXNum; i++) { M_UIEnemyNum[i].MS_Texture.Release(); }
 }
@@ -346,7 +359,7 @@ void C_MainGameScene::Update_Entity_HitJudgment_MainCharacter•Boss()
 				if (Length > 0.0f)
 				{
 					KnockDir.Normalize();
-					Column2->ApplyKnockback(KnockDir, 5.0f);
+					Column2->ApplyKnockback(KnockDir, 2.0f);
 				}
 
 				KnockDir = Column1->Getter_MyPosition() - Column2->Getter_MyPosition();
