@@ -11,8 +11,8 @@ C_TitleScene::C_TitleScene()
 	M_Press.MS_Texture.Load("Texture/TitleStart.png");
 	M_MainChara.MS_Texture.Load("Texture/MainCharacter/MainCharacter.png");
 	M_Title.MS_Position = { 0, 0 };
-	M_Logo.MS_Position = { 640 + 501, 125 };
-	M_Press.MS_Position = { 640 + 501, -200 };
+	M_Logo.MS_Position = { 640 + 404, 125 };
+	M_Press.MS_Position = { 640 + 404, -200 };
 	M_MainChara.MS_Position = { 640 + 32, 0 };
 	// シーン遷移させないようフラグを立てる。
 	MF_Stop_ContinuitySceneTransition = true;
@@ -69,7 +69,7 @@ void C_TitleScene::Update()
 	M_Press.MS_Position.x -= 20;
 	if ((M_Press.MS_Position.x < 0) && !MF_StartFlag) { M_Press.MS_Position.x = 0; }
 
-	if (M_Logo.MS_Position.x < -640 + -501){ M_MainChara.MS_Position.x -= 10; }
+	if (M_Logo.MS_Position.x < -640 + -404){ M_MainChara.MS_Position.x -= 10; }
 	if (M_MainChara.MS_Position.x < -500) { M_MainChara.MS_Position.x = -500; }
 
 	M_Title.MS_Matrix = Math::Matrix::CreateTranslation(0, 0, 0);
@@ -95,7 +95,7 @@ void C_TitleScene::DrawSprite()
 	//SHADER.m_spriteShader.SetMatrix(M_Title.MS_Matrix);
 	//SHADER.m_spriteShader.DrawColorTex(&M_Title.MS_Texture, Math::Rectangle{ 0, 0, 1280, 720 }, Math::Color {1, 1, 1, 1 });
 	SHADER.m_spriteShader.SetMatrix(M_Logo.MS_Matrix);
-	SHADER.m_spriteShader.DrawColorTex(&M_Logo.MS_Texture, Math::Rectangle{ 0, 0, 1001, 169 }, Math::Color {1, 1, 1, 1 });
+	SHADER.m_spriteShader.DrawColorTex(&M_Logo.MS_Texture, Math::Rectangle{ 0, 0, 808, 169 }, Math::Color {1, 1, 1, 1 });
 	SHADER.m_spriteShader.SetMatrix(M_Press.MS_Matrix);
 	SHADER.m_spriteShader.DrawColorTex(&M_Press.MS_Texture, Math::Rectangle{ 0, 0, 398, 80 }, Math::Color {1, 1, 1, M_Alpha });
 

@@ -33,7 +33,7 @@ bool Application::Init(int w, int h)
 	//===================================================================
 	// ウィンドウ作成
 	//===================================================================
-	if (m_window.Create(w, h, "SOLO AVIATOR", "Window") == false) {
+	if (m_window.Create(w, h, "SOLO PILOT", "Window") == false) {
 		MessageBoxA(nullptr, "ウィンドウ作成に失敗", "エラー", MB_OK);
 		return false;
 	}
@@ -248,7 +248,7 @@ void Application::Execute()
 		}
 
 		// FPSをタイトルバーに表示する。
-		std::string TitleBar = "SOLO AVIATOR ： FPS:" + std::to_string(m_fps);
+		std::string TitleBar = "SOLO PILOT ： FPS:" + std::to_string(m_fps);
 		SetWindowTextA(m_window.GetWndHandle(), TitleBar.c_str());
 	}
 
